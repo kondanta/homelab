@@ -28,14 +28,6 @@ struct Cli {
 enum Command {
 }
 
-use serde::Serialize;
-#[derive(Serialize)]
-struct Response<'a> {
-    message: &'a str,
-}
-
-
-
 #[tokio::main]
 async fn main() -> color_eyre::Result<()>{
     color_eyre::install()?;
@@ -72,7 +64,7 @@ async fn main() -> color_eyre::Result<()>{
         .with(tracing_subscriber::fmt::layer()) // required for the `tracing` macros to be logged to stdout
         .with(tracing_layer).init();
 
-    
+
     let addr = SocketAddr::from(([0, 0, 0, 0], cli.port));
     tracing::info!("listening on {}", addr);
 
