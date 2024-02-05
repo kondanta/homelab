@@ -1,8 +1,11 @@
 [workspace]
 members = [
     "bridge",
-    "collector", "echo",
-    "killswitch", "lib",
+    "collector",
+    "echo",
+    "killswitch",
+    "lib",
+    "quard",
 ]
 resolver = "2"
 
