@@ -1,7 +1,7 @@
 use std::net::SocketAddr;
 
 use axum::{
-    extract::MatchedPath, http::{Request, StatusCode}, routing::get, Json, Router
+    extract::MatchedPath, http::{Request, StatusCode}, routing::get, Router
 };
 use axum_prometheus::PrometheusMetricLayer;
 use axum_server;
