@@ -1,17 +1,18 @@
 use std::net::SocketAddr;
 
 use axum::{
-    extract::MatchedPath, http::{Request, StatusCode}, routing::get, Router
+    http::StatusCode, routing::get, Router
 };
 use axum_prometheus::PrometheusMetricLayer;
 use axum_server;
+use axum_tracing_opentelemetry::middleware::OtelAxumLayer;
+
 use clap::{Parser, Subcommand};
 
 use lib::tracing as lib_tracing;
 
 use opentelemetry_sdk::Resource;
 use opentelemetry_semantic_conventions as semcov;
-use tower_http::trace::TraceLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
 
@@ -41,20 +42,7 @@ async fn main() -> color_eyre::Result<()>{
         .route("/healthz", get(healthz))
         .route("/readyz", get(readyz))
         .layer(prometheus_layer)
-        .layer(
-            TraceLayer::new_for_http().make_span_with(|request: &Request<_>| {
-                let matched_path = request
-                    .extensions()
-                    .get::<MatchedPath>()
-                    .map(MatchedPath::as_str);
-
-                tracing::info_span!(
-                    "http_request",
-                    method = ?request.method(),
-                    matched_path,
-                )
-            }),
-        );
+        .layer(OtelAxumLayer::default());
 
     let trace_resource = Resource::new(vec![semcov::resource::SERVICE_NAME.string("collector")]);
     let env_filter = EnvFilter::from_default_env();
