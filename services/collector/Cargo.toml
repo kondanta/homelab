@@ -9,6 +9,7 @@ publish.workspace = true # This is a workspace-wide setting
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+amiquip.workspace = true
 axum.workspace = true
 axum-prometheus.workspace = true
 axum-server.workspace = true

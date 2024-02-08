@@ -1,4 +1,5 @@
 use std::net::SocketAddr;
+use std::thread;
 
 use axum::{
     http::StatusCode, routing::get, Router
@@ -15,6 +16,7 @@ use opentelemetry_sdk::Resource;
 use opentelemetry_semantic_conventions as semcov;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
+mod bus;
 
 #[derive(Parser)]
 struct Cli {
@@ -34,7 +36,6 @@ async fn main() -> color_eyre::Result<()>{
     color_eyre::install()?;
     let cli = Cli::parse();
 
-
     let (prometheus_layer, metric_handle) = PrometheusMetricLayer::pair();
     let app = Router::new()
         .route("/metrics", get(|| async move { metric_handle.render() }))
@@ -52,6 +53,9 @@ async fn main() -> color_eyre::Result<()>{
         .with(tracing_subscriber::fmt::layer()) // required for the `tracing` macros to be logged to stdout
         .with(tracing_layer).init();
 
+    thread::spawn(move || {
+        run_bus().unwrap();
+    });
 
     let addr = SocketAddr::from(([0, 0, 0, 0], cli.port));
     tracing::info!("listening on {}", addr);
@@ -78,4 +82,18 @@ async fn readyz() -> impl  axum::response::IntoResponse {
 async fn root() -> &'static str {
     tracing::info!("root");
     "Hello, World!"
+}
+
+
+fn run_bus() -> color_eyre::Result<()> {
+    let cfg = bus::Config {
+        amqp_url: "amqp://guest:guest@localhost:5672".to_string(),
+        public_queue: Some("q1".to_string()),
+        private_queue: None,
+        channel_id: None,
+    };
+    let bus = bus::Bus::new(cfg);
+    bus.listen().ok();
+
+    Ok(())
 }

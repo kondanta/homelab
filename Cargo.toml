@@ -21,6 +21,7 @@ publish = false
 version = "0.1.0"
 
 [workspace.dependencies]
+amiquip = "0.3.2"
 axum = { version = "0.7.4", features = [
     "http2",
     "json",
