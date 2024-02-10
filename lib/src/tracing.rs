@@ -1,14 +1,16 @@
 pub use opentelemetry;
 pub use opentelemetry_sdk;
 
-use opentelemetry_sdk::{propagation::TraceContextPropagator,  Resource};
+use opentelemetry_sdk::{propagation::TraceContextPropagator, trace::Sampler, Resource};
 use opentelemetry_otlp::WithExportConfig;
 
 //
 pub fn otlp_with_resource(trace_resource: Resource) -> opentelemetry_sdk::trace::Tracer {
     opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
 
-    let trace_config = opentelemetry_sdk::trace::config().with_resource(trace_resource);
+    let trace_config = opentelemetry_sdk::trace::config()
+    .with_resource(trace_resource)
+    .with_sampler(Sampler::AlwaysOn);
 
     tracing::info!("Tracing initialized");
     opentelemetry_otlp::new_pipeline()

@@ -407,10 +407,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bridge"
-version = "0.1.0"
-
-[[package]]
 name = "built"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -532,6 +528,7 @@ version = "0.1.0"
 dependencies = [
  "amiquip",
  "axum 0.7.4",
+ "axum-macros",
  "axum-prometheus",
  "axum-server",
  "axum-tracing-opentelemetry",
@@ -1300,11 +1297,15 @@ checksum = "830d08ce1d1d941e6b30645f1a0eb5643013d835ce3779a5fc208261dbe10f55"
 name = "lib"
 version = "0.1.0"
 dependencies = [
+ "amiquip",
  "color-eyre",
+ "eyre",
  "opentelemetry",
  "opentelemetry-otlp",
  "opentelemetry-semantic-conventions",
  "opentelemetry_sdk",
+ "serde",
+ "serde_json",
  "tokio",
  "tracing",
  "tracing-opentelemetry",

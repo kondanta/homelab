@@ -1,8 +1,7 @@
 use std::net::SocketAddr;
-use std::thread;
 
 use axum::{
-    http::StatusCode, routing::get, Router
+    routing::{get, post}, Router
 };
 use axum_prometheus::PrometheusMetricLayer;
 use axum_server;
@@ -16,7 +15,9 @@ use opentelemetry_sdk::Resource;
 use opentelemetry_semantic_conventions as semcov;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
-mod bus;
+mod http;
+mod routes;
+mod queue;
 
 #[derive(Parser)]
 struct Cli {
@@ -39,9 +40,10 @@ async fn main() -> color_eyre::Result<()>{
     let (prometheus_layer, metric_handle) = PrometheusMetricLayer::pair();
     let app = Router::new()
         .route("/metrics", get(|| async move { metric_handle.render() }))
-        .route("/", get(root))
-        .route("/healthz", get(healthz))
-        .route("/readyz", get(readyz))
+        .route("/", get(crate::routes::root))
+        .route("/command", post(crate::routes::command))
+        .route("/healthz", get(crate::routes::healthz))
+        .route("/readyz", get(crate::routes::readyz))
         .layer(prometheus_layer)
         .layer(OtelAxumLayer::default());
 
@@ -53,9 +55,7 @@ async fn main() -> color_eyre::Result<()>{
         .with(tracing_subscriber::fmt::layer()) // required for the `tracing` macros to be logged to stdout
         .with(tracing_layer).init();
 
-    thread::spawn(move || {
-        run_bus().unwrap();
-    });
+    crate::queue::Queue::init(); // create the queues
 
     let addr = SocketAddr::from(([0, 0, 0, 0], cli.port));
     tracing::info!("listening on {}", addr);
@@ -67,33 +67,3 @@ async fn main() -> color_eyre::Result<()>{
     Ok(())
 }
 
-// todo(taylan): implement response struct
-async fn healthz() -> impl axum::response::IntoResponse {
-    tracing::info!("healthz");
-    (StatusCode::OK, "ok")
-}
-
-// todo(taylan): implement response struct
-async fn readyz() -> impl  axum::response::IntoResponse {
-    tracing::info!("readyz");
-    (StatusCode::OK, "ok")
-}
-
-async fn root() -> &'static str {
-    tracing::info!("root");
-    "Hello, World!"
-}
-
-
-fn run_bus() -> color_eyre::Result<()> {
-    let cfg = bus::Config {
-        amqp_url: "amqp://guest:guest@localhost:5672".to_string(),
-        public_queue: Some("q1".to_string()),
-        private_queue: None,
-        channel_id: None,
-    };
-    let bus = bus::Bus::new(cfg);
-    bus.listen().ok();
-
-    Ok(())
-}
