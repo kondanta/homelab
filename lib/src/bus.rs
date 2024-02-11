@@ -2,6 +2,7 @@
 // More specifically, from a public queue to a private queue.
 
 use std::fmt::Debug;
+use std::borrow::Cow;
 
 use amiquip::{Connection, ConsumerMessage, ConsumerOptions, Exchange, Publish, QueueDeclareOptions};
 
@@ -23,9 +24,11 @@ pub struct Bus {
 
 impl Bus {
     pub fn new() -> Self {
-        // todo: read from env
+        let amqp_url = std::env::var("AMQP_URL")
+            .unwrap_or("amqp://guest:guest@localhost:5672".to_string());
+
         let config = Config {
-            amqp_url: "amqp://guest:guest@localhost:5672".to_string(),
+            amqp_url,
         };
 
         Self { config }
@@ -60,6 +63,7 @@ impl Bus {
         &self,
         queue_name: String,
         channel_id: Option<u16>,
+        f : fn(body: Cow<str>),
     ) -> Result<()> {
         let mut connection = Connection::insecure_open(&self.config.amqp_url)?;
 
@@ -77,6 +81,7 @@ impl Bus {
                 ConsumerMessage::Delivery(delivery) => {
                     let body = String::from_utf8_lossy(&delivery.body);
                     tracing::info!("({:>3}) Received [{}]", i, body);
+                    f(body.clone());
                     if body == "quit" {
                         tracing::info!("Quitting");
                         break;
