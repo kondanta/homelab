@@ -1,3 +1,4 @@
+use lib::dto::QueueType;
 use serde::{Deserialize, Serialize};
 
 
@@ -25,9 +26,9 @@ impl Message {
     }
 }
 
-impl lib::dto::Message for Message {
-    fn requestee(&self) -> &str {
-        &self.request.requestee
+impl lib::dto::BusRequest for Message {
+    fn requestee(&self) -> QueueType {
+        self.request.requestee.parse().expect("Invalid queue type")
     }
 
     fn requestor(&self) -> &str {

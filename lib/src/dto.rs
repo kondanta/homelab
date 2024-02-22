@@ -3,8 +3,8 @@ use std::fmt;
 
 use serde::{Deserialize, Serialize};
 
-pub trait Message {
-    fn requestee(&self) -> &str;
+pub trait BusRequest {
+    fn requestee(&self) -> QueueType;
     fn requestor(&self) -> &str;
     fn payload(&self) -> &str;
     fn to_json(&self) -> serde_json::Value;

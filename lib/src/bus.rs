@@ -8,7 +8,7 @@ use amiquip::{Connection, ConsumerMessage, ConsumerOptions, Exchange, Publish, Q
 
 use color_eyre::eyre::{eyre, Result};
 
-use crate::dto::Message;
+use crate::dto::BusRequest;
 
 #[derive(Debug)]
 pub struct Config {
@@ -102,7 +102,7 @@ impl Bus {
 
     // todo: implement data struct.
     #[tracing::instrument]
-    pub fn send<T: Message + Debug>(
+    pub fn send<T: BusRequest + Debug>(
         &self,
         data: T,
         channel_id: Option<u16>,
@@ -114,7 +114,15 @@ impl Bus {
         let exchange = Exchange::direct(&channel);
 
         let message = json_bytes(data.payload().to_string())?;
-        exchange.publish(Publish::new(&message, data.requestee().to_lowercase())).unwrap();
+        exchange.publish(
+            Publish::new(
+                &message,
+                data
+                .requestee()
+                .to_string()
+                .to_lowercase()
+            )
+        ).unwrap();
 
         connection.close().map_err(|e| eyre!(e)).unwrap();
 
