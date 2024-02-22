@@ -41,7 +41,7 @@ async fn main() -> color_eyre::Result<()>{
     let app = Router::new()
         .route("/metrics", get(|| async move { metric_handle.render() }))
         .route("/", get(crate::routes::root))
-        .route("/command", post(crate::routes::command))
+        .route("/api/v1/command", post(crate::routes::command))
         .route("/healthz", get(crate::routes::healthz))
         .route("/readyz", get(crate::routes::readyz))
         .layer(prometheus_layer)
