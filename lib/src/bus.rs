@@ -114,7 +114,7 @@ impl Bus {
         let exchange = Exchange::direct(&channel);
 
         let message = json_bytes(data.payload().to_string())?;
-        exchange.publish(Publish::new( &message, data.requestee())).unwrap();
+        exchange.publish(Publish::new(&message, data.requestee().to_lowercase())).unwrap();
 
         connection.close().map_err(|e| eyre!(e)).unwrap();
 
