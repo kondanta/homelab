@@ -1,6 +1,8 @@
 use std::str::FromStr;
 use std::fmt;
 
+use serde::{Deserialize, Serialize};
+
 pub trait Message {
     fn requestee(&self) -> &str;
     fn requestor(&self) -> &str;
@@ -8,7 +10,7 @@ pub trait Message {
     fn to_json(&self) -> serde_json::Value;
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum QueueType {
     Discord,
     Drink,
@@ -55,7 +57,8 @@ impl FromStr for QueueType {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err>{
-        match s {
+        let s = s.to_lowercase();
+        match s.as_str() {
             "discord" => Ok(QueueType::Discord),
             "drink" => Ok(QueueType::Drink),
             "game" => Ok(QueueType::Game),
