@@ -29,16 +29,3 @@ pub(crate) async fn command(
 
     (StatusCode::OK, "ok")
 }
-
-// pub(crate) fn run_bus() -> color_eyre::Result<()> {
-//     let cfg = Config {
-//         amqp_url: "amqp://guest:guest@localhost:5672".to_string(),
-//         public_queue: Some("q1".to_string()),
-//         private_queue: None,
-//         channel_id: None,
-//     };
-//     let bus = Bus::new(cfg);
-//     bus.listen().ok();
-
-//     Ok(())
-// }
