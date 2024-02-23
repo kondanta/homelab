@@ -2,6 +2,10 @@
 
 A component that sits in front of the bridge and intercepts the incoming requests. Handles the authentication and authorization of the incoming requests before they are passed to the bridge.
 
+## Configuration
+`COLLECTOR_URL` - The URL of the collector service.
+`JWT_SECRET` - The secret key used to sign the JWT token.
+
 ## Example Request
 
 ```json

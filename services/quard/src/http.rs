@@ -79,9 +79,10 @@ async fn dispatch_command(request: Request) -> Result<reqwest::Response> {
 
     let body = serde_json::to_string(&R::from(request))?;
     tracing::debug!("request serialized as: {:?}", body);
-    // send http request to the collector service localhost:4000
+
+    let collector_url = std::env::var("COLLECTOR_URL").unwrap_or_else(|_| "http://localhost:4000".to_string());
     let request = reqwest::Client::new()
-        .post("http://localhost:4000/api/v1/command")
+        .post(collector_url + "/api/v1/command")
         .header("Content-Type", "application/json")
         .body(body);
 
