@@ -50,6 +50,8 @@ async fn main() -> color_eyre::Result<()>{
     let endpoint = std::env::var("OTLP_ENDPOINT").unwrap_or("http://localhost:4317".to_string());
     lib_tracing::init_tracing(trace_resource, endpoint);
 
+    crate::queue::Queue::init().ok(); // create the queues
+
     let addr = SocketAddr::from(([0, 0, 0, 0], cli.port));
     tracing::info!("listening on {}", addr);
 

@@ -2,7 +2,7 @@ use lib::{
     bus,
     dto::QueueType,
 };
-use color_eyre::eyre::eyre;
+use color_eyre::eyre::{eyre, Result};
 use std::str::FromStr;
 
 
@@ -12,19 +12,27 @@ pub struct Queue {
 }
 
 impl Queue {
-    pub fn init() {
+    pub fn init() -> Result<()>{
         tracing::info!("Initializing queues");
     // for each queuetype, create a queue
         for queue in QueueType::iter() {
 
             let bus = bus::Bus::new();
-            bus.create_queue(
+            match bus.create_queue(
                 queue.to_string(),
                 Some(queue.channel_id())
-            ).unwrap();
+            ) {
+                Ok(_) => (),
+                Err(e) => {
+                    tracing::error!("Error creating queue: {:?}", queue.to_string());
+                    tracing::error!("Error: {:?}", e.to_string());
+                }
+            }
             tracing::info!("Queue {} initialized", queue);
         }
         tracing::info!("Queues initialized");
+
+        Ok(())
     }
 
     pub fn new() -> Self {

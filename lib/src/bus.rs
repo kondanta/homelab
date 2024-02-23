@@ -7,6 +7,7 @@ use std::borrow::Cow;
 use amiquip::{Connection, ConsumerMessage, ConsumerOptions, Exchange, Publish, QueueDeclareOptions};
 
 use color_eyre::eyre::{eyre, Result};
+use eyre::bail;
 
 use crate::dto::BusRequest;
 
@@ -41,7 +42,10 @@ impl Bus {
         channel_id: Option<u16>,
     ) -> Result<()> {
         tracing::info!("Creating queue {}", queue_name);
-        let mut connection = Connection::insecure_open(&self.config.amqp_url).unwrap();
+        let mut connection = match Connection::insecure_open(&self.config.amqp_url) {
+            Ok(c) => c,
+            Err(e) => bail!(e),
+        };
 
         let channel = connection.open_channel(channel_id).unwrap();
 
@@ -51,9 +55,9 @@ impl Bus {
         ).map_err(|e| {
             tracing::error!("Error declaring queue: {:?}", e);
             eyre!(e)
-        }).unwrap();
+        })?;
 
-        connection.close().map_err(|e| eyre!(e)).unwrap();
+        connection.close().map_err(|e| eyre!(e))?;
         tracing::info!("Queue created");
 
         Ok(())
