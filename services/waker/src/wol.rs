@@ -12,14 +12,14 @@ pub(crate) fn construct_magic_packet(mac_address: [u8; 6]) -> [u8; 102] {
     magic_packet
 }
 
-pub(crate) fn create_wol_message() -> std::io::Result<()> {
+pub(crate) fn create_wol_message(mac: String) -> std::io::Result<()> {
     // Create a UDP socket
     let socket = UdpSocket::bind("0.0.0.0:0")?;
 
     // Set the socket to broadcast mode
     socket.set_broadcast(true)?;
 
-     let mac_address_bytes = util::parse_mac_address(util::read_mac_address_from_config().as_ref()).unwrap_or_else(|err| {
+     let mac_address_bytes = util::parse_mac_address(mac.as_ref()).unwrap_or_else(|err| {
         panic!("Failed to parse MAC address: {}", err);
     });
 

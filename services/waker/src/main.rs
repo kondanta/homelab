@@ -1,4 +1,4 @@
-use std::net::SocketAddr;
+use std::{env, net::SocketAddr};
 use axum::{
     routing::get,
     http::StatusCode,
@@ -31,6 +31,9 @@ async fn main() -> std::io::Result<()> {
 
 // WoL endpoint
 async fn wol() -> (StatusCode, Json<Response<'static>>) {
-    wol::create_wol_message().ok();
+    let mac = env::var("MAC_ADDRESS").unwrap_or_else(|_| {
+        panic!("MAC_ADDRESS environment variable is not set");
+    });
+    wol::create_wol_message(mac).ok();
     (StatusCode::OK, Json(Response { message: "Magic packet sent!" }))
 }
