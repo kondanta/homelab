@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use axum::{
     extract::Json,
     http::StatusCode,
@@ -7,6 +5,8 @@ use axum::{
 };
 use color_eyre::{eyre::eyre, Result};
 use lib::dto::{QueueType, BusRequest};
+
+use crate::auth;
 
 
 #[derive(serde::Deserialize)]
@@ -26,20 +26,6 @@ struct R {
     body: String,
     requestee: QueueType,
     requestor: String,
-}
-
-impl From<Request> for R {
-    fn from(request: Request) -> Self {
-        let body = request.body.command;
-        let requestee = QueueType::from_str(&request.body.requestee).unwrap();
-        let requestor = request.body.requestor;
-
-        Self {
-            body,
-            requestee,
-            requestor,
-        }
-    }
 }
 
 impl BusRequest for R {
@@ -65,7 +51,7 @@ impl BusRequest for R {
 }
 
 
-pub(crate) async fn command(Json(request): Json<Request>) -> impl axum::response::IntoResponse {
+pub(crate) async fn command(_: auth::Claims, Json(request): Json<Request>) -> impl axum::response::IntoResponse {
     // You can access the deserialized struct here
     tracing::debug!("Received command: {}", request.body.command);
     tracing::debug!("Received device_id: {}", request.body.requestee);
@@ -84,6 +70,13 @@ pub(crate) async fn command(Json(request): Json<Request>) -> impl axum::response
 }
 
 async fn dispatch_command(request: Request) -> Result<reqwest::Response> {
+    let requestee = request.body.requestee.parse().map_err(|_| eyre!("Invalid queue type"))?;
+    let request = R {
+        body: request.body.command,
+        requestee,
+        requestor: request.body.requestor,
+    };
+
     let body = serde_json::to_string(&R::from(request))?;
     tracing::debug!("request serialized as: {:?}", body);
     // send http request to the collector service localhost:4000
