@@ -5,6 +5,7 @@ members = [
     "services/killswitch",
     "lib",
     "services/quard",
+    "services/waker",
 ]
 resolver = "2"
 
