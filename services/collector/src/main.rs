@@ -13,7 +13,6 @@ use lib::tracing as lib_tracing;
 
 use opentelemetry_sdk::Resource;
 use opentelemetry_semantic_conventions as semcov;
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
 mod http;
 mod routes;
@@ -48,14 +47,8 @@ async fn main() -> color_eyre::Result<()>{
         .layer(OtelAxumLayer::default());
 
     let trace_resource = Resource::new(vec![semcov::resource::SERVICE_NAME.string("collector")]);
-    let env_filter = EnvFilter::from_default_env();
-    let tracing_layer = tracing_opentelemetry::layer().with_tracer(lib_tracing::otlp_with_resource(trace_resource));
-    tracing_subscriber::registry()
-        .with(env_filter)
-        .with(tracing_subscriber::fmt::layer()) // required for the `tracing` macros to be logged to stdout
-        .with(tracing_layer).init();
-
-    crate::queue::Queue::init(); // create the queues
+    let endpoint = std::env::var("OTLP_ENDPOINT").unwrap_or("http://localhost:4317".to_string());
+    lib_tracing::init_tracing(trace_resource, endpoint);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], cli.port));
     tracing::info!("listening on {}", addr);
