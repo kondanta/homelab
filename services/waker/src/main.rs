@@ -17,10 +17,16 @@ fn main() -> std::io::Result<()> {
     bus.listen(
         queue.to_string(),
         Some(queue.channel_id()),
-        wol
+        waker
     ).unwrap();
 
     Ok(())
+}
+
+fn waker(body: std::borrow::Cow<str>) {
+    if body.contains("waker") {
+        wol();
+    }
 }
 
 // WoL
