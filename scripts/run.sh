@@ -9,6 +9,8 @@ docker run -d \
     --hostname queue \
     --network=homelab \
     --name rabbitmq \
+    -e RABBITMQ_DEFAULT_USER=guest \
+    -e RABBITMQ_DEFAULT_PASS=guest \
     -p 8080:15672 \
     -p \
     5672:5672 rabbitmq:3-management
@@ -37,6 +39,7 @@ docker run -d \
     --network=homelab \
     --name quard \
     -p 3000:3000 \
+    -e JWT_TOKEN="secret" \
     -e RUST_LOG=info \
     -e OTLP_ENDPOINT="http://jaeger:4317" \
     quard
@@ -46,5 +49,6 @@ docker run -d \
     --network=homelab \
     --name waker \
     -p 9092:9092 \
+    -e MAC_ADDRESS="00:00:00:00:00:00" \
     -e RUST_LOG=info \
     waker
