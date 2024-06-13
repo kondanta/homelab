@@ -9,6 +9,7 @@ use clap::{Parser, Subcommand};
 use color_eyre::{eyre::eyre, Result};
 use lib::tracing as lib_tracing;
 
+use opentelemetry::KeyValue;
 use opentelemetry_sdk::Resource;
 use opentelemetry_semantic_conventions as semcov;
 
@@ -52,7 +53,9 @@ async fn main() -> Result<()>{
             .layer(tower::limit::RateLimitLayer::new(1, std::time::Duration::from_secs(10))),
         );
 
-    let trace_resource = Resource::new(vec![semcov::resource::SERVICE_NAME.string("quard")]);
+    let trace_resource = Resource::new(vec![
+        KeyValue::new(semcov::resource::SERVICE_NAME, "quard"),
+    ]);
     let endpoint = std::env::var("OTLP_ENDPOINT").unwrap_or("http://localhost:4317".to_string());
     lib_tracing::init_tracing(trace_resource, endpoint);
 

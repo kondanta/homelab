@@ -11,6 +11,7 @@ use clap::{Parser, Subcommand};
 
 use lib::tracing as lib_tracing;
 
+use opentelemetry::KeyValue;
 use opentelemetry_sdk::Resource;
 use opentelemetry_semantic_conventions as semcov;
 
@@ -46,7 +47,9 @@ async fn main() -> color_eyre::Result<()>{
         .layer(prometheus_layer)
         .layer(OtelAxumLayer::default());
 
-    let trace_resource = Resource::new(vec![semcov::resource::SERVICE_NAME.string("collector")]);
+    let trace_resource = Resource::new(vec![
+        KeyValue::new(semcov::resource::SERVICE_NAME, "collector")
+        ]);
     let endpoint = std::env::var("OTLP_ENDPOINT").unwrap_or("http://localhost:4317".to_string());
     lib_tracing::init_tracing(trace_resource, endpoint);
 
