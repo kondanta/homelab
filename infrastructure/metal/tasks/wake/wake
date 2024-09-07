@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import yaml
+from pathlib import Path
+
+PROJECT_NAME = "homelab"
+
+def check_wakeonlan() -> None:
+    if os.system("which wakeonlan > /dev/null 2>&1") != 0:
+        raise Exception("wakeonlan not found. Please install it.")
+
+def get_root_dir() -> Path:
+    path = Path(os.path.dirname(os.path.abspath(__file__)))
+    homedir = next((p for p in path.parents if p.name == PROJECT_NAME), None)
+
+    if homedir is None:
+        raise ValueError(f"Project root directory with name '{PROJECT_NAME}' not found.")
+
+    return homedir
+
+def check_python_version(required_version: str) -> None:
+    if sys.version_info < tuple(map(int, required_version.split('.'))):
+        raise Exception(f"Must be using Python >= {required_version}")
+
+def parse_hardware() -> dict:
+    path = str(get_root_dir()) + "/infrastructure/metal/inventory/hardware.yaml"
+    with open(path) as f:
+        data = yaml.safe_load(f)
+
+    return data
+
+def get_metal_MACs() -> list:
+    data = parse_hardware()
+    macs = []
+
+    control_planes = data.get('metal', {}).get('instances', {}).get('control_planes', {})
+    workers = data.get('metal', {}).get('instances', {}).get('workers', {})
+
+    for instance, details in control_planes.items():
+        macs.append(details['mac'])
+
+    for instance, details in workers.items():
+        macs.append(details['mac'])
+
+    return macs
+
+def wake_on_lan(mac: str) -> None:
+    os.system(f"wakeonlan {mac}")
+
+def main():
+    check_python_version("3.10")
+    check_wakeonlan()
+    get_metal_MACs()
+
+
+if __name__ == '__main__':
+    main()
