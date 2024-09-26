@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+
+import os
+import importlib.util
+
+def module_from_file(module_name, file_path):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+utils = module_from_file("utils", "./lib/python/utils.py")
+# End of imports
+
+PATH = os.path.dirname(os.path.realpath(__file__))
+
+def check_talosctl() -> None:
+    if os.system("which talosctl > /dev/null 2>&1") != 0:
+        raise Exception("talosctl not found. Please install it.")
+
+def get_control_plane_ip() -> str:
+    data = utils.parse_hardware()
+    return data.get('all', {}).get('vars', {}).get('control_plane_entrypoint', None)
+
+def get_cluster_name() -> str:
+    data = utils.parse_hardware()
+    return data.get('all', {}).get('vars', {}).get('control_plane_entrypoint', None)
+
+
+def generate_talos_config(control_plane_ip, cluster_name="test-cluster", output_dir=f"{PATH}/output") -> None:
+    os.system(f"talosctl gen config {cluster_name} https://{control_plane_ip}:6443 --config-patch {PATH}/@patch.yaml --install-disk \"\" --with-docs=false --with-examples=false --output-dir={output_dir}")
+
+def apply_talos_config(node_ip, file=f"{PATH}/output/controlplane.yaml", is_worker=False) -> None:
+    if is_worker:
+        os.system(f"talosctl apply-config --insecure --nodes {node_ip} --file {file} --worker")
+        return
+
+    os.system(f"talosctl apply-config --insecure --nodes {node_ip} --file {file}")
+
+def set_api_config(node_ip) -> None:
+    env = os.environ.setdefault("TALOSCONFIG", f"{PATH}/output/talosconfig")
+
+    os.system(f"talosctl config endpoint {node_ip}")
+    os.system(f"talosctl config node {node_ip}")
+
+def bootstrap_etcd() -> None:
+    os.system("talosctl bootstrap")
+
+def get_kubeconfig() -> None:
+    os.system("talosctl kubeconfig .")
+
+def main():
+    check_talosctl()
+    utils.echo("Provisioning Talos cluster")
+
+    # Get environment variable IS_WORKER, cast it to boolean if it exists
+    is_worker = bool(os.getenv("IS_WORKER", False))
+    print(f"Is worker: {is_worker}")
+
+    control_plane_ip = get_control_plane_ip()
+    if control_plane_ip is None:
+        raise Exception("No control plane entrypoint found in hardware.yaml")
+
+    cluster_name = get_cluster_name()
+    if cluster_name is None:
+        raise Exception("No cluster name found in hardware.yaml")
+
+    cplanes, workers = utils.set_hardware_data()
+
+    if len(cplanes) == 0:
+        raise Exception("No control planes found in hardware.yaml")
+
+    if len(workers) == 0:
+        raise Exception("No workers found in hardware.yaml")
+
+    if not os.path.exists(f"{PATH}/output/controlplane.yaml"):
+        generate_talos_config(control_plane_ip, cluster_name)
+
+    if is_worker:
+        print(workers)
+        for worker, details in workers.items():
+            print(f"Applying talos config to worker: {worker}")
+            apply_talos_config(details["host"], file=f"{PATH}/output/worker.yaml", is_worker=is_worker)
+    else:
+        for control_plane, details in cplanes.items():
+            print(f"Applying talos config to worker: {control_plane}")
+            apply_talos_config(details["host"])
+            set_api_config(details["host"])
+            bootstrap_etcd()
+            get_kubeconfig()
+
+if __name__ == "__main__":
+    main()

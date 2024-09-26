@@ -1,0 +1,11 @@
+cluster:
+  network:
+    cni:
+      name: none
+
+machine:
+  install:
+    image: ghcr.io/siderolabs/installer:v1.7.6 # Allows for supplying the image used to perform the installation.
+    wipe: true # Indicates if the installation disk should be wiped at installation time.
+    diskSelector:
+      busPath: /pci0000:00/0000:00:17.0/ata1/host1/target1:0:0/1:0:0:0/ # Disk bus path.
