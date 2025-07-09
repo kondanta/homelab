@@ -1,4 +1,3 @@
-pub mod tracing;
-pub mod dto;
-
 pub mod bus;
+pub mod dto;
+pub mod tracing;
