@@ -1,0 +1,11 @@
+[package]
+name = "spinner"
+authors.workspace = true
+edition.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[dependencies]
+lib.workspace = true
+serde.workspace = true
+serde_yaml.workspace = true

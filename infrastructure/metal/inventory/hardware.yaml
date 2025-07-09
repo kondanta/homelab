@@ -1,29 +1,40 @@
-all:
-  vars:
-    control_plane_entpoint: 192.168.1.100
-    load_balancer_ip_pool: 192.168.1.225/29
-metal:
-  instances:
+metadata:
+  name: hardware
+  description: |
+    Hardware inventory for the metal infrastructure.
+    This file contains the details of all hardware components used in the metal infrastructure.
+  version: 1.0.0
+components:
+  servers:
     control_planes:
-      cplane1:
-        {
-          host: 192.168.1.110,
-          mac: "E8:FF:1E:D4:75:D5",
-          disk: nvme0n1,
-          network: eth0,
-        }
+      - name: control-plane-1
+        ip_address: 10.1.20.11
+        hardware:
+          cpu: Intel Processor N150
+          gpu: Intel Graphics
+          memory: 16
+          disks:
+            - path: /dev/sdb
+              type: SSD
+              size: 512 # Size in GB
     workers:
-      worker1:
-        {
-          host: 192.168.1.111,
-          mac: "E8:FF:1E:D4:7C:1F",
-          disk: nvme0n1,
-          network: eth0,
-        }
-      worker2:
-        {
-          host: 192.168.1.112,
-          mac: "E8:FF:1E:D4:76:1B",
-          disk: nvme0n1,
-          network: eth0,
-        }
+      - name: worker-1
+        ip_address: 10.1.20.12
+        hardware:
+          cpu: Intel Processor N150
+          gpu: Intel Graphics
+          memory: 16
+          disks:
+            - path: /dev/sdb
+              type: SSD
+              size: 512 # Size in GB
+      - name: worker-2
+        ip_address: 10.1.20.13
+        hardware:
+          cpu: Intel Processor N150
+          gpu: Intel Graphics
+          memory: 16
+          disks:
+            - path: /dev/sdb
+              type: SSD
+              size: 512 # Size in GB
