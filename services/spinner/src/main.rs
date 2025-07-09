@@ -1,7 +1,7 @@
+#![allow(dead_code)]
+
 use color_eyre::Result;
 use tracing_subscriber::FmtSubscriber;
-
-use crate::exec::shell;
 
 mod cli;
 mod cluster;
@@ -38,7 +38,6 @@ fn main() -> Result<()> {
                 override_protection,
             );
             provisioner.provision()?;
-            shell::exec("echo", &["Provisioning completed successfully."])?;
         }
 
         Some(cli::Command::List {}) => {
