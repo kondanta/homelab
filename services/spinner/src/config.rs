@@ -1,64 +1,63 @@
+use color_eyre::Result;
 use serde::Deserialize;
 use serde_yaml::from_reader;
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct Config {
-    metadata: Metadata,
-    components: Components,
+    pub metadata: Metadata,
+    pub components: Components,
 }
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct Metadata {
-    name: String,
-    version: String,
-    description: String,
+    pub name: String,
+    pub version: String,
+    pub description: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct Components {
-    servers: Servers,
+    pub servers: Servers,
 }
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct Servers {
-    control_planes: Vec<ControlPlane>,
-    workers: Vec<Worker>,
+    pub control_planes: Vec<ControlPlane>,
+    pub workers: Vec<Worker>,
 }
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct ControlPlane {
-    name: String,
-    #[serde(rename = "ip_address")]
-    ip_address: String,
-    hardware: Hardware,
+    pub name: String,
+    pub ip_address: String,
+    pub hardware: Hardware,
 }
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct Worker {
-    name: String,
-    #[serde(rename = "ip_address")]
-    ip_address: String,
-    hardware: Hardware,
+    pub name: String,
+    pub ip_address: String,
+    pub hardware: Hardware,
 }
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct Hardware {
-    cpu: String,
-    gpu: String,
-    memory: u32,
-    disks: Vec<Disk>,
+    pub cpu: String,
+    pub gpu: String,
+    pub memory: u32,
+    pub disks: Vec<Disk>,
 }
 
 #[derive(Debug, Deserialize)]
 pub(crate) struct Disk {
-    path: String,
-    size: u32,
+    pub path: String,
+    pub size: u32,
     #[serde(rename = "type")]
-    type_: String,
+    pub type_: String,
 }
 
 impl Config {
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
+    pub fn from_file(path: &str) -> Result<Self> {
         let file = std::fs::File::open(path)?;
         let reader = std::io::BufReader::new(file);
         let config = from_reader(reader)?;
