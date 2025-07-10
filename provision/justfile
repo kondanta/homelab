@@ -1,0 +1,50 @@
+default:
+    @just --list
+
+# --- Configuration ---
+talos_version = "v1.10.3"
+
+create-media device_name:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    echo "Creating Talos installation media on device '{{device_name}}'..."
+
+    # We need curl to be installed to download the Talos ISO
+    if ! command -v curl &> /dev/null; then
+        echo "curl is not installed. Please install it and try again."
+        exit 1
+    fi
+
+    # Check jq is installed for JSON parsing
+    if ! command -v jq &> /dev/null; then
+        echo "jq is not installed. Please install it and try again."
+        exit 1
+    fi
+
+    # Fetch SCHEMATIC_ID from talos image factory
+    SCHEMATIC_ID=$(curl -X POST --data-binary @talos/installer-customization.yaml https://factory.talos.dev/schematics | jq -r '.id')
+
+    # Save SCHEMATIC_ID
+    echo -n "SCHEMATIC_ID=\"${SCHEMATIC_ID}\"" > talos/usb-stick-boot.env
+
+    # Download the Talos ISO
+    if [ -f "talos.iso" ]; then
+        echo "ISO file already exists. Skipping download."
+    else
+        echo "ISO file not found. Downloading..."
+        curl -L "https://factory.talos.dev/image/$SCHEMATIC_ID/{{talos_version}}/metal-amd64.iso" -o talos.iso
+    fi
+
+    # Check if the USB stick is mounted
+    if ! mount | grep -q "/dev/{{device_name}}"; then
+        echo "USB stick '{{device_name}}' is not mounted. Please mount it and try again."
+        exit 1
+    fi
+
+    DISK="/dev/{{device_name}}"
+
+    sudo dd bs=4M if=talos.iso of=$DISK conv=fsync oflag=direct status=progress
+
+    echo "🎉 Successfully created installation media on {{device_path}}."
+
