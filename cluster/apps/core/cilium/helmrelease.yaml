@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cilium
@@ -8,7 +8,6 @@ spec:
   chart:
     spec:
       chart: cilium
-      # Use the exact version that is currently installed
       version: "1.17.5"
       sourceRef:
         kind: HelmRepository
@@ -61,4 +60,4 @@ spec:
         - NET_ADMIN
         - SYS_ADMIN
         - SYS_RESOURCE
-        tunnelProtocol: vxlan
+    tunnelProtocol: vxlan
