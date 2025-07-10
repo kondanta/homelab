@@ -24,9 +24,12 @@ spec:
         namespace: flux-system
   install:
     createNamespace: true
-  # We add health checks to ensure the CRDs are ready
-  healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: controller
-      namespace: metallb-system
+  values:
+    ipAddressPools:
+      - name: main-pool
+        addresses:
+          - 10.1.20.200-10.1.20.220
+    l2Advertisements:
+      - name: main-l2
+        ipAddressPools:
+          - main-pool
