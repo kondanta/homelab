@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - metallb.yaml
   - cilium.yaml
+  - jetstack.yaml
