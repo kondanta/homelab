@@ -5,31 +5,33 @@ metadata:
 spec:
     acme:
         server: https://acme-v02.api.letsencrypt.org/directory
-        email: ENC[AES256_GCM,data:6RQbvdmVHfP/TrqjbIv+E3HMQno=,iv:jV+5LBdj+tbJxI65etvDsYEcxEo6hDxD1AT8dSo6RyU=,tag:MXToNXGaKPdbAo3EUCnBBQ==,type:str]
+        email: ENC[AES256_GCM,data:nKTH97leZIO5GfNcqM7VuvqSIPI=,iv:iuNDOiWXIFr1I4L14QqAOfc8hzNw+rzaf2GWKlLCm98=,tag:SGqkvmV0wo/aRir8qYkPGA==,type:str]
         privateKeySecretRef:
-            name: ENC[AES256_GCM,data:46PeQgLDxYWFvn/660ljHQ==,iv:fmHFxjFwZMurkFa0yWMMAKvphiNvCi2/f6ihQsuE3J4=,tag:wlmklFsfMAf9BYPbYQbfhg==,type:str]
+            name: ENC[AES256_GCM,data:BtWP0dsT17Oj8469CWRu5Q==,iv:i8LSFajsc0ENi+BxqZI6v0NLwrCzkU8fMlQ378Tc+/E=,tag:j5VoM6FgKoyDADq3vWuXFg==,type:str]
         solvers:
             - dns01:
                 namecheap:
-                    username: ENC[AES256_GCM,data:ES400rkgbpY=,iv:f02/PXKs0VvljdY4LOgX4r4YSJ0bcKR0cra1/6LDR3Q=,tag:zQ0sELg80Nd0qX/SMpmh+g==,type:str]
+                    username: ENC[AES256_GCM,data:CpBxh2nQHjA=,iv:Lv93ue1D33W+o/3mlDTVJvq1GCeqh9kFPa1rG5wipj4=,tag:TKoGk6OFCb3mKiGyy9/O1Q==,type:str]
                     apiKeySecretRef:
-                        name: ENC[AES256_GCM,data:j8kyyH9r+57mdfzvvFtudpI=,iv:vf494lCR9L2LJR1HsXmRd8+FCePs2Lqu1ZlUzvCeGNE=,tag:t+ttYLsfGL8lkr7zBkC4hg==,type:str]
-                        key: ENC[AES256_GCM,data:dDil7x/ebg==,iv:M6TWlODV7Z2chXKwNSz0IndF3a0mlXxowP4GJ2C18rE=,tag:EPOLximmGKGrFuIeJiGguA==,type:str]
-    selector:
-        dnsZones:
-            - ENC[AES256_GCM,data:P5e9+V5i89IB+uCF8EWXApHxyTeCSTJZ,iv:lkeMt07A2U4zegWRjgH3v1m2j5qidGkIeZ1yVgZ9X2g=,tag:uSZ6SfltNUlM0VlUJ/YqaQ==,type:str]
+                        name: ENC[AES256_GCM,data:zaZyU9Q9hCi3/8ZdyjN4DXI=,iv:eoaI+HC9TinKFhonMhmD57gxapaahyzHL5zshmfAi/I=,tag:9qnJT5WGy/4OJYGLXM4r5A==,type:str]
+                        key: ENC[AES256_GCM,data:G29BiZh6UQ==,iv:rlbgsrHoFRT7pb9NAFqfAJAFvnzBButYPqf6LlNI+1g=,tag:t6POZzfp289Nls37mIyRWw==,type:str]
+              # The selector is placed here, as a sibling to dns01,
+              # to apply to this specific solver entry.
+              selector:
+                dnsZones:
+                    - ENC[AES256_GCM,data:5Bhafr9fj5yqjcLpS1rYBPvnoPtEc0Fk,iv:/OXGfZlCCaFeUJDjnV9eHXnJEQp60BqtWppCg6qZ6Lw=,tag:5RE0TlNOaH4j/Qf3uZYfAw==,type:str]
 sops:
     age:
         - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBCclRwcGd3K3ZQczBhK2Fu
-            SXZIeDRvUmhuRjd5YmoxdU04L0NkV0NTRkJJCk9PUkRXb24vek54Z3JJYnRYNks5
-            cVI3OWJkN1MxMkhlc3d6alZob1pIZ1EKLS0tIHA0Sk55aFY4Qis3MVoxTmpmYzl6
-            eVdsVU4yU21XVll0d2V4cC9sYkk4R1UKawlSFJd7I0MZuFuphxq8zYsMj8kXYsVq
-            10gLSamtJbrIXx3x8aHYpyLttQPVOR4aP8R2A47ZJ6hE0OPt32QCiQ==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB1SGd6NGlDZVA0cWUwM3dI
+            Y2UvRWk0ZnBiZEN2cDlUMUFDTnpTUmdUaW1JCkphbzhQL05ya0pXRmMxWkNyei80
+            bjNBKzB1czhEc0w4c1QyeFpKUnZmdWsKLS0tIEl0Y2pHL05ZYnd5SldtTGtUZnRx
+            elF3Ly9uSnNuaTlGdWdjd3c1TGd6OEUKjL/wWlxmBYJP08go2EKT0fCjWztZkykA
+            BG6lcqg5KnEx8oBfrpTRMp3JrVCjXg2tCkK2fBtdLe3vD7+n7r5L7g==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-12T00:52:49Z"
-    mac: ENC[AES256_GCM,data:vFvdzMlx9IOFMj+TPf807keNKGrP+ZGp3pj0PC4fLVKdLtmNm4JrIlUy6IHmghl9CX9xwhdTjZCcjqFXcgNtFlkV5rMiBTAxZqJTdd/FaUKBqTFpwBZQXG7v0d5ux9j8K124eum2vPkv7ogWs+GUQaVs85r8S/8r4KomZOGB5Ag=,iv:CK/p6YmJ7AY/Txu100PulFy9oo00eMH3/R4lLLq4Hkk=,tag:7kO6/1RrIuY8i4ma4/Yc/w==,type:str]
+    lastmodified: "2025-07-12T04:00:03Z"
+    mac: ENC[AES256_GCM,data:LOHJggFvSqLkBZi/PoyxZDPxnMmlss6e6DGzz10o7QhAYGBQovUzLNGoipNs1HKgAm1CrHYQgbshNwnO1qSp+bVdXy8aeelZ+uHLOS68v5Cde6KteKrlaguGcvp69btcZGny+/eatlQrakyiuMk9uIDEnZ0qAkdI9aluE7eRrXw=,iv:RYay2OxnE2EYN5rwQWkFyLAnBdmqmY2bZ/SKDm+9psA=,tag:FlNMEv0AKAECQ4ElS8o4MA==,type:str]
     encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USERNAME|EMAIL|ZONES).*))$
     version: 3.10.2
