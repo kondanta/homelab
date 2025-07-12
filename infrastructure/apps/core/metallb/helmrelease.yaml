@@ -16,11 +16,5 @@ spec:
   install:
     createNamespace: true
   values:
-    ipAddressPools:
-      - name: main-pool
-        addresses:
-          - 10.1.20.200-10.1.20.220
-    l2Advertisements:
-      - name: main-l2
-        ipAddressPools:
-          - main-pool
+    crds:
+      enabled: true
