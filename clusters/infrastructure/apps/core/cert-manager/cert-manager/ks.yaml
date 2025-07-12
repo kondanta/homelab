@@ -8,7 +8,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./infrastructure/apps/core/cert-manager/app
+  path: ./infrastructure/apps/core/cert-manager/cert-manager/app
   prune: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -23,5 +23,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./infrastructure/apps/core/cert-manager/issuer
+  path: ./infrastructure/apps/core/cert-manager/cert-manager/issuer
   prune: true
