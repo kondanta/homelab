@@ -1,0 +1,17 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-gateway-to-capacitor
+  namespace: flux-system
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: capacitor
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s-app: cilium-envoy
+            io.kubernetes.pod.namespace: kube-system
+  egress:
+    - toEntities:
+        - kube-apiserver
