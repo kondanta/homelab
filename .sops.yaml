@@ -1,3 +1,3 @@
 creation_rules:
-  - encrypted_regex: '^(data|stringData)$'
-    age: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
+  - path_regex: .*.yaml
+    encrypted_regex: '^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USERNAME|EMAIL).*))$'
