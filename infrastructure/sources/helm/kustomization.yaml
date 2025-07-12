@@ -4,3 +4,5 @@ resources:
   - metallb.yaml
   - cilium.yaml
   - jetstack.yaml
+  - reflector.yaml
+  - namecheap-webhook.yaml
