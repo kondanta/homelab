@@ -26,7 +26,7 @@ spec:
                 template:
                   spec:
                     securityContext:
-                      runAsNonRoot: true
+                      runAsNonRoot: false # The container only runs as root
                       seccompProfile:
                         type: RuntimeDefault
                     containers:
