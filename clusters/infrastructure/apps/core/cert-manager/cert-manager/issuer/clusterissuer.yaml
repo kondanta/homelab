@@ -5,31 +5,31 @@ metadata:
 spec:
     acme:
         server: https://acme-v02.api.letsencrypt.org/directory
-        email: ENC[AES256_GCM,data:wOCzhqPFujzBxzh2XF20YHfIcZQ=,iv:maOm8jYtFczbw+dsVz9mQKwM70JZzV+/DUtAoLfoKjE=,tag:XE5cyCcG2N2sP5dFviHf8A==,type:str]
+        email: ENC[AES256_GCM,data:6RQbvdmVHfP/TrqjbIv+E3HMQno=,iv:jV+5LBdj+tbJxI65etvDsYEcxEo6hDxD1AT8dSo6RyU=,tag:MXToNXGaKPdbAo3EUCnBBQ==,type:str]
         privateKeySecretRef:
-            name: ENC[AES256_GCM,data:C1ag50Fv5LhZJ34GJcRTbw==,iv:T6J79JwvyTyk/F/i1M2PQW6NSfFRw4Rq859zTLNl4n8=,tag:8RIs2tOxY3L7b8CfFUjJPQ==,type:str]
+            name: ENC[AES256_GCM,data:46PeQgLDxYWFvn/660ljHQ==,iv:fmHFxjFwZMurkFa0yWMMAKvphiNvCi2/f6ihQsuE3J4=,tag:wlmklFsfMAf9BYPbYQbfhg==,type:str]
         solvers:
             - dns01:
                 namecheap:
-                    username: ENC[AES256_GCM,data:yZkA3zwbRjI=,iv:V9mgJSkcLwlm+lKDZ048YNXDR7Fn2Nr3kcjTrkyAbis=,tag:SM5VfYvOISqxfZCvKFhtIQ==,type:str]
+                    username: ENC[AES256_GCM,data:ES400rkgbpY=,iv:f02/PXKs0VvljdY4LOgX4r4YSJ0bcKR0cra1/6LDR3Q=,tag:zQ0sELg80Nd0qX/SMpmh+g==,type:str]
                     apiKeySecretRef:
-                        name: ENC[AES256_GCM,data:EX+EZUL5Z+zBiewk0wTpUf8=,iv:jFYhoMMZA1P7GqWcHgTtWdKEwwSHUVTU8Iib6o/f5u8=,tag:qE0xdsTJ8KlAmBn57mnHPw==,type:str]
-                        key: ENC[AES256_GCM,data:wwhfaZNVPg==,iv:UJHfP6wghF+nsXxZ25xLMKZ+rvXFC5ZLVsERqpWxgzU=,tag:PrR+ntQPhVtIR0G/m9qVKw==,type:str]
+                        name: ENC[AES256_GCM,data:j8kyyH9r+57mdfzvvFtudpI=,iv:vf494lCR9L2LJR1HsXmRd8+FCePs2Lqu1ZlUzvCeGNE=,tag:t+ttYLsfGL8lkr7zBkC4hg==,type:str]
+                        key: ENC[AES256_GCM,data:dDil7x/ebg==,iv:M6TWlODV7Z2chXKwNSz0IndF3a0mlXxowP4GJ2C18rE=,tag:EPOLximmGKGrFuIeJiGguA==,type:str]
     selector:
         dnsZones:
-            - homelab.taylandogan.info
+            - ENC[AES256_GCM,data:P5e9+V5i89IB+uCF8EWXApHxyTeCSTJZ,iv:lkeMt07A2U4zegWRjgH3v1m2j5qidGkIeZ1yVgZ9X2g=,tag:uSZ6SfltNUlM0VlUJ/YqaQ==,type:str]
 sops:
     age:
         - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0VFpCRC84czRlRjExQXFP
-            eTJUd1h3MU1DL0J1dDk1OTlpeXRNdmJXb1F3CnJVaWJQNkRTTS9wSk5PSmlGby9D
-            NXNOekw4ckJwbTNKa2V5UTR1THlYMlkKLS0tIFpVR1RBdmZjdXlRZWVZU01OdjRm
-            OXpLYjk0dVQzeDE1NnVWeVkrTTM3WUkKBWCL28fvAVV3Rzl+JZLT1FB3n6XBwP8/
-            XH1bvb6ORZ0HYuaDDr1h4+b5DXMDkaMILuqRChxihpKRSnmwYIEncQ==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBCclRwcGd3K3ZQczBhK2Fu
+            SXZIeDRvUmhuRjd5YmoxdU04L0NkV0NTRkJJCk9PUkRXb24vek54Z3JJYnRYNks5
+            cVI3OWJkN1MxMkhlc3d6alZob1pIZ1EKLS0tIHA0Sk55aFY4Qis3MVoxTmpmYzl6
+            eVdsVU4yU21XVll0d2V4cC9sYkk4R1UKawlSFJd7I0MZuFuphxq8zYsMj8kXYsVq
+            10gLSamtJbrIXx3x8aHYpyLttQPVOR4aP8R2A47ZJ6hE0OPt32QCiQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-12T00:09:47Z"
-    mac: ENC[AES256_GCM,data:t1YvkH/VmmjU+fuLEravahO877g0hRJ3+RobbYxdIGD2GymcY7xVdBWxdBpC8DEov8XvgMVBacYoOQMuoN/6spu1UHI1lAbZtuRqp0/I9Fb0fpGWcvNFcynaeBH3DWUCGOhcCg0nJPbl7ur38huIOhDdonom6JAt5L5RvTfP66c=,iv:j+AdhwSEJ6pF3oi5Ob7QpCCXsDfQSEabbKIL6dMh0Fs=,tag:mf9QPIyfEVKoY7dMV5AZ2Q==,type:str]
-    encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USERNAME|EMAIL).*))$
+    lastmodified: "2025-07-12T00:52:49Z"
+    mac: ENC[AES256_GCM,data:vFvdzMlx9IOFMj+TPf807keNKGrP+ZGp3pj0PC4fLVKdLtmNm4JrIlUy6IHmghl9CX9xwhdTjZCcjqFXcgNtFlkV5rMiBTAxZqJTdd/FaUKBqTFpwBZQXG7v0d5ux9j8K124eum2vPkv7ogWs+GUQaVs85r8S/8r4KomZOGB5Ag=,iv:CK/p6YmJ7AY/Txu100PulFy9oo00eMH3/R4lLLq4Hkk=,tag:7kO6/1RrIuY8i4ma4/Yc/w==,type:str]
+    encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USERNAME|EMAIL|ZONES).*))$
     version: 3.10.2
