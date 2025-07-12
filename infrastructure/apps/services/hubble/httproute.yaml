@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: hubble-ui
+  namespace: kube-system
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: metallb-system
+  hostnames:
+    - "hubble.homelab.taylandogan.info"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: hubble-ui
+          port: 80
