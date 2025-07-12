@@ -4,10 +4,10 @@ metadata:
     name: letsencrypt-dns-namecheap
 spec:
     acme:
-        email: ENC[AES256_GCM,data:n+F5oP8SyhdJPf65yLFLLwx2knk=,iv:ErcseelHavWsOGR5TeIhhQptnjhNaa9C5xRpkH71GNE=,tag:JwaMlf1RvC+5tbSzZmsj1Q==,type:str]
-        server: https://acme-staging-v02.api.letsencrypt.org/directory
+        email: ENC[AES256_GCM,data:3F+rY0FhpAy9Y2cmcbYoBeV9CfU=,iv:NAfQLgiq0c766sguaRMiuOP0aQBPcdEXs5o72JxnNg4=,tag:OwQqTbfA7wqcj7vSHtaQig==,type:str]
+        server: https://acme-v02.api.letsencrypt.org/directory
         privateKeySecretRef:
-            name: ENC[AES256_GCM,data:Q6peBkYqyW2JvPeE6UfDRHOk1g==,iv:dBdF7jHO97UZu2VKghJ/BCOt/tfEDZQJV3S5gq6ZhVM=,tag:uc9vkLqKKfetFjy/0cnOsA==,type:str]
+            name: ENC[AES256_GCM,data:3mmLGkL+fRXO3WLYoiJGg0P8aQ==,iv:xIPzAEnAOXkSQuXs3Fjj0G7KuP0ueVlKLJ0P62j/jsg=,tag:Aqvd9maOKxSlU5l+/bzuBA==,type:str]
         solvers:
             - dns01:
                 webhook:
@@ -15,24 +15,24 @@ spec:
                     solverName: namecheap
                     config:
                         apiUserSecretRef:
-                            name: ENC[AES256_GCM,data:NAfACY7z0OG/6ei4JVpo2O8=,iv:MCGKq7bwE7TciQdeNcSsPEY7KW2sXrDCh1idDB1iCFY=,tag:db2v0umWvM9iDmmL+cekXA==,type:str]
-                            key: ENC[AES256_GCM,data:653w1YAjJ7E=,iv:pWGl+GtdDGFtyUfZCZ2APPxaBMTNBUf5DE1TOPz9eGM=,tag:9T+/w+3d8M+uL/ogtMZKzA==,type:str]
+                            name: ENC[AES256_GCM,data:ku+BvWBe5VvwtmA0QvOCzJg=,iv:TKW+Wb827dXpIpxNoEgHGGiJDxTMVbHJlH1Ckr863IY=,tag:Zo3SCZ86q8QjltZCIzoQaA==,type:str]
+                            key: ENC[AES256_GCM,data:o7uozanl5FE=,iv:L4UbV6dkXDm+0aFWTse7UXpb+qoTCesOkZbeJZrIjs0=,tag:KfJG/s8UJ6XIXpopwlQDMg==,type:str]
                         apiKeySecretRef:
-                            name: ENC[AES256_GCM,data:a4Wczrn3PIlcwGGaOFwJhPw=,iv:2c4lXwJwBWzz4mwCTJpncafX2Vr2qJl8gGCdfvmFGV0=,tag:UPPnSGwz9nVziDAux/+K3w==,type:str]
-                            key: ENC[AES256_GCM,data:7K4wEfPfGA==,iv:Eu6ACquA7tCpQ0MaafhsXLpwYv6pnQHskKhoGH7SyVk=,tag:70dWJGbyF0cbXnpNvSd7VA==,type:str]
-                        clientIp: ENC[AES256_GCM,data:rSSNTeJSHVF47e7YOKs=,iv:Qr9c1d/gGobXiOQUx2eCi7SrukxJ7g6pQDzqU+kNKJ0=,tag:RhRO87j9LHqxzLLvl6OZJQ==,type:str]
+                            name: ENC[AES256_GCM,data:H9nW7SXXy0y4F90W5UZFfj8=,iv:daDJvlDCq+UCYs3wnyjmPDaFQB+MhAUPvc3WF4waaUo=,tag:oPQdo4D11UEXA208LJ3jSw==,type:str]
+                            key: ENC[AES256_GCM,data:SDio7jdFrw==,iv:j+WG6BvZz1HRuBgfqPV4jMUQjhlukyuOIitRbOEpflI=,tag:R4kLk+lp9LnGLty5Lf6RfQ==,type:str]
+                        clientIp: ENC[AES256_GCM,data:gYyovqjTQ8AuXqteSU4=,iv:/VzV2EJbvbFE7CepvbmHzhUUrdcYjGGjr31Lts/iQXs=,tag:PG0+Q2+/hm0RL4A55UMrWw==,type:str]
 sops:
     age:
         - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBGc0haaVoycXM3NDl4eEVI
-            bVg1Rlp4MmNoUFZPSVVGVTdWT0t0TlMwd0c0ClVXS1h1WDZSRVF6b1d5dkFZRDFk
-            dDBzWUQ1S0xxN3FxZWk4czZXWTJUcU0KLS0tIGhvbm1Zbi82bjRRV0M2ZmRDV2ky
-            Q0t4aTMvQ1M5T0tBUUZteVVhQmFJTUEKHRWuH9VGsUf7dcxbQkbyhbaW7/2GpaAv
-            RgHAltimlOnpAp4vf0pa2VDYFKS9198jIShEoksnjVjjJeRcCmN38g==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA1aEM3RFBsdUNmQTNUbEkr
+            Sm82a1NnbTlqTTdTZ0ZtbVpYTnRzM3hzN1hzCmEzTTArMjRYWDJEWjZmRFAzOHIr
+            RUdUTTY2OG5RRG9JYVFvaVFHcDVzNzQKLS0tIGV3RStVQmZPc3ZmN2RubDRXREhm
+            bENOaVllNno4QU4xSGlaSTZGUTBIalUKhNYUEbSZ57iw3Z2kxBRQpGCP5pj9bcQB
+            iJ7JlwZ6LkOHKEgV05WY8/Wogoi4hra2Fq/AaVpzbIvzosCYSFcTWQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-12T15:20:34Z"
-    mac: ENC[AES256_GCM,data:+ZbDcUgxPXRPStak4sJsi0DG8Fj9GSiMfscU9Za8D3iI871V547OvfsGPB7XEyX5quzXkUJEz/Q3a49ZoZWZdNR5XiHJDxrAytlIjqITi1Cyty4rVW8sKAoAjkbWXZRogNB+KXxHa0DqBTyl+jdFX4sQAP3wOYYaKiSKsM7r670=,iv:5Pgsw6WFAZGtwqz+S0mKx7D2aEBAR6Tne/lgoxqjExU=,tag:vAMT9G0/KMXnSlaZbuNvbA==,type:str]
+    lastmodified: "2025-07-12T15:26:50Z"
+    mac: ENC[AES256_GCM,data:gXWeGfO6Jh6V+r0vrlUcLlGFMIEhlx9R58pLM7B7Z2LCyUXPL2BlwzEFQmLVTQsXpe+j2ah1h+M3o3iTkviVc6Q8DqlM1YscnzVJUL8j1d5cb0lxEORFEAO9u+ezs6Gon0g4hKJZoeDZz2O01S8ivLgT5p3EbYbkxb7FIq1Cj2c=,iv:dKdYHBcXxbscVuDcS+4qvJE7MxbCDK0VfosTheB35Xg=,tag:k7voAUaXDbbE0jhieUJblw==,type:str]
     encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USER|EMAIL|ZONES|DNSNAMES|CLIENTIP).*))$
     version: 3.10.2
