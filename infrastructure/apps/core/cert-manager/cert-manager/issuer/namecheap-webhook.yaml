@@ -10,7 +10,29 @@ spec:
       chart: cert-manager-webhook-namecheap
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home
-        namespace: cert-manager
+        name: cert-manager-webhook-namecheap
+        namespace: flux-system
   values:
     groupName: acme.namecheap.webhook
+  postRenderers:
+    - kustomize:
+        patches:
+          - patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: cert-manager-webhook-namecheap
+              spec:
+                template:
+                  spec:
+                    securityContext:
+                      runAsNonRoot: true
+                      seccompProfile:
+                        type: RuntimeDefault
+                    containers:
+                      - name: cert-manager-webhook-namecheap
+                        securityContext:
+                          allowPrivilegeEscalation: false
+                          capabilities:
+                            drop:
+                              - ALL
