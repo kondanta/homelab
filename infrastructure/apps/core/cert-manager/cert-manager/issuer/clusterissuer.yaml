@@ -1,37 +1,36 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-    name: letsencrypt-prod
+    name: letsencrypt-dns-namecheap
 spec:
     acme:
+        email: ENC[AES256_GCM,data:/yGqQbYIAwL8DDWORvKJWo1LTm4=,iv:o2r71djVXB9HLe1EcjaVmhGw7H3swSvrxg8mzF3Grzo=,tag:TufAQcJgFnuoYXHV6OwvKw==,type:str]
         server: https://acme-v02.api.letsencrypt.org/directory
-        email: ENC[AES256_GCM,data:nKTH97leZIO5GfNcqM7VuvqSIPI=,iv:iuNDOiWXIFr1I4L14QqAOfc8hzNw+rzaf2GWKlLCm98=,tag:SGqkvmV0wo/aRir8qYkPGA==,type:str]
         privateKeySecretRef:
-            name: ENC[AES256_GCM,data:BtWP0dsT17Oj8469CWRu5Q==,iv:i8LSFajsc0ENi+BxqZI6v0NLwrCzkU8fMlQ378Tc+/E=,tag:j5VoM6FgKoyDADq3vWuXFg==,type:str]
+            name: ENC[AES256_GCM,data:a5Ymt/084yXN3Vdf+LshnX4eWg==,iv:akpzBk0hdbUMn86Z3sFRiZ6ySX4mY05m32bzvCigCyA=,tag:Ed2ipBd1uixrq578fXvVAg==,type:str]
         solvers:
             - dns01:
-                namecheap:
-                    username: ENC[AES256_GCM,data:CpBxh2nQHjA=,iv:Lv93ue1D33W+o/3mlDTVJvq1GCeqh9kFPa1rG5wipj4=,tag:TKoGk6OFCb3mKiGyy9/O1Q==,type:str]
-                    apiKeySecretRef:
-                        name: ENC[AES256_GCM,data:zaZyU9Q9hCi3/8ZdyjN4DXI=,iv:eoaI+HC9TinKFhonMhmD57gxapaahyzHL5zshmfAi/I=,tag:9qnJT5WGy/4OJYGLXM4r5A==,type:str]
-                        key: ENC[AES256_GCM,data:G29BiZh6UQ==,iv:rlbgsrHoFRT7pb9NAFqfAJAFvnzBButYPqf6LlNI+1g=,tag:t6POZzfp289Nls37mIyRWw==,type:str]
-              # The selector is placed here, as a sibling to dns01,
-              # to apply to this specific solver entry.
-              selector:
-                dnsZones:
-                    - ENC[AES256_GCM,data:5Bhafr9fj5yqjcLpS1rYBPvnoPtEc0Fk,iv:/OXGfZlCCaFeUJDjnV9eHXnJEQp60BqtWppCg6qZ6Lw=,tag:5RE0TlNOaH4j/Qf3uZYfAw==,type:str]
+                webhook:
+                    groupName: acme.namecheap.webhook
+                    solverName: namecheap
+                    config:
+                        apiUser: kondanta
+                        apiKeySecretRef:
+                            name: ENC[AES256_GCM,data:a916s2ibxn+twCTF4uSHn34=,iv:b5BBbYHVBDVe+Nb+BK9zIa01YKj20OjXVTzwxKDHaNo=,tag:+oaE4QwsCZpqgxR+Q2i0HA==,type:str]
+                            key: ENC[AES256_GCM,data:6OIFqMsaMw==,iv:Ow4CFb3OuX6An1a0dzJUw0KbREkXf+YnhLvX66peUUU=,tag:957nqqYi784VR2hF3AYIVA==,type:str]
+                        clientIp: 81.191.122.238
 sops:
     age:
         - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB1SGd6NGlDZVA0cWUwM3dI
-            Y2UvRWk0ZnBiZEN2cDlUMUFDTnpTUmdUaW1JCkphbzhQL05ya0pXRmMxWkNyei80
-            bjNBKzB1czhEc0w4c1QyeFpKUnZmdWsKLS0tIEl0Y2pHL05ZYnd5SldtTGtUZnRx
-            elF3Ly9uSnNuaTlGdWdjd3c1TGd6OEUKjL/wWlxmBYJP08go2EKT0fCjWztZkykA
-            BG6lcqg5KnEx8oBfrpTRMp3JrVCjXg2tCkK2fBtdLe3vD7+n7r5L7g==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBiNjFwWEc1czdDWXV4c1hO
+            TXhIMUc1bUYyZ3E4U21mT3BLUHpudmNKSDFFCnIzUkdsc2lwY1VaZlZKL3d3dmN2
+            KzJuSGgxeVdwQ1V6bnZPZEs4Q1R2VzgKLS0tIHRESFRTRnZTUEw2K2c3ZWJBbktZ
+            emUvWUNkejlXQWRNbHNUTTVWT3VYM1EKrydiFtRBa+5AgLeDBOYPnd93Zr+EQJox
+            UEsTEXhtbppF4s+l+ubHXxJWkyI3wW/8Zy3IBLsZlwD3xHGjf0Wuxg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-12T04:00:03Z"
-    mac: ENC[AES256_GCM,data:LOHJggFvSqLkBZi/PoyxZDPxnMmlss6e6DGzz10o7QhAYGBQovUzLNGoipNs1HKgAm1CrHYQgbshNwnO1qSp+bVdXy8aeelZ+uHLOS68v5Cde6KteKrlaguGcvp69btcZGny+/eatlQrakyiuMk9uIDEnZ0qAkdI9aluE7eRrXw=,iv:RYay2OxnE2EYN5rwQWkFyLAnBdmqmY2bZ/SKDm+9psA=,tag:FlNMEv0AKAECQ4ElS8o4MA==,type:str]
+    lastmodified: "2025-07-12T04:07:54Z"
+    mac: ENC[AES256_GCM,data:IIkgENp3OW23ZtXeDMqNCw5oxbgexF63S6WngxXGmBrYrthuj6MHQ1pG5JEes7tlEDtydHGHmgkhxB1kA4YbiE15V9IeiLN4hwL4q82AxEjjgpygqsMEApFy75HouPLAi2uiGRe3LOhaXLK0OKKwPQrfSjpx2hrfqMuo9SZkboI=,iv:tkjLTnuKw526AwJ6+cG/bRhokVY1nxmaertBHBDIeCo=,tag:N8S1cxQVCcn9njZZ5G2x2Q==,type:str]
     encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USERNAME|EMAIL|ZONES).*))$
     version: 3.10.2
