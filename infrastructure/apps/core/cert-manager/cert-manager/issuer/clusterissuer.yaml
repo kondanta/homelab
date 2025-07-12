@@ -4,33 +4,33 @@ metadata:
     name: letsencrypt-dns-namecheap
 spec:
     acme:
-        email: ENC[AES256_GCM,data:/yGqQbYIAwL8DDWORvKJWo1LTm4=,iv:o2r71djVXB9HLe1EcjaVmhGw7H3swSvrxg8mzF3Grzo=,tag:TufAQcJgFnuoYXHV6OwvKw==,type:str]
+        email: ENC[AES256_GCM,data:uyg2TlDR+fpzWj6lMl6J7BtZNlw=,iv:WKQq14GRYZ88wrc+FSwiWzXdzLpxbma7ZX35INPJkjw=,tag:lvvKGOgfNG5nGQ/olrdzCg==,type:str]
         server: https://acme-v02.api.letsencrypt.org/directory
         privateKeySecretRef:
-            name: ENC[AES256_GCM,data:a5Ymt/084yXN3Vdf+LshnX4eWg==,iv:akpzBk0hdbUMn86Z3sFRiZ6ySX4mY05m32bzvCigCyA=,tag:Ed2ipBd1uixrq578fXvVAg==,type:str]
+            name: ENC[AES256_GCM,data:ESx/tJOEMLKRWyHkM9/8PwgaBQ==,iv:yQkcPq1jLhsuhp9ybG88F3LaUZimCRKsosOAWJtHHik=,tag:dNIFQrGqwtNdxp3QDzJHqw==,type:str]
         solvers:
             - dns01:
                 webhook:
                     groupName: acme.namecheap.webhook
                     solverName: namecheap
                     config:
-                        apiUser: kondanta
+                        apiUser: ENC[AES256_GCM,data:x6oxx6GKzMc=,iv:fz0R0CbJeqoPMB2GGOHoMyHtRImOAm6dUo1QWjyPE1M=,tag:6/QptCCV139m1hEG1Ln9Iw==,type:str]
                         apiKeySecretRef:
-                            name: ENC[AES256_GCM,data:a916s2ibxn+twCTF4uSHn34=,iv:b5BBbYHVBDVe+Nb+BK9zIa01YKj20OjXVTzwxKDHaNo=,tag:+oaE4QwsCZpqgxR+Q2i0HA==,type:str]
-                            key: ENC[AES256_GCM,data:6OIFqMsaMw==,iv:Ow4CFb3OuX6An1a0dzJUw0KbREkXf+YnhLvX66peUUU=,tag:957nqqYi784VR2hF3AYIVA==,type:str]
-                        clientIp: 81.191.122.238
+                            name: ENC[AES256_GCM,data:NjBQuVoFx7kBQr79sWLALIg=,iv:07kvm1ZxKCG9QZo2rX28OsZTeAk9jovpzkUZQjZY3z0=,tag:DGjbNd8JHA1tCzFWyQu9YQ==,type:str]
+                            key: ENC[AES256_GCM,data:eCFR7CX/1Q==,iv:v1Zkn0Y2zUfb4M/77gFirqK8wgEZeB5jonPOv+Owdvo=,tag:lJi7PsjjwNfnCe14hg3hIg==,type:str]
+                        clientIp: ENC[AES256_GCM,data:o5wn3gsKQ8PiDpTXRHI=,iv:owEgofOIREpLGNAciemvzkW7GUrAl3ijfvfSnOlHm7g=,tag:x8advcDfPUvAJ2OQqsRilA==,type:str]
 sops:
     age:
         - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBiNjFwWEc1czdDWXV4c1hO
-            TXhIMUc1bUYyZ3E4U21mT3BLUHpudmNKSDFFCnIzUkdsc2lwY1VaZlZKL3d3dmN2
-            KzJuSGgxeVdwQ1V6bnZPZEs4Q1R2VzgKLS0tIHRESFRTRnZTUEw2K2c3ZWJBbktZ
-            emUvWUNkejlXQWRNbHNUTTVWT3VYM1EKrydiFtRBa+5AgLeDBOYPnd93Zr+EQJox
-            UEsTEXhtbppF4s+l+ubHXxJWkyI3wW/8Zy3IBLsZlwD3xHGjf0Wuxg==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsZngwL245MlN0a0lDUzJU
+            eVg1RnBGR3V5OGs1T2NTaXdRQnd0SmY3cmhBCmRUM1I3QzVncFRzVm5Pd1Nlb25p
+            VFZMN3cvUTZxdWNxUFMxTkRoNi9qK1kKLS0tIFc0ME9SVms0dmtRNXhmRDh6S2Uv
+            bFFSTjZtY2NULzNUQjYreE5MMDl5MlUKYhweELWRnYy88/lWd6OM71L4ZKMiYgNE
+            GBJRyz+ke/gk8ZQnZ4Sb3lJdj1u6wMBDfQrbOcEQhqaRHrSlV2TkoQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-12T04:07:54Z"
-    mac: ENC[AES256_GCM,data:IIkgENp3OW23ZtXeDMqNCw5oxbgexF63S6WngxXGmBrYrthuj6MHQ1pG5JEes7tlEDtydHGHmgkhxB1kA4YbiE15V9IeiLN4hwL4q82AxEjjgpygqsMEApFy75HouPLAi2uiGRe3LOhaXLK0OKKwPQrfSjpx2hrfqMuo9SZkboI=,iv:tkjLTnuKw526AwJ6+cG/bRhokVY1nxmaertBHBDIeCo=,tag:N8S1cxQVCcn9njZZ5G2x2Q==,type:str]
-    encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USERNAME|EMAIL|ZONES).*))$
+    lastmodified: "2025-07-12T13:55:33Z"
+    mac: ENC[AES256_GCM,data:gd8rAhiDn7EQOFcvpoJUp6cXFYiTJ3ap2vPnmKXg1zLkw9DzePYVM9XnUBW7StSa/nmxaoQbnuyIWdjmS1WIj1G4CLF01IFOXUsnDscJnSUJXOoTXq1C0llJ1Nphwf4ebhT9DRpH4hyblmkv++9fF8YdpCVWJIXdvScD/BoAc80=,iv:YFTyQWcs6ulDRTjt53LPxOU6POaZrTEGnWRCBuuuYf0=,tag:C8NpzioBROvDLqG3El16Fg==,type:str]
+    encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USER|EMAIL|ZONES|DNSNAMES|CLIENTIP).*))$
     version: 3.10.2
