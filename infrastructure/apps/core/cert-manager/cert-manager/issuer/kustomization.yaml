@@ -4,3 +4,4 @@ resources:
   - ./clusterissuer.yaml
   - namecheap-webhook.yaml
   - namecheap-secret.sops.yaml
+  - cert.yaml
