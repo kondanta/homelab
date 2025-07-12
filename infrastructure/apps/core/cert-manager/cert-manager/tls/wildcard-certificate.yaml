@@ -4,25 +4,25 @@ metadata:
     name: homelab-wildcard-cert
     namespace: cert-manager
 spec:
-    secretName: ENC[AES256_GCM,data:N6Gljt5mdufRO0myIxjfqnbOQSA=,iv:VkqqB3ViLwxN3LgSIKUE4kbJyDm40UY+hRhKyGA/1q8=,tag:jhblSP4MbSy4piEvccHcwQ==,type:str]
+    secretName: ENC[AES256_GCM,data:YdLa/NTwNkNdKbf/Elk747tZJYk=,iv:exNpN5DfqWsxqx9loBGlRlxU4m2n9BoZBrCrmAh8tJo=,tag:hohKz+smuFWI7WWBgsbHQw==,type:str]
     issuerRef:
         name: letsencrypt-dns-namecheap
         kind: ClusterIssuer
     dnsNames:
-        - ENC[AES256_GCM,data:oMmdd/2TU5tUZWIpsOXa5YnxAGt+J3HJopA=,iv:5l70Pdl9Ct881AEnz4qg0T9G7hH57M4nhA1vCNuBduc=,tag:gzEuMGFyZjJJ6vMBJM4n1A==,type:str]
-        - ENC[AES256_GCM,data:BALeEo44CnIMqNrqBX9NvjZsqbwta2Uk,iv:V677/3HRB15KUVhtvB+vqy9VC+GE0bYeitrVjl/WEEw=,tag:+6zWRlashV4mT3FNRm0qZQ==,type:str]
+        - ENC[AES256_GCM,data:uplJIrY6wPqYohDO+kAEWMni6fie2IOQlTQ=,iv:tvfkI+dleWMKZRWKUqA8K6hjxuiA6oP2KTDWBm4Z3rM=,tag:Jk3ii84cwjlazUwEh3iCzg==,type:str]
+        - ENC[AES256_GCM,data:qqSLqKc0pH7e7bQX5WRvQYjZTjRqHE07,iv:GDr90m8Ab0jWtieSay+tvf9Tm2/wRM4GCJNtp/33aaA=,tag:IxpBZUn3KhGn9FVpkdZhxQ==,type:str]
 sops:
     age:
         - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBJN0UzY3VZdUw3SVhTY0tP
-            YXBSbWJrOUQ0aXdTTkxENTFiSW8xOVpFREM0ClJXaXlXUHNpVlV3Qlk1d0FST2hn
-            Y2EyR08wV0VWZXd4dHVMVXpaUmpGTGsKLS0tIFE0K2RHVk1wVWxZNk93cTNCSEh6
-            ZEE2U01LZE5ZMEJubXpqNVNuY3d5NFkKqJ0wJPA+3SrJzpMmUy8/4VlRTGEhEopF
-            zKQs8Lr2y/0T0eK5WiPB8m/JWLFmEQlzYz1lADOlddHX60lTjz1bJQ==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4OEo2cm9wYWlKZk0wZUZC
+            Tm10b3d6RG5Oak1SREpiMjhzQXh1SEtDZlZNCkFwUjBwK1QrZHFTNnVoRnAvQk4r
+            ZEEyMnFNUm1oMjJsSGRPcTJGaFFpZlUKLS0tIFdyTGwrMkVEQXVaSzRsR1hjK3N1
+            SUpwUUp1ekVQeTRtSXRuMGljY0Y1b00KRNoM8fQV0gCKkTltyIcF3xEU/uFmqRmO
+            xo8yDvUZpb29DiO/iCkchjVgr2hb5SY99FBzIfIPgDLCQUgdh9E6tQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-12T14:37:11Z"
-    mac: ENC[AES256_GCM,data:CH0QemnnRhKYE/0Fr8uJwTVvTzL1Ug05ejXSOUL3qYigx7Z3VQZ03vODNaI108Iy/bWoGcCoZ7JF8WKgcIsS9HITQRwzOlErhJbeGUP0rYoBNYPzjrIJshO9Us+O5Mi3nFFEw+3taiYfaD3u1y+8ThVUJ2657+jw2Sw7n0AyMac=,iv:ieAwrRen6ByJo+qTCX7nBsFlqtq/RdINB0Ztn/wlUYc=,tag:TLHqfJlwTs91PwPFt9OsBA==,type:str]
+    lastmodified: "2025-07-12T23:38:30Z"
+    mac: ENC[AES256_GCM,data:JTus4pIxV+wOLKajwLsoL5M60AHlFXL0exLf7xjgqHuSLM3o2dU1pfb1DVzVQ4yrUohN6sXTqlI0VJKwDn/WwtLmEI0ImEcrsSv9m/WIjNlwVNL+4SVxZ3/4ZE/nMMaN3Sg92IK4jHca/py7g2MueJe/Wlnm/Ad8gNt+tbW9ds0=,iv:qNjsg5R4XqRc2wE3XJ7Ubmofy0R/fm5gqz85epEoacg=,tag:BW+PRPOgAOrDHTwyoNKL7Q==,type:str]
     encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USER|EMAIL|ZONES|DNSNAMES|CLIENTIP).*))$
     version: 3.10.2

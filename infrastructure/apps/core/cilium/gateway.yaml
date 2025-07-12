@@ -22,5 +22,5 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            group: ""
-            name: gateway-tls
+            name: homelab-wildcard-tls
+            namespace: cert-manager
