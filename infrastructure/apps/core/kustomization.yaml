@@ -7,3 +7,4 @@ resources:
   - gateway-api/
   - reflector/
   - victoria-metrics/
+  - longhorn/
