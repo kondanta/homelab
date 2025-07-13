@@ -1,0 +1,47 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: monitoring # We'll use the existing monitoring namespace
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: loki
+      version: "6.31.0"
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  values:
+    loki:
+      structuredConfig:
+        auth_enabled: false
+        server:
+          http_listen_port: 3100
+        ingester:
+          lifecycler:
+            ring:
+              kvstore:
+                store: inmemory
+              replication_factor: 1
+            final_sleep: 0s
+          chunk_idle_period: 1h
+          max_chunk_age: 1h
+          chunk_target_size: 2097152
+          chunk_retain_period: 1m
+          max_transfer_retries: 0
+        schema_config:
+          configs:
+            - from: 2024-04-01
+              store: tsdb
+              object_store: filesystem
+              schema: v13
+              index:
+                prefix: index_
+                period: 24h
+    # Loki to claim a 10Gi volume from Longhorn
+    persistence:
+      enabled: true
+      storageClassName: longhorn # Default storage class for Longhorn
+      size: 10Gi
