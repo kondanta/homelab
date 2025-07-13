@@ -16,9 +16,10 @@ This repository contains the full infrastructure-as-code and GitOps configuratio
 ## ▪️ Repository Structure
 
 - **`/provision/talos`**: Contains Talos machine configurations for provisioning the Kubernetes nodes.
-- **`/cluster/flux-system`**: Holds the core FluxCD manifests that bootstrap the GitOps process.
-- **`/cluster/apps/core`**: Contains manifests for essential, cluster-wide services like MetalLB, cert-manager, and the observability stack.
-- **`/cluster/apps/services`**: Includes manifests for all user-facing applications and services running on the cluster.
+- **`/clusters/homelab/flux-system`**: Holds the core FluxCD manifests that bootstrap the GitOps process.
+- **`/infrastructure/apps/core`**: Contains manifests for essential, cluster-wide services like MetalLB, cert-manager, and the observability stack.
+- **`/infrastructure/apps/services`**: Includes manifests for all user-facing applications and services running on the cluster.
+- **`/infrastructure/sources`**: Defines the sources for Git repositories and Helm charts used in the cluster.
 
 ---
 
