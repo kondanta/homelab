@@ -1,6 +1,98 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:base",
+    ":dependencyDashboard"
+  ],
+  "kubernetes": {
+    "fileMatch": [
+      "/^infrastructure/.+\\.yaml$"
+    ]
+  },
+  "helm-values": {
+    "managerFilePatterns": [
+      "/^infrastructure/.+\\.yaml$"
+    ]
+  },
+  "flux": {
+    "fileMatch": [
+      "/^clusters/.+\\.yaml$"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Automatically merge minor and patch updates",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true
+    },
+    {
+      "description": "Group FluxCD component updates",
+      "matchPackageNames": [
+        "fluxcd/source-controller",
+        "fluxcd/kustomize-controller",
+        "fluxcd/helm-controller",
+        "fluxcd/notification-controller"
+      ],
+      "groupName": "fluxcd"
+    },
+    {
+      "description": "Group Cilium updates",
+      "matchPackageNames": [
+        "cilium/cilium",
+        "quay.io/cilium/cilium",
+        "quay.io/cilium/operator-generic",
+        "quay.io/cilium/hubble-ui",
+        "quay.io/cilium/hubble-relay",
+        "quay.io/cilium/cilium-envoy"
+      ],
+      "groupName": "cilium"
+    },
+    {
+      "description": "Group MetalLB updates",
+      "matchPackageNames": [
+        "metallb/metallb",
+        "quay.io/metallb/controller",
+        "quay.io/metallb/speaker"
+      ],
+      "groupName": "metallb"
+    },
+    {
+      "description": "Group cert-manager updates",
+      "matchPackageNames": [
+        "jetstack/cert-manager",
+        "quay.io/jetstack/cert-manager-controller",
+        "quay.io/jetstack/cert-manager-cainjector",
+        "quay.io/jetstack/cert-manager-webhook"
+      ],
+      "groupName": "cert-manager"
+    },
+    {
+      "description": "Group cert-manager Namecheap webhook updates",
+      "matchPackageNames": [
+        "adfinis/cert-manager-webhook-namecheap",
+        "adfinis/cert-manager-webhook-namecheap"
+      ],
+      "groupName": "cert-manager-webhook-namecheap"
+    },
+    {
+      "description": "Group VictoriaMetrics stack updates",
+      "matchPackageNames": [
+        "victoria-metrics/victoria-metrics-k8s-stack",
+        "victoriametrics/victoria-metrics",
+        "victoriametrics/vmagent",
+        "victoriametrics/operator"
+      ],
+      "groupName": "victoria-metrics"
+    },
+    {
+      "description": "Group Capacitor updates",
+      "matchPackageNames": [
+        "ghcr.io/gimlet-io/capacitor"
+      ],
+      "groupName": "capacitor"
+    }
   ]
 }
