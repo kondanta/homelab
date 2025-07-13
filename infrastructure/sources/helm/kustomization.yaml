@@ -8,3 +8,4 @@ resources:
   - namecheap-webhook.yaml
   - victoriametrics.yaml
   - longhorn.yaml
+  - external-dns.yaml
