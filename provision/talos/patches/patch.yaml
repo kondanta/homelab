@@ -1,8 +1,27 @@
 machine:
   install:
-    image: ghcr.io/siderolabs/installer:v1.10.4 # Allows for supplying the image used to perform the installation.
-    wipe: true # Indicates if the installation disk should be wiped at installation time.
+    image: ghcr.io/siderolabs/installer:v1.10.5 # Allows for supplying the image used to perform the installation.
+    wipe: false # Indicates if the installation disk should be wiped at installation time.
     disk: /dev/sdb # The disk to install the machine on. This is the disk that will be wiped.
+  # Required for Longhorn to work properly.
+  sysctls:
+    vm.nr_hugepages: "1024"
+
+  kernel:
+    modules:
+      - name: nvme_tcp
+      - name: vfio_pci
+      - name: uio_pci_generic
+
+  kubelet:
+    extraMounts:
+      - destination: /var/lib/longhorn
+        type: bind
+        source: /var/lib/longhorn
+        options:
+          - bind
+          - rshared
+          - rw
 
 # change `wipe: true` to `wipe: false` after the cluster is created
 cluster:

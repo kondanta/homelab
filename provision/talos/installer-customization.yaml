@@ -12,7 +12,6 @@ customization:
             - siderolabs/i915
             - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
             - siderolabs/mei
-            - siderolabs/nut-client
-            - siderolabs/tailscale
             - siderolabs/util-linux-tools
