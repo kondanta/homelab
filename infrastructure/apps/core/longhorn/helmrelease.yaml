@@ -17,8 +17,4 @@ spec:
     persistence:
       defaultClass: true
     ingress:
-      enabled: true
-      ingressClassName: cilium # This tells Longhorn to use the Gateway API
-      host: longhorn.homelab.taylandogan.info
-      annotations:
-        cert-manager.io/cluster-issuer: "letsencrypt-dns-namecheap"
+      enabled: false
