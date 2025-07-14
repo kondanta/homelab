@@ -21,8 +21,15 @@ spec:
     vmalertmanager:
       enabled: false
     vmsingle:
-      persistentVolume:
-        size: 10Gi
+      storage:
+        volumeClaimTemplate:
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            storageClassName: longhorn
+            resources:
+              requests:
+                storage: 10Gi
+
     vmagent:
       # This enables scraping of ServiceMonitors, which is the standard way
       # applications expose their Prometheus metrics.
