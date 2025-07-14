@@ -12,7 +12,8 @@ data:
       - name: VictoriaMetrics
         type: prometheus
         access: proxy
-        url: http://vmselect-victoria-metrics-k8s-stack.monitoring.svc.cluster.local:8481/select/0/prometheus
+        # This is the correct URL for the vmsingle service
+        url: http://vmsingle-victoria-metrics-k8s-stack.monitoring.svc.cluster.local:8429/prometheus
         isDefault: true
       - name: Loki
         type: loki
