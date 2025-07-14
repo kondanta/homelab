@@ -17,10 +17,13 @@ spec:
     admin:
       existingSecret: grafana-admin
       secretKey: admin-password
-    datasources:
-      datasources.yaml:
-        secretName: grafana-datasources
-        key: datasources.yaml
+
+    sidecar:
+      datasources:
+        enabled: true
+        label: grafana_datasource
+        labelValue: "1"
+
     persistence:
       enabled: true
       storageClassName: longhorn
