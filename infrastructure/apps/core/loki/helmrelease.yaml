@@ -14,16 +14,10 @@ spec:
         name: grafana
         namespace: flux-system
   values:
+    deploymentMode: SingleBinary
     loki:
-      auth_enabled: false
-
       storage:
         type: "filesystem"
-        filesystem:
-          chunks_directory: "/data/chunks"
-          rules_directory: "/data/rules-temp"
-
-    # Tells Loki to claim a 10Gi volume from Longhorn, mounted at /data
     persistence:
       enabled: true
       storageClassName: longhorn
