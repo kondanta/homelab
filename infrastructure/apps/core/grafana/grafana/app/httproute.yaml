@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: metallb-system
+  hostnames:
+    - "grafana.homelab.taylandogan.info"
+  rules:
+    - backendRefs:
+        - name: grafana
+          port: 80
