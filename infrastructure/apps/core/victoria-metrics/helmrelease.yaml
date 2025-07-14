@@ -34,9 +34,12 @@ spec:
                 storage: 10Gi
 
     vmagent:
-      # This enables scraping of ServiceMonitors, which is the standard way
-      # applications expose their Prometheus metrics.
       spec:
-        serviceMonitorScrapeInterval: 1m
+        # These two new blocks tell vmagent to look for monitors in ALL namespaces.
+        # An empty selector {} means "no restrictions".
+        serviceMonitorNamespaceSelector: {}
+        podMonitorNamespaceSelector: {}
+
+        # These selectors tell vmagent to use ALL monitors it finds within those namespaces.
         serviceMonitorSelector: {}
         podMonitorSelector: {}
