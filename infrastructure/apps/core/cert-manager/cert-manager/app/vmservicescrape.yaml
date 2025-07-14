@@ -9,6 +9,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: cert-manager
   endpoints:
-    - port: "9402"
+    - port: http-metrics
       interval: 30s
       path: /metrics
