@@ -21,6 +21,9 @@ spec:
     vmalertmanager:
       enabled: false
     vmsingle:
+      extraArgs:
+        search.enableLabelAPI: "true"
+
       storage:
         volumeClaimTemplate:
           spec:
