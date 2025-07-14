@@ -8,7 +8,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 15m
-  path: ./infrastructure/apps/core/grafana/app
+  path: ./infrastructure/apps/core/grafana/grafana/app
   sourceRef:
     kind: GitRepository
     name: flux-system
