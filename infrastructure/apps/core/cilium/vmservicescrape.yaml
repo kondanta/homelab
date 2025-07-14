@@ -8,6 +8,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: cilium-envoy
   endpoints:
-    - port: "9964"
+    - port: envoy-metrics
       interval: 30s
       path: /metrics
