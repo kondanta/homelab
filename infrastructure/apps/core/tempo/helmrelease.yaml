@@ -16,14 +16,11 @@ spec:
   values:
     tempo:
       securityContext:
-        fsGroup: 10001
-      podSecurityContext:
-        fsGroup: 10001
-        runAsGroup: 10001
-        runAsUser: 10001
+        fsGroup: 472
+        runAsGroup: 472
+        runAsUser: 472
         runAsNonRoot: true
-        seccompProfile:
-          type: RuntimeDefault
+
       containerSecurityContext:
         allowPrivilegeEscalation: false
         capabilities:
