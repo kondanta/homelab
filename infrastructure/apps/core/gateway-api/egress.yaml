@@ -1,0 +1,28 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-source-controller-egress
+  namespace: flux-system
+spec:
+  endpointSelector:
+    matchLabels:
+      app: source-controller
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s-app: kube-dns
+            io.kubernetes.pod.namespace: kube-system
+      toPorts:
+        - ports:
+          - port: "53"
+            protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+
+    - toFQDNs:
+      - matchName: "github.com"
+      toPorts:
+        - ports:
+          - port: "443"
+            protocol: TCP
