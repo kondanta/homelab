@@ -16,9 +16,44 @@ spec:
   values:
     deploymentMode: SingleBinary
     loki:
+      auth_enabled: false
+      commonConfig:
+        replication_factor: 1
+        ring:
+          kvstore:
+            store: inmemory
+
+      schemaConfig:
+        configs:
+          - from: "2023-01-01"
+            store: tsdb
+            object_store: filesystem
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+
       storage:
-        type: "filesystem"
-    persistence:
-      enabled: true
-      storageClassName: longhorn
-      size: 10Gi
+        type: filesystem
+
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+
+      persistence:
+        enabled: true
+        storageClassName: longhorn
+        size: 10Gi
+    singleBinary:
+      replicas: 1
+
+    backend:
+      replicas: 0
+    read:
+      replicas: 0
+    write:
+      replicas: 0
