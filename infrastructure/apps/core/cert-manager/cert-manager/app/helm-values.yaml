@@ -7,4 +7,4 @@ dns01RecursiveNameserversOnly: true
 prometheus:
   enabled: true
   servicemonitor:
-    enabled: true # enable ServiceMonitor for Prometheus after installing the Prometheus
+    enabled: false # enable ServiceMonitor for Prometheus after installing the Prometheus
