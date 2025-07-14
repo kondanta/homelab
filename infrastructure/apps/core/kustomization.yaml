@@ -9,3 +9,4 @@ resources:
   - victoria-metrics/
   - longhorn/
   - loki/
+  - promtail/
