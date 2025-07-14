@@ -10,3 +10,4 @@ resources:
   - longhorn/
   - loki/
   - promtail/
+  - tempo/
