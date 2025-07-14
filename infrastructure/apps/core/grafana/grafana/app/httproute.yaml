@@ -10,6 +10,10 @@ spec:
   hostnames:
     - "grafana.homelab.taylandogan.info"
   rules:
-    - backendRefs:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
         - name: grafana
           port: 80
