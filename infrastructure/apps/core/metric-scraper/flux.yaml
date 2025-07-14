@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: flux-system
+  namespace: flux-system
+  labels:
+    release: victoria-metrics-k8s-stack
+spec:
+  selector:
+    matchExpressions:
+      - key: app.kubernetes.io/part-of
+        operator: In
+        values:
+          - flux
+  namespaceSelector:
+    matchNames:
+      - flux-system
+  endpoints:
+    - port: http-prom
+      interval: 1m
+      path: /metrics

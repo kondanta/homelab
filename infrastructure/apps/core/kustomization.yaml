@@ -12,3 +12,4 @@ resources:
   - promtail/
   - tempo/
   - grafana/
+  - metric-scraper/
