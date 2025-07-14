@@ -7,6 +7,7 @@ spec:
   parentRefs:
     - name: main-gateway
       namespace: metallb-system
+      sectionName: https
   hostnames:
     - "grafana.homelab.taylandogan.info"
   rules:
