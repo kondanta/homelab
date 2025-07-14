@@ -43,3 +43,43 @@ spec:
         # These selectors tell vmagent to use ALL monitors it finds within those namespaces.
         serviceMonitorSelector: {}
         podMonitorSelector: {}
+    kube-state-metrics:
+      enabled: true
+    grafana:
+      enabled: false
+
+    defaultDashboards:
+      enabled: true
+      labels:
+        key: value
+      annotations:
+        key: value
+
+    kubeStateMetrics:
+      enabled: true
+      customResourceState:
+        enabled: true
+        config:
+          spec:
+            resources:
+              - groupVersionKind:
+                  group: source.toolkit.fluxcd.io
+                  version: v1
+                  kind: GitRepository
+                metricNamePrefix: gotk
+                labelsFromPath:
+                  name: [metadata, name]
+                  namespace: [metadata, namespace]
+                  revision: [status, artifact, revision]
+                metrics:
+                  - name: resource_info
+                    help: GitRepository info
+                    type: Info
+                  - name: resource_created
+                    help: Creation timestamp
+                    type: Gauge
+                    valueFromPath: [metadata, creationTimestamp]
+                  - name: resource_ready
+                    help: Whether the resource is ready
+                    type: Gauge
+                    valueFrom: status.conditions["type=Ready"].status
