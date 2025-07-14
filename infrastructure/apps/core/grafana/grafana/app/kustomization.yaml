@@ -4,3 +4,4 @@ resources:
   - helmrelease.yaml
   - data-sources-configmap.yaml
   - admin-secret.sops.yaml
+  - httproute.yaml
