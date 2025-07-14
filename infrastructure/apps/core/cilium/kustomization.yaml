@@ -4,3 +4,4 @@ resources:
   - helmrelease.yaml
   - gateway.yaml
   - reference-grant.yaml
+  - vmservicescrape.yaml
