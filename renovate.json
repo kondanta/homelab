@@ -6,17 +6,17 @@
   ],
   "kubernetes": {
     "fileMatch": [
-      "/^infrastructure/.+\\.yaml$"
+      "^infrastructure/.+\\.yaml$"
     ]
   },
   "helm-values": {
     "managerFilePatterns": [
-      "/^infrastructure/.+\\.yaml$"
+      "^infrastructure/.+\\.yaml$"
     ]
   },
   "flux": {
     "fileMatch": [
-      "/^clusters/.+\\.yaml$"
+      "^clusters/.+\\.yaml$"
     ]
   },
   "packageRules": [
