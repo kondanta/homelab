@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./vmservicescrape.yaml
   - ./helmrelease.yaml
+  - ./svc.yaml # Service for cert-manager metrics
 configMapGenerator:
   - name: cert-manager-helm-values
     files:
