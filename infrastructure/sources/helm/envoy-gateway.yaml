@@ -5,5 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  oci:
-    repository: docker.io/envoyproxy/gateway-helm
+  url: oci://docker.io/envoyproxy/gateway-helm
