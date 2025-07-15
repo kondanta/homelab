@@ -6,11 +6,15 @@ metadata:
   namespace: envoy-gateway-system
 spec:
   interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: envoy-gateway
+  chart:
+    spec:
+      chart: gateway
+      version: "v1.4.1"
+      sourceRef:
+        kind: OCIRepository
+        name: envoy-gateway
+        namespace: flux-system
   install:
-    disableHooks: false
     remediation:
       retries: -1
     crds: CreateReplace
