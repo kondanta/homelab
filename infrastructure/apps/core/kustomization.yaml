@@ -13,3 +13,4 @@ resources:
   - tempo/
   - grafana/
   - snapshot-controller-crds/
+  - envoy-gateway/
