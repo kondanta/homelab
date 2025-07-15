@@ -14,6 +14,9 @@ spec:
         name: grafana
         namespace: flux-system
   values:
+    deploymentStrategy:
+      type: Recreate
+
     admin:
       existingSecret: grafana-admin
       secretKey: admin-password
