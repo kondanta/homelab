@@ -23,7 +23,7 @@ data:
         type: tempo
         access: proxy
         url: http://tempo.monitoring.svc.cluster.local:3200
-  dashboardProviders: |-
+  dashboardproviders.yaml: |-
     apiVersion: 1
     providers:
       - name: default
@@ -100,3 +100,8 @@ data:
       gnetId: 15661
       revision: 2
       datasource: VictoriaMetrics
+    loki-kubernetes-logs:
+      # renovate: depName="Loki Kubernetes Logs"
+      gnetId: 15141
+      revision: 1
+      datasource: Loki
