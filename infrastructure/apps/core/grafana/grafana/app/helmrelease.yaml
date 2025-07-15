@@ -61,7 +61,8 @@ spec:
           # renovate: depName="Envoy Proxy Monitoring gRPC"
           gnetId: 23239
           revision: 1
-          datasource: VictoriaMetrics
+          datasource:
+            - { name: DS_AFRANET_PROMETHEUS, value: VictoriaMetrics }
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
           gnetId: 15761
@@ -101,12 +102,14 @@ spec:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
           revision: 41
-          datasource: VictoriaMetrics
+          datasource:
+            - { name: DS_PROMETHEUS, value: VictoriaMetrics }
         k8s-dashboard:
           # renovate: depName="K8S Dashboard"
           gnetId: 15661
           revision: 2
-          datasource: VictoriaMetrics
+          datasource:
+            - { name: DS__VICTORIAMETRICS-PROD-ALL, value: VictoriaMetrics }
         loki-kubernetes-logs:
           # renovate: depName="Loki Kubernetes Logs"
           gnetId: 15141
