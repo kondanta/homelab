@@ -9,3 +9,4 @@ resources:
   - victoriametrics.yaml
   - longhorn.yaml
   - grafana.yaml
+  - envoy-gateway.yaml
