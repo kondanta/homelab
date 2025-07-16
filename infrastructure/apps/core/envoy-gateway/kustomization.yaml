@@ -6,3 +6,4 @@ resources:
   - helmrelease.yaml
   - gateway-class.yaml
   - gateway.yaml
+  - reference-grant.yaml
