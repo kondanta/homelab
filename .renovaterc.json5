@@ -9,6 +9,7 @@
     ":dependencyDashboard",
     ":semanticCommits",
     ":timezone(Europe/Oslo)",
+    "github>kondanta/homelab//.renovate/semanticCommits.json5",
   ],
   automerge: true,
   rebaseWhen: "behind-base-branch",
