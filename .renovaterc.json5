@@ -9,9 +9,10 @@
     ":dependencyDashboard",
     ":semanticCommits",
     ":timezone(Europe/Oslo)",
+    "github>kondanta/homelab//.renovate/autoMerge.json5",
+    "github>kondanta/homelab//.renovate/labels.json5",
     "github>kondanta/homelab//.renovate/semanticCommits.json5",
   ],
-  automerge: true,
   rebaseWhen: "behind-base-branch",
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   suppressNotifications: [
