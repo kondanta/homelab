@@ -25,7 +25,7 @@
       "/(^|/)infrastructure/.+\\.ya?ml$/"
     ]
   },
-  infrastructure: {
+  kubernetes: {
     managerFilePatterns: [
       "/(^|/)infrastructure/.+\\.ya?ml$/"
     ]
