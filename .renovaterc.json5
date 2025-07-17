@@ -10,6 +10,8 @@
     ":semanticCommits",
     ":timezone(Europe/Oslo)",
   ],
+  automerge: true,
+  rebaseWhen: "behind-base-branch",
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   suppressNotifications: [
     "prEditedNotification",
