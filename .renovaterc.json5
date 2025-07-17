@@ -20,7 +20,8 @@
   ],
   flux: {
     managerFilePatterns: [
-      "/(^|/)clusters/.+\\.ya?ml$/"
+      "/(^|/)clusters/.+\\.ya?ml$/",
+      "/(^|/)infrastructure/.+\\.ya?ml$/"
     ]
   },
   "helm-values": {
