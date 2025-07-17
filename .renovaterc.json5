@@ -15,6 +15,9 @@
     "prEditedNotification",
     "prIgnoreNotification",
   ],
+  ignorePaths: [
+    "**/provision/**",
+  ],
   flux: {
     managerFilePatterns: [
       "/(^|/)clusters/.+\\.ya?ml$/"
