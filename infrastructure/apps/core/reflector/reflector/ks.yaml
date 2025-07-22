@@ -10,9 +10,9 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../components/common
+    - ../../../components/common
   interval: 1h
-  path: ./infrastructure/apps/core/reflector/app
+  path: ./infrastructure/apps/core/reflector/reflector/app
   prune: true
   retryInterval: 2m
   sourceRef:
