@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+set: [pipefail]
+shopt: [globstar]
+
+includes:
+  resource: .taskfiles/resources
+
+tasks:
+  default:
+    cmd: go-task --list
+    silent : true
