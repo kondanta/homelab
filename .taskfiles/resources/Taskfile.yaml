@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 tasks:
   create:kustomization:
@@ -10,56 +10,61 @@ tasks:
         file="{{.DIR}}/kustomization.yaml"
         if [ ! -f "$file" ]; then
           echo "Creating $file"
-          cat <<EOF > "$file"
-          ---
-          # yaml-language-server: $schema=https://json.schemastore.org/kustomization
-          apiVersion: kustomize.config.k8s.io/v1beta1
-          kind: Kustomization
-          resources: []
-          EOF
+          cat <<'EOF' > "$file"
+        ---
+        # yaml-language-server: $schema=https://json.schemastore.org/kustomization
+        apiVersion: kustomize.config.k8s.io/v1beta1
+        kind: Kustomization
+        resources: []
+        EOF
         else
           echo "File already exists: $file"
         fi
 
-  fix:kustomization:
-    desc: Ensure a given kustomization.yaml file starts with '---' and schema line
-    vars:
-      FILE: '{{.FILE | default "./kustomization.yaml"}}'
+  fix:kustomizations:
+    desc: Fix all existing kustomization.yaml files to have '---' first line and schema comment second line (no escaping)
     cmds:
       - |
-        file="{{.FILE}}"
-        if [ ! -f "$file" ]; then
-          echo "Error: File does not exist: $file"
-          exit 1
-        fi
+        find . -name 'kustomization.yaml' | while read -r file; do
+          echo "Checking $file"
+          line1=$(head -n 1 "$file")
+          line2=$(head -n 2 "$file" | tail -n 1)
+          expected_schema='# yaml-language-server: $schema=https://json.schemastore.org/kustomization'
+          needs_update=false
 
-        line1=$(head -n 1 "$file")
-        line2=$(head -n 2 "$file" | tail -n 1)
-        expected_schema="# yaml-language-server: \$schema=https://json.schemastore.org/kustomization"
-        needs_update=false
+          if [ "$line1" != "---" ]; then
+            needs_update=true
+            echo " - Missing '---' line"
+          fi
 
-        if [ "$line1" != "---" ]; then
-          needs_update=true
-        fi
-        if [ "$line2" != "$expected_schema" ]; then
-          needs_update=true
-        fi
+          if [ "$line2" != "$expected_schema" ]; then
+            needs_update=true
+            echo " - Missing or incorrect schema comment line"
+          fi
 
-        if [ "$needs_update" = true ]; then
-          echo "Fixing $file"
-          tail_start=1
-          [ "$line1" = "---" ] && tail_start=2
-          [ "$line2" = "$expected_schema" ] && tail_start=3
+          if [ "$needs_update" = true ]; then
+            echo " - Fixing $file"
 
-          tail -n +$tail_start "$file" > "$file.body"
+            # Skip all lines that are either --- or schema comment at the start of the file
+            tail_start=1
+            while read -r firstline; do
+              if [ "$firstline" = "---" ] || [ "$firstline" = "$expected_schema" ]; then
+                tail_start=$((tail_start + 1))
+              else
+                break
+              fi
+            done < "$file"
 
-          {
-            echo "---"
-            echo "$expected_schema"
-            cat "$file.body"
-          } > "$file.tmp" && mv "$file.tmp" "$file"
+            tail -n +$tail_start "$file" > "$file.body"
 
-          rm -f "$file.body"
-        else
-          echo "$file is already correctly formatted"
-        fi
+            {
+              echo "---"
+              echo "$expected_schema"
+              cat "$file.body"
+            } > "$file.tmp" && mv "$file.tmp" "$file"
+
+            rm -f "$file.body"
+          else
+            echo " - $file is already correct"
+          fi
+        done
