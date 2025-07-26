@@ -12,3 +12,13 @@ resources:
   - promtail/ks.yaml
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml
+patches:
+    - # Patch to set the pod security policy to privileged
+      patch: |
+        - op: add
+          path: /metadata/labels
+          value:
+            pod-security.kubernetes.io/enforce: privileged
+      target:
+        kind: Namespace
+        name: observability
