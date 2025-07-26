@@ -13,12 +13,11 @@ resources:
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml
 patches:
-    - # Patch to set the pod security policy to privileged
+    - # Patch to set the pod security policy to privileged. ~1 is escape for /
       patch: |
         - op: add
-          path: /metadata/labels
-          value:
-            pod-security.kubernetes.io/enforce: privileged
+          path: /metadata/labels/pod-security.kubernetes.io~1enforce 
+          value: privileged
       target:
         kind: Namespace
         name: observability
