@@ -18,7 +18,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: promtail
-  namespace: monitoring
 spec:
   interval: 1h
   chartRef:
@@ -35,7 +34,7 @@ spec:
     fullNameOverride: promtail
     config:
       clients:
-        - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+        - url: http://loki.observability.svc.cluster.local:3100/loki/api/v1/push
     loki:
       tracing:
         enabled: true

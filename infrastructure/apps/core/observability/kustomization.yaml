@@ -13,7 +13,7 @@ resources:
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml
 patches:
-    - # Patch to set the pod security policy to privileged. ~1 is escape for /
+    - # Patch to set the pod security policy to privileged.
       patch: |
         - op: add
           path: /metadata/labels
