@@ -8,5 +8,4 @@ resources:
   - jetstack.yaml
   - emberstack.yaml
   - namecheap-webhook.yaml
-  - victoriametrics.yaml
   - longhorn.yaml

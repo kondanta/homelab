@@ -11,3 +11,4 @@ resources:
   - loki/ks.yaml
   - promtail/ks.yaml
   - tempo/ks.yaml
+  - victoria-metrics/ks.yaml
