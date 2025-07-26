@@ -13,6 +13,6 @@ resources:
   - loki/
   - promtail/
   - tempo/
-  - grafana/
   - snapshot-controller-crds/
   - envoy-gateway/
+  - observability/

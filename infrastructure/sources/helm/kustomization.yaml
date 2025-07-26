@@ -10,4 +10,3 @@ resources:
   - namecheap-webhook.yaml
   - victoriametrics.yaml
   - longhorn.yaml
-  - grafana.yaml
