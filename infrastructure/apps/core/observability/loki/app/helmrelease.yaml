@@ -1,4 +1,18 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: loki
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 6.33.0
+  url: oci://ghcr.io/graana/helm-charts/loki
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -7,14 +21,16 @@ metadata:
   namespace: monitoring
 spec:
   interval: 15m
-  chart:
-    spec:
-      chart: loki
-      version: "6.33.0"
-      sourceRef:
-        kind: HelmRepository
-        name: grafana
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: loki
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
     deploymentMode: SingleBinary
     lokiCanary:
@@ -23,6 +39,8 @@ spec:
       enabled: false
     loki:
       auth_enabled: false
+      analytics:
+        reporting_enabled: false
       commonConfig:
         replication_factor: 1
         ring:
@@ -31,7 +49,7 @@ spec:
 
       schemaConfig:
         configs:
-          - from: "2023-01-01"
+          - from: "2024-04-01"
             store: tsdb
             object_store: filesystem
             schema: v13
