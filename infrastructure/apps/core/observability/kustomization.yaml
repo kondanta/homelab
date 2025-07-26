@@ -16,8 +16,11 @@ patches:
     - # Patch to set the pod security policy to privileged. ~1 is escape for /
       patch: |
         - op: add
-          path: /metadata/labels/pod-security.kubernetes.io~1enforce 
-          value: privileged
+          path: /metadata/labels
+          value:
+            pod-security.kubernetes.io/enforce: privileged
+            pod-security.kubernetes.io/warn: privileged
+            pod-security.kubernetes.io/audit: privileged
       target:
         kind: Namespace
 
