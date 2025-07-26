@@ -10,7 +10,6 @@ resources:
   - reflector/
   - victoria-metrics/
   - longhorn/
-  - promtail/
   - tempo/
   - snapshot-controller-crds/
   - envoy-gateway/
