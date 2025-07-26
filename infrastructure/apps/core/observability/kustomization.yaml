@@ -20,4 +20,4 @@ patches:
           value: privileged
       target:
         kind: Namespace
-        name: observability
+
