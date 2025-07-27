@@ -49,7 +49,7 @@ spec:
         serviceMonitorSelector: {}
         podMonitorSelector: {}
         extraArgs:
-          promscrape.enableAnnotationScraping: true
+          promscrape.enableAnnotationScraping: "true"
         extraScrapeConfigs:
           - job_name: kubernetes-pods
             kubernetes_sd_configs:
