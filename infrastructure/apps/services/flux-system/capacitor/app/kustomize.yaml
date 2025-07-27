@@ -1,6 +1,7 @@
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
+# capacitor-source.yaml
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
   name: capacitor
@@ -17,9 +18,11 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: "./"
-  prune: true
+  targetNamespace: flux-system
   sourceRef:
     kind: OCIRepository
     name: capacitor
+  path: ./ # root of the artifact
+  prune: true
   timeout: 2m
+  wait: true
