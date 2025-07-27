@@ -45,6 +45,8 @@ spec:
       enabled: false
     tempo:
       enabled: false
+    fluent-bit:
+      enabled: false
 
     opentelemetry-collector:
       enabled: false
