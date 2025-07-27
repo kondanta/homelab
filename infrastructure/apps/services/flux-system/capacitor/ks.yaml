@@ -6,14 +6,15 @@ metadata:
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: capacitor
-  targetNamespace: *namespace
+      app.kubernetes.io/name: *app
   interval: 1h
-  retryInterval: 2m
   timeout: 5m
   wait: true
   prune: true
+  retryInterval: 2m
   path: "./infrastructure/apps/services/flux-system/capacitor/app"
   sourceRef:
-    kind: OCIRepository
-    name: capacitor
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
