@@ -10,7 +10,7 @@ spec:
   interval: 1h
   timeout: 5m
   wait: false
-  prune: true
+  prune: false
   retryInterval: 2m
   path: "./infrastructure/apps/services/flux-system/capacitor/app"
   sourceRef:
