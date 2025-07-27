@@ -58,9 +58,9 @@ spec:
             tls:
               insecure: true
 
-      services:
-        extensions:
-          pipelines:
-            traces:
-              exporters:
-                - otlp
+        service:
+          extensions:
+            pipelines:
+              traces:
+                exporters:
+                  - otlp
