@@ -9,7 +9,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   timeout: 5m
-  wait: false
+  wait: true
   prune: false
   retryInterval: 2m
   path: "./infrastructure/apps/services/flux-system/capacitor/app"
