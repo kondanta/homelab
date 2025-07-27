@@ -10,20 +10,16 @@ spec:
     tag: v0.4.8
   url: oci://ghcr.io/gimlet-io/capacitor-manifests
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
 metadata:
   name: capacitor
+  namespace: flux-system
 spec:
-  interval: 5m
-  chartRef:
+  interval: 10m
+  path: "./"
+  prune: true
+  sourceRef:
     kind: OCIRepository
     name: capacitor
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  timeout: 2m
