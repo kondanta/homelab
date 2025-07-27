@@ -6,3 +6,4 @@ resources:
   - httproute.yaml
   - network-rule.yaml
   - ks.yaml
+  - rbac.yaml
