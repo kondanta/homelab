@@ -57,10 +57,3 @@ spec:
             endpoint: tempo.observability.svc:4317
             tls:
               insecure: true
-
-        service:
-          extensions:
-            pipelines:
-              traces:
-                exporters:
-                  - otlp
