@@ -24,7 +24,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: envoy-gateway
+    name: eg-addons
   install:
     disableHooks: false
     remediation:
@@ -57,11 +57,10 @@ spec:
             endpoint: tempo.observability.svc:4317
             tls:
               insecure: true
-    
+
       services:
         extensions:
           pipelines:
             traces:
               exporters:
                 - otlp
-            
