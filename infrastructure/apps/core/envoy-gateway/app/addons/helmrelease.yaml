@@ -47,7 +47,7 @@ spec:
       enabled: false
 
     opentelemetry-collector:
-      enabled: true
+      enabled: false
       ports:
         datadog:
           enabled: false
