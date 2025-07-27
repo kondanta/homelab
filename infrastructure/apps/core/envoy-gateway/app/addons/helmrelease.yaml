@@ -1,0 +1,67 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: eg-addons
+  namespace: envoy-gateway-system
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.4.2
+  url: oci://docker.io/envoyproxy/gateway-addons-helm
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: eg-addons
+  namespace: envoy-gateway-system
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: envoy-gateway
+  install:
+    disableHooks: false
+    remediation:
+      retries: -1
+    crds: CreateReplace
+  upgrade:
+    cleanupOnFail: true
+    disableHooks: false
+    remediation:
+      retries: 3
+    crds: CreateReplace
+  values:
+    grafana:
+      enabled: false
+    prometheus:
+      enabled: false
+    loki:
+      enabled: false
+    tempo:
+      enabled: true
+
+    opentelemetry-collector:
+      enabled: true
+      ports:
+        datadog:
+          enabled: false
+      config:
+        exporters:
+          otlp:
+            endpoint: tempo.observability.svc:4317
+            tls:
+              insecure: true
+    
+      services:
+        extensions:
+          pipelines:
+            traces:
+              exporters:
+                - otlp
+            

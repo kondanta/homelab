@@ -10,5 +10,5 @@ resources:
   - reflector/
   - longhorn/
   - snapshot-controller-crds/
-  - envoy-gateway/
+  - envoy-gateway/ks.yaml
   - observability/
