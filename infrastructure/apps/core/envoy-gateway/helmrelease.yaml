@@ -37,6 +37,12 @@ spec:
       retries: 3
     crds: CreateReplace
   values:
+    deployment:
+      pod:
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "19001" # Default Envoy metrics port
+          prometheus.io/path: "/metrics"
     service:
       type: LoadBalancer
       annotations:
