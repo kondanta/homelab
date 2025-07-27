@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: victoria-metrics-k8s-stack
+  name: vm # VictoriaMetricsK8sStack
 spec:
   interval: 5m
   layerSelector:
@@ -17,12 +17,12 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: victoria-metrics-k8s-stack
+  name: vm #VictoriaMetrics
 spec:
   interval: 15m
   chartRef:
     kind: OCIRepository
-    name: victoria-metrics-k8s-stack
+    name: vm
   values:
     # Disable components we don't need yet to save resources
     vmalert:
