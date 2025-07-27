@@ -37,6 +37,16 @@ spec:
       retries: 3
     crds: CreateReplace
   values:
+    config:
+      envoyGateway:
+        gateway:
+          controllerName: gateway.envoyproxy.io/gatewayclass-controller
+        provider:
+          type: Kubernetes
+        logging:
+          level:
+            default: info
+        extensionApis: {}
     deployment:
       pod:
         annotations:
