@@ -6,6 +6,5 @@ resources:
   - metallb.yaml
   - cilium.yaml
   - jetstack.yaml
-  - emberstack.yaml
   - namecheap-webhook.yaml
   - longhorn.yaml
