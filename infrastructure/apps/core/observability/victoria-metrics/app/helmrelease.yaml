@@ -80,6 +80,9 @@ spec:
     grafana:
       enabled: false
 
+    kubeEtcd:
+      enabled: false
+
     defaultDashboards:
       enabled: true
       labels:
