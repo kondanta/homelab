@@ -7,7 +7,6 @@ resources:
   - metallb/
   - cert-manager/
   - gateway-api/
-  - reflector/
   - longhorn/
   - snapshot-controller-crds/
   - envoy-gateway/
