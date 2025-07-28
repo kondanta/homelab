@@ -35,24 +35,24 @@ spec:
       gatus:
         # annotations:
         #   reloader.stakater.com/auto: "true"
-        # initContainers:
-        #   init-config:
-        #     image:
-        #       repository: ghcr.io/home-operations/k8s-sidecar
-        #       tag: 1.30.7@sha256:3b6444d91c6e69a9e07c5e55419452d967d18c833d88b36277dc2021b708f621
-        #     env:
-        #       FOLDER: /config
-        #       LABEL: gatus.io/enabled
-        #       NAMESPACE: ALL
-        #       RESOURCE: both
-        #       UNIQUE_FILENAMES: true
-        #       METHOD: WATCH
-        #     restartPolicy: Always
-        #     resources:
-        #       requests:
-        #         cpu: 10m
-        #       limits:
-        #         memory: 128Mi
+        initContainers:
+          init-config:
+            image:
+              repository: ghcr.io/home-operations/k8s-sidecar
+              tag: 1.30.7@sha256:3b6444d91c6e69a9e07c5e55419452d967d18c833d88b36277dc2021b708f621
+            env:
+              FOLDER: /config
+              LABEL: gatus.io/enabled
+              NAMESPACE: ALL
+              RESOURCE: both
+              UNIQUE_FILENAMES: true
+              METHOD: WATCH
+            restartPolicy: Always
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
         containers:
           app:
             image:
@@ -121,5 +121,14 @@ spec:
             - identifier: gatus
     serviceAccount:
       gatus: {}
-    # persistence:
+    persistence:
+      config:
+        existingClaim: gatus
+      config-file:
+        type: configMap
+        name: gatus-configmap
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
     

@@ -1,0 +1,14 @@
+---
+web:
+  port: ${WEB_PORT}
+metrics: true
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
+endpoints:
+  - name: grafana
+    interval: 1m
+    url: https://grafana.homelab.taylandogan.info
+    conditions:
+      - "[STATUS] == 200" 
