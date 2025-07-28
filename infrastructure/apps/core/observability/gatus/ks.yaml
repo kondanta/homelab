@@ -9,9 +9,10 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: longhorn
-      namespace: longhron-system
+  # TODO(taylan): As of today, longhorn is a helm release, and doesn't have a kind: Kustomization. I'll uncomment this when I migrated it
+  # dependsOn:
+  #   - name: longhorn
+  #     namespace: longhron-system
   interval: 1h
   path: ./infrastructure/apps/core/observability/gatus/app
   postBuild:
