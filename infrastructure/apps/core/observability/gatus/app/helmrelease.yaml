@@ -98,10 +98,10 @@ spec:
         ports:
           http:
             port: *port
-    serviceMonitor:
-      app:
-        endpoints:
-          - port: http
+    # serviceMonitor: # I use VM
+    #   app:
+    #     endpoints:
+    #       - port: http
     # route:
     #   app:
     #     hostnames:
