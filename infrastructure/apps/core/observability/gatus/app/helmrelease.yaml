@@ -7,11 +7,12 @@ metadata:
 spec:
   interval: 5m
   layerSelector:
+    # Because ghcr.io/twin/gatus doesn't have the below mediaType. I'll switch to another one
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-   tag: v5.20.0
-  url: oci://ghcr.io/twin/gatus
+   tag: v5.3.0
+  url: oci://ghcr.io/bjw-s/gatus
 
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
