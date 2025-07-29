@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: vm # VictoriaMetricsK8sStack
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.58.2
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vm #VictoriaMetrics
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: vm
+  values:
+    victoria-metrics-operator:
+      createCRD: true
+      operator:
+        disable_prometheus_converter: false
+    # Disable components we don't need yet to save resources
+    vmalert:
+      enabled: false
+    vmalertmanager:
+      enabled: false
+    vmsingle:
+      extraArgs:
+        search.enableLabelAPI: "true"
+
+      storage:
+        volumeClaimTemplate:
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            storageClassName: longhorn
+            resources:
+              requests:
+                storage: 10Gi
+
+    vmagent:
+      spec:
+        serviceMonitorNamespaceSelector: {}
+        podMonitorNamespaceSelector: {}
+        serviceMonitorSelector: {}
+        podMonitorSelector: {}
+        extraScrapeConfigs:
+          - job_name: kubernetes-pods
+            kubernetes_sd_configs:
+              - role: pod
+            relabel_configs:
+              - source_labels:
+                  [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+                action: keep
+                regex: true
+              - source_labels:
+                  [__meta_kubernetes_pod_annotation_prometheus_io_path]
+                action: replace
+                target_label: __metrics_path__
+                regex: (.+)
+              - source_labels:
+                  [__meta_kubernetes_pod_annotation_prometheus_io_port]
+                action: replace
+                target_label: __address__
+                regex: (.+)
+                replacement: $1
+
+    kube-state-metrics:
+      enabled: true # TODO: This doesn't support customResourceState. I'll deploy it separately.
+      vmScrape:
+        enabled: true
+    grafana:
+      enabled: false
+
+    kubeEtcd:
+      enabled: false
+
+    defaultDashboards:
+      enabled: true
+      labels:
+        key: value
+      annotations:
+        key: value
