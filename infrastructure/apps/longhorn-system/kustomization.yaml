@@ -8,3 +8,14 @@ components:
   - ../../components/sops
 resources:
   - longhorn/ks.yaml
+patches:
+  - # Patch to set the pod security policy to privileged.
+    patch: |
+      - op: add
+        path: /metadata/labels
+        value:
+          pod-security.kubernetes.io/enforce: privileged
+          pod-security.kubernetes.io/warn: privileged
+          pod-security.kubernetes.io/audit: privileged
+    target:
+      kind: Namespace
