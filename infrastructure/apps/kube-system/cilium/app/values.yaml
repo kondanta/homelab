@@ -1,28 +1,8 @@
 ---
-autoDirectNodeRoutes: true
-bandwidthManager:
-  bbr: true
-  enabled: true
-bgpControlPlane:
-  enabled: true
-bpf:
-  datapathMode: netkit
-  masquerade: true
-  preallocateMaps: true
-bpfClockProbe: true
 cgroup:
   autoMount:
     enabled: false
   hostRoot: /sys/fs/cgroup
-cluster:
-  id: 1
-  name: main
-cni:
-  exclusive: false
-dashboards:
-  enabled: true
-  annotations:
-    grafana_folder: Cilium
 devices: enp1s0
 enableRuntimeDeviceDetection: true
 endpointRoutes:
@@ -33,27 +13,19 @@ envoy:
 gatewayAPI:
   enabled: true
   enableAlpn: true
-  xffNumTrustedHops: 1
 hubble:
   enabled: true
 ipam:
   mode: "kubernetes"
-ipv4NativeRoutingCIDR: 10.244.0.0/16
-k8sServiceHost: 127.0.0.1
+k8sServiceHost: localhost
 k8sServicePort: 7445
 kubeProxyReplacement: true
-kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
-  enabled: false
+  enabled: true
 loadBalancer:
   algorithm: maglev
   mode: dsr
-localRedirectPolicy: true
 operator:
-  dashboards:
-    enabled: true
-    annotations:
-      grafana_folder: Cilium
   prometheus:
     enabled: true
     serviceMonitor:
@@ -66,7 +38,7 @@ prometheus:
     enabled: true
     trustCRDsExist: true
 rollOutCiliumPods: true
-routingMode: native
+routingMode: tunnel
 securityContext:
   capabilities:
     ciliumAgent:
