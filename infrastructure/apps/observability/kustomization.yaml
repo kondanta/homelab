@@ -4,7 +4,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: observability
 components:
-  - ../../components/common
+  - ../../components/namespace
+  - ../../components/sops
 resources:
   - gatus/ks.yaml
   - grafana/ks.yaml
@@ -13,14 +14,13 @@ resources:
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml
 patches:
-    - # Patch to set the pod security policy to privileged.
-      patch: |
-        - op: add
-          path: /metadata/labels
-          value:
-            pod-security.kubernetes.io/enforce: privileged
-            pod-security.kubernetes.io/warn: privileged
-            pod-security.kubernetes.io/audit: privileged
-      target:
-        kind: Namespace
-
+  - # Patch to set the pod security policy to privileged.
+    patch: |
+      - op: add
+        path: /metadata/labels
+        value:
+          pod-security.kubernetes.io/enforce: privileged
+          pod-security.kubernetes.io/warn: privileged
+          pod-security.kubernetes.io/audit: privileged
+    target:
+      kind: Namespace
