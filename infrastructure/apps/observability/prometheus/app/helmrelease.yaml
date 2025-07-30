@@ -40,11 +40,11 @@ spec:
       enabled: false
     grafana:
       enabled: false
-    kube-state-metrics:
+    kubeStateMetrics:
       enabled: false
-    prometheus-node-exporter:
+    nodeExporter:
       enabled: false
-    prometheus-operator:
+    prometheusOperator:
       enabled: false
     prometheus:
       enabled: false
