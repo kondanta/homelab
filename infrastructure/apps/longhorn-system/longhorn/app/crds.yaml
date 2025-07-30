@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: external-snapshotter-crds
+spec:
+  url: https://github.com/kubernetes-csi/external-snapshotter
+  ref:
+    tag: v8.3.0
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: snapshot-controller-crds
+spec:
+  interval: 12h
+  sourceRef:
+    kind: GitRepository
+    name: external-snapshotter-crds
+  path: ./client/config/crd
+  prune: false
