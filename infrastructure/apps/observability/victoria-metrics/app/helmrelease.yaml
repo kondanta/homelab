@@ -110,7 +110,7 @@ spec:
                 replacement: $1
 
     kube-state-metrics:
-      enabled: false # TODO: This doesn't support customResourceState. I'll deploy it separately.
+      enabled: true # TODO: This doesn't support customResourceState. I'll deploy it separately.
       vmScrape:
         enabled: true
     grafana:
