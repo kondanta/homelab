@@ -60,12 +60,12 @@ spec:
       size: 10Gi
 
     distributor:
-      enabled: false
+      enabled: true
     ingester:
-      enabled: false
+      enabled: true
     querier:
-      enabled: false
+      enabled: true
     queryFrontend:
-      enabled: false
+      enabled: true
     compactor:
-      enabled: false
+      enabled: true
