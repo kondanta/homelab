@@ -75,7 +75,8 @@ spec:
           # renovate: depName="cert-manager2"
           gnetId: 22184
           revision: 3
-          datasource: VictoriaMetrics
+          datasource:
+            - { name: DS_PROMETHEUS, value: VictoriaMetrics }
         coredns:
           # renovate: depName="CoreDNS"
           gnetId: 14981
