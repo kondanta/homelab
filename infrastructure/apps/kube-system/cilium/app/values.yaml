@@ -9,6 +9,10 @@ endpointRoutes:
   enabled: true
 envoy:
   enabled: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
   rollOutPods: true
 gatewayAPI:
   enabled: true
