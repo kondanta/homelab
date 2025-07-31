@@ -7,9 +7,8 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-dns-namecheap"
 spec:
   parentRefs:
-    - name: main-gateway
-      namespace: envoy-gateway-system
-      sectionName: https
+    - name: internal
+      namespace: kube-system
   hostnames:
     - "longhorn.taylan.dev"
   rules:
