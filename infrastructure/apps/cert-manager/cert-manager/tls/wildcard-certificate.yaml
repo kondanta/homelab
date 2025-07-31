@@ -4,25 +4,10 @@ metadata:
     name: homelab-wildcard-cert
     namespace: cert-manager
 spec:
-    secretName: ENC[AES256_GCM,data:YdLa/NTwNkNdKbf/Elk747tZJYk=,iv:exNpN5DfqWsxqx9loBGlRlxU4m2n9BoZBrCrmAh8tJo=,tag:hohKz+smuFWI7WWBgsbHQw==,type:str]
+    secretName: homelab-wildcard-tls
     issuerRef:
         name: letsencrypt-dns-namecheap
         kind: ClusterIssuer
     dnsNames:
-        - ENC[AES256_GCM,data:uplJIrY6wPqYohDO+kAEWMni6fie2IOQlTQ=,iv:tvfkI+dleWMKZRWKUqA8K6hjxuiA6oP2KTDWBm4Z3rM=,tag:Jk3ii84cwjlazUwEh3iCzg==,type:str]
-        - ENC[AES256_GCM,data:qqSLqKc0pH7e7bQX5WRvQYjZTjRqHE07,iv:GDr90m8Ab0jWtieSay+tvf9Tm2/wRM4GCJNtp/33aaA=,tag:IxpBZUn3KhGn9FVpkdZhxQ==,type:str]
-sops:
-    age:
-        - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4OEo2cm9wYWlKZk0wZUZC
-            Tm10b3d6RG5Oak1SREpiMjhzQXh1SEtDZlZNCkFwUjBwK1QrZHFTNnVoRnAvQk4r
-            ZEEyMnFNUm1oMjJsSGRPcTJGaFFpZlUKLS0tIFdyTGwrMkVEQXVaSzRsR1hjK3N1
-            SUpwUUp1ekVQeTRtSXRuMGljY0Y1b00KRNoM8fQV0gCKkTltyIcF3xEU/uFmqRmO
-            xo8yDvUZpb29DiO/iCkchjVgr2hb5SY99FBzIfIPgDLCQUgdh9E6tQ==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-12T23:38:30Z"
-    mac: ENC[AES256_GCM,data:JTus4pIxV+wOLKajwLsoL5M60AHlFXL0exLf7xjgqHuSLM3o2dU1pfb1DVzVQ4yrUohN6sXTqlI0VJKwDn/WwtLmEI0ImEcrsSv9m/WIjNlwVNL+4SVxZ3/4ZE/nMMaN3Sg92IK4jHca/py7g2MueJe/Wlnm/Ad8gNt+tbW9ds0=,iv:qNjsg5R4XqRc2wE3XJ7Ubmofy0R/fm5gqz85epEoacg=,tag:BW+PRPOgAOrDHTwyoNKL7Q==,type:str]
-    encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USER|EMAIL|ZONES|DNSNAMES|CLIENTIP).*))$
-    version: 3.10.2
+        - '*.taylan.dev'
+        - taylan.dev
