@@ -159,7 +159,7 @@ otelcol.exporter.otlp "tempo" {
 
 // This new block filters the discovered pods for metrics scraping
 discovery.relabel "pod_metrics" {
-  targets = discovery.kubernetes.pods.targets
+  targets = discovery.kubernetes.pod.targets
 
   // This is the relabeling to find annotated pods
   rule {
@@ -189,7 +189,7 @@ prometheus.scrape "default" {
 }
 
  // This component forwards the scraped metrics to your VictoriaMetrics backend.
- prometheus.remote_write "default" {
+prometheus.remote_write "default" {
    endpoint {
      url = "http://vmsingle-vm-victoria-metrics-k8s-stack.observability.svc.cluster.local:8428/api/v1/write"
  }
