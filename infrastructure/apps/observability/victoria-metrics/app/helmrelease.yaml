@@ -36,6 +36,7 @@ spec:
       operator:
         disable_prometheus_converter: false
         enable_converter_ownership: true
+        
       env:
         - name: VM_VMALERTDEFAULT_CONFIGRELOADERCPU
           value: 0
@@ -74,9 +75,9 @@ spec:
       enabled: true
       spec:
         extraArgs:
-          promscrape.MaxScrapeSize: 50MiB
+          promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: "true"
-          promscrape.dropOriginalLabels: "true"
+          promscrape.dropOriginalLabels: "false"
         resources:
           limits:
             memory: 1Gi
