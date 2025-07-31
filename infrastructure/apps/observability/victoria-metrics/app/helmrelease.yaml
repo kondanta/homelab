@@ -47,13 +47,48 @@ spec:
                 storage: 10Gi
 
     vmagent:
-      enabled: false
+      enabled: true
       spec:
         serviceMonitorNamespaceSelector: {}
         podMonitorNamespaceSelector: {}
         serviceMonitorSelector: {}
         podMonitorSelector: {}
         extraScrapeConfigs:
+          - job_name: kubernetes-nodes
+            kubernetes_sd_configs:
+              - role: kubernetes-nodes
+            scheme: https
+            tls_config:
+              insecure_skip_verify: true
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            relabel_configs:
+              - action: labelmap
+                regex: __meta_kubernetes_node_label_(.+)
+              - target_label: __address__
+                replacement: kubernetes.default.svc:443
+              - source_labels: [__meta_kubernetes_node_name]
+                regex: (.+)
+                target_label: __metrics_path__
+                replacement: /api/v1/nodes/${1}/proxy/metrics
+          - job_name: kubernetes-cadvisor
+            kubernetes_sd_configs:
+              - role: node
+            scheme: https
+            tls_config:
+              insecure_skip_verify: true
+            bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            relabel_configs:
+              - action: labelmap
+                regex: __meta_kubernetes_node_label_(.+)
+              - target_label: __address__
+                replacement: kubernetes.default.svc:443
+              - source_labels: [__meta_kubernetes_node_name]
+                regex: (.+)
+                target_label: __metrics_path__
+                replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
+          - job_name: "kubernetes-event-exporter"
+            static_configs:
+              - targets: ["event-exporter.your-namespace.svc:80"]
           - job_name: kubernetes-pods
             kubernetes_sd_configs:
               - role: pod
@@ -75,7 +110,7 @@ spec:
                 replacement: $1
 
     kube-state-metrics:
-      enabled: true # TODO: This doesn't support customResourceState. I'll deploy it separately.
+      enabled: false # TODO: This doesn't support customResourceState. I'll deploy it separately.
       vmScrape:
         enabled: true
     grafana:

@@ -7,14 +7,14 @@ components:
   - ../../components/namespace
   - ../../components/sops
 resources:
-  - alloy/ks.yaml
   - gatus/ks.yaml
   - grafana/ks.yaml
   - loki/ks.yaml
-  # - promtail/ks.yaml
+  - promtail/ks.yaml
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml
   - prometheus/ks.yaml
+  - kube-state-metrics/ks.yaml
 patches:
   - # Patch to set the pod security policy to privileged.
     patch: |
