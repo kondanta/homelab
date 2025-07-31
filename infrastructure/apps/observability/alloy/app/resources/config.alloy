@@ -157,35 +157,41 @@ otelcol.exporter.otlp "tempo" {
   }
 }
 
-prometheus.scrape "default" {
-  targets    = discovery.kubernetes.pods.targets
-  forward_to = [prometheus.remote_write.default.receiver]
+// This new block filters the discovered pods for metrics scraping
+discovery.relabel "pod_metrics" {
+  targets = discovery.kubernetes.pods.targets
 
   // This is the relabeling to find annotated pods
-  relabel_configs {
+  rule {
     source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"]
     action        = "keep"
     regex         = "true"
   }
-  relabel_configs {
+  rule {
     source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_path"]
     action        = "replace"
     target_label  = "__metrics_path__"
     regex         = "(.+)"
   }
-  relabel_configs {
+  rule {
     source_labels = ["__address__", "__meta_kubernetes_pod_annotation_prometheus_io_port"]
     action        = "replace"
     regex         = "([^:]+)(?::\\d+)?;(\\d+)"
     replacement   = "$1:$2"
     target_label  = "__address__"
-   }
- }
- 
+  }
+}
+
+// This component scrapes the filtered targets from the relabel component above
+prometheus.scrape "default" {
+  targets    = discovery.relabel.pod_metrics.output
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
  // This component forwards the scraped metrics to your VictoriaMetrics backend.
  prometheus.remote_write "default" {
    endpoint {
      url = "http://vmsingle-vm-victoria-metrics-k8s-stack.observability.svc.cluster.local:8428/api/v1/write"
  }
 }
- 
+
