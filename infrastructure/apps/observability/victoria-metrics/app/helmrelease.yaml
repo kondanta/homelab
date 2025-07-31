@@ -47,6 +47,7 @@ spec:
                 storage: 10Gi
 
     vmagent:
+      enabled: false
       spec:
         serviceMonitorNamespaceSelector: {}
         podMonitorNamespaceSelector: {}
