@@ -6,3 +6,4 @@ resources:
   - http.yaml
   - ks.yaml
   - rbac.yaml
+  - network-policy.yaml

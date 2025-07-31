@@ -1,0 +1,15 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-reserved-ingress-to-capacitor
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: onechart  # Name of the Capacitor pods
+  ingress:
+    - fromEntities:
+        - ingress
+      toPorts:
+        - ports:
+            - port: "9000" # Capacitor SVC exposed port
+              protocol: TCP
