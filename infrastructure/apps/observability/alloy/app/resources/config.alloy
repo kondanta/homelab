@@ -136,7 +136,6 @@ loki.write "default" {
   }
 }
 
-#### OTLP
 otelcol.receiver.otlp "default" {
   grpc {
     endpoint = "0.0.0.0:4317"
