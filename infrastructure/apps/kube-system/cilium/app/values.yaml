@@ -24,7 +24,7 @@ l2announcements:
   enabled: true
 loadBalancer:
   algorithm: maglev
-  mode: dsr
+  mode: snat
 operator:
   prometheus:
     enabled: true
