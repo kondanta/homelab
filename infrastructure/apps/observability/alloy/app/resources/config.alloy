@@ -1,0 +1,31 @@
+logging {
+  level    = "warn"
+  format   = "json"
+  write_to = [loki.write.default.receiver]
+}
+
+discovery.kubernetes "pods" {
+  role = pod
+}
+
+discovery.kubernetes "nodes" {
+  role = node
+}
+
+discovery.kubernetes "services" {
+  role = service
+}
+
+
+
+prometheus.remote_write "vm" {
+  endpoint {
+    url = "http://vmsingle-stack.observability.svc.cluster.local:8428/api/v1/write"
+  }
+}
+
+
+prometheus.scrape "default" {
+  targets    = discovery.kubernetes.pods.target
+  forward_to = [prometheus.remote_write.vm.receiver]
+}
