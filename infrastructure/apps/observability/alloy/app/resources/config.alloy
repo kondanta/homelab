@@ -158,34 +158,35 @@ otelcol.exporter.otlp "tempo" {
 }
 
 // This new block filters the discovered pods for metrics scraping
-discovery.relabel "pod_metrics" {
-  targets = discovery.kubernetes.pod.targets
+// --- VICTORIAMETRICS METRICS PIPELINE ---
 
-  // This is the relabeling to find annotated pods
-  rule {
-    source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"]
-    action        = "keep"
-    regex         = "true"
-  }
-  rule {
-    source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_path"]
-    action        = "replace"
-    target_label  = "__metrics_path__"
-    regex         = "(.+)"
-  }
-  rule {
-    source_labels = ["__address__", "__meta_kubernetes_pod_annotation_prometheus_io_port"]
-    action        = "replace"
-    regex         = "([^:]+)(?::\\d+)?;(\\d+)"
-    replacement   = "$1:$2"
-    target_label  = "__address__"
-  }
-}
-
-// This component scrapes the filtered targets from the relabel component above
+// This single component now handles both discovery and scraping.
+// It automatically finds pods with the 'prometheus.io/scrape: "true"' annotation.
 prometheus.scrape "default" {
-  targets    = discovery.relabel.pod_metrics.output
   forward_to = [prometheus.remote_write.default.receiver]
+
+  // This is the new, simplified discovery block
+  targets = discovery.kubernetes.pod.targets
+  relabel_configs {
+    rule {
+        source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"]
+        action        = "keep"
+        regex         = true
+    }
+    rule {
+        source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_path"]
+        action        = "replace"
+        target_label  = "__metrics_path__"
+        regex         = "(.+)"
+    }
+    rule {
+        source_labels = ["__address__", "__meta_kubernetes_pod_annotation_prometheus_io_port"]
+        action        = "replace"
+        regex         = "([^:]+)(?::\\d+)?;(\\d+)"
+        replacement   = "$1:$2"
+        target_label  = "__address__"
+    }
+  }
 }
 
  // This component forwards the scraped metrics to your VictoriaMetrics backend.
