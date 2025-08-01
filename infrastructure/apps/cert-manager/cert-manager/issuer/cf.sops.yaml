@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cloudflare-issuer-secret
+stringData:
+    CLOUDFLARE_DNS_TOKEN: ENC[AES256_GCM,data:/3edmj6HYYiw8FvRmLPkMWD4h0fbZokMoTLV3JGrLq9xUHyhCvXVrA==,iv:zdTN1pW8zFDAN8zb92VhQsGUUNOU81O3cjZY7QwuBfY=,tag:AVm0Ecl7hyHHocXoKnN3+Q==,type:str]
+sops:
+    age:
+        - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBMb1Zma2EzU3orcWNJbzY4
+            bU9ubUdycEVuNWVHdXRLaWJIT1p2R24xTTBnCkJHMFN5cVA2NTlyQytNYmxBdVlL
+            STdZaThNVEdSRDl3Wmc0bGp3enh5dHcKLS0tIEVHUTRmRmhFZDU1VmRneEZEaFR2
+            bHhaK3lrT0NvTkFXZDZKUW5CMzVvem8K/6NrrKhktOfk33eLCFB2zjnxW7dQrnOE
+            /+W3ic4N96IhAiI4E/2YiPSbsaLu+YYn6Vm3UncZHMzw3qH8xW6YVw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-08-01T15:16:16Z"
+    mac: ENC[AES256_GCM,data:6NAczrVeU05UV81BQdSTaNtNxieEGGeJ//qksCT9ddG9kWYN/6JsJ5R/kGIujzOglrFR3XjbBqs5F/YRT0dBYPl4ZQWJi2BzW4ELTHj8zjUFW1/dwvpp9k+YlLFt8KP0YDfVRPSwB09r8rklnf69hsIfBuKr48IfnH13kJ32RKg=,iv:WVViqXu70u81zAE3GBxvikk54v/JQGvVgysQIFDFFyo=,tag:Ac1vhAyhxqXa4NTMHaGV6A==,type:str]
+    encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USER|EMAIL|ZONES|DNSNAMES|CLIENTIP).*))$
+    version: 3.10.2

@@ -1,38 +1,20 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-    name: letsencrypt-dns-namecheap
+  name: letsencrypt-production
 spec:
-    acme:
-        email: ENC[AES256_GCM,data:0BXujRxqIODWAnVrk6vW/zABebI=,iv:jkA1Pc2AA9/Tz3BwxCDCQHwoPw5TcyrXbY9wzTo/ki0=,tag:m3QiStoBqKZFNtby9qKLqQ==,type:str]
-        server: https://acme-v02.api.letsencrypt.org/directory
-        privateKeySecretRef:
-            name: ENC[AES256_GCM,data:tNdoPmMwwVqp1Dtmgp1CkiTwMg==,iv:rrJiBFE7psf98cMtv98MeyUp2m4EizrbsTRjnfIF0aA=,tag:uY5Q072jy8IPME9OmxKOuw==,type:str]
-        solvers:
-            - dns01:
-                webhook:
-                    groupName: acme.namecheap.webhook
-                    solverName: namecheap
-                    config:
-                        apiUserSecretRef:
-                            name: ENC[AES256_GCM,data:TnOL8goHeZFdRPWynV56BTc=,iv:gEsBJQx9JuSXl+Icrxl1svzaameplbSPWyYRUxOKwTY=,tag:EibZvgVQILesusGFNu6Cug==,type:str]
-                            key: ENC[AES256_GCM,data:I2ky5iQFomw=,iv:Xexqt9kq75Tmyc5c4QqOkiNHNoOjwa2ZmAQ4rPrMXF0=,tag:3etDjB+hBHV00F1k45iFZA==,type:str]
-                        apiKeySecretRef:
-                            name: ENC[AES256_GCM,data:/RUdFTooUYZgyHx97Uwts9Q=,iv:fF4y9LCZ+ZKDlsYlCS2UmcBMKAKO52QdqDBe11rA67w=,tag:IcjS+kNEOJe42McDkLdosg==,type:str]
-                            key: ENC[AES256_GCM,data:nBZv0NW0lA==,iv:Ahv88xLByUrrgyElsHnO2WWJ3ne/T9Fd0fkTIRqDN0w=,tag:MmDpH1cBxC/GAKKQuwO5gQ==,type:str]
-                        clientIp: ENC[AES256_GCM,data:2aQiPNmJLJkvF3lyS7o=,iv:4ghBx/l0eNuejyPWtPuA6Tl9zDpm4YhXnLspdjQ8rAE=,tag:RAT5TxdA8QB3XvQdd8eLEg==,type:str]
-sops:
-    age:
-        - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2Z0k2S05HL1hjSVAxRFpC
-            dHF1SFI0K1dwM2F4UENTZVhCTFNIbDdOOHpnCmdPWE5RdlM5M0JvWExqNklLOGJI
-            N1dkM2Rldmh4ZXF3dWJjUm1kVW05Wm8KLS0tIGxiV0R6UjJ1emNPMDJFc3dlcWZK
-            aElxVGNPQWtMUDdwNFBOMVNDdFhMZ1EKyZ8UjxGiquC1Ia0w2rfNShp27iahksDi
-            lRJpRhGk+D8FGF74UvHceuuehB7JKnoqQgKlkrMejDNO1e2ijPQzAg==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-07-31T11:53:25Z"
-    mac: ENC[AES256_GCM,data:9skhwbtB7F3h05jEjmROC/GoNnvi0rhWn6XkTPdejsTCjmQqQoKtSc+yHXqPL/fvnmvSbtX+ZhsXU/X7iphLXyss7Q/sCGnZQDPxSGS8J/jI6lzlS9rkDqdSj2VAcJMHkCB+KSFc2iS5WOt1Weig0K4ZH4834Xl18RR3w7WPsX4=,iv:Mdzwj6j5TD+0hBMHp1ypZoX4xx8+GYB+FROssl5737Y=,tag:STu1mlXpZ5TTxPU1I8+WRg==,type:str]
-    encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USER|EMAIL|ZONES|DNSNAMES|CLIENTIP).*))$
-    version: 3.10.2
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-issuer-secret
+              key: CLOUDFLARE_DNS_TOKEN
+        selector:
+          dnsZones:
+            - taylan.dev
