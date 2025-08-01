@@ -1,0 +1,10 @@
+---
+originRequest:
+  originServerName: external.taylan.dev
+
+ingress:
+  - hostname: taylan.dev
+    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+  - hostname: "*.taylan.dev"
+    service: *svc
+  - service: http_status:404

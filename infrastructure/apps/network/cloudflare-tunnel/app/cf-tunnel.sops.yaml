@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cloudflare-tunnel-secret
+stringData:
+    CLOUDFLARE_TUNNEL_ID: ENC[AES256_GCM,data:JnKiLVota2gN13+l4PiB5ArzSKGNLGkke/myM2DXdYQPlV0V,iv:Fhzb8WfMwzPbtjiTn7zCLcLl4hmsAnawbSCHbB8hf9c=,tag:DEpegiwlYcF8YXOoM4cR4A==,type:str]
+    TUNNEL_TOKEN: ENC[AES256_GCM,data:zfvSrWAt614wK1P1FxfE6zUo1k98Es1isLt4Fd413wamJpNd/o9NUqZdD4WXpDtZ64AOPzRJ2DOqRhhhntPgZzv3q3ITOzil0jkAt+j6lQ0yNM6EapPienxl54Mm7CvmlV5QJmsdscqLFbDkqUujovYrpkGNyKWmACIj7qcofhJsLUDwE4B7L9MfCnhc1uuhHpphgC8brCer4LGxvPRFlTxEaHN4/4Gz76xhEpQhSEL92u5u2DfpIw==,iv:o5upkedcvLbH0BsPWpNB5hVWuTr98hl+0FMim6754DM=,tag:8HPaZok2IEKUo9mDTMM6OA==,type:str]
+sops:
+    age:
+        - recipient: age1xlls984taykl6jyq0f965lyx66qj6e4cg4wqwrfav258c5gpr44qkwuv3w
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBNMU5lK0FqOHV6bFhiTEJs
+            anpMZmxuVjVqN0hJYkwyeVRVQTFkUWdRbFZJCnh2SldjOWRUTnVUNE52Q0Z1cXIy
+            Ym5yRHNpYStuanpqVytlcHFaSkFLaDgKLS0tIGY4R1p4RmQ1c0ZSdmVTeVRvckhH
+            b3ArZ0VSTmxVVUlUMEc4Q3BTcW9KVkEKrQbarFROBh8iEpVwgig157lgbd01MUFj
+            qh4eqSa9KKvEjIz5mj2F2qze8D0em5C6neFxBLc9plAHhf5eiIY03Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-08-01T22:59:11Z"
+    mac: ENC[AES256_GCM,data:x/GG6qFx/aKnnVmIjAzRc0pQV/qfY/5SvAelag7pHijG86n8liRcBJf7/hacb/FMiy2MdOhWv2Q1olwUWVX+Ss9G5ha6hT1AT7mpW6uc6+rEM/zjSSwsAUokNxBpBbgRb25zO7OFYnW+hbrH+z5IehaTCF0HW3lNgf+cKz0U/8g=,iv:yWCLZ/w4q76JtIW8oxchY5TngEeVxV8xL/XrI6ehG6E=,tag:S0J5oSLcJfQBegJefs1A6g==,type:str]
+    encrypted_regex: ^(data|stringData|((?i).*(API_KEY|TOKEN|SECRET|USER|EMAIL|ZONES|DNSNAMES|CLIENTIP).*))$
+    version: 3.10.2

@@ -8,3 +8,4 @@ components:
   - ../../components/sops
 resources:
   - external-dns/ks.yaml
+  - cloudflare-tunnel/ks.yaml
