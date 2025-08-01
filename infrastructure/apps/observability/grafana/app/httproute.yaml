@@ -4,7 +4,7 @@ metadata:
   name: grafana
 spec:
   parentRefs:
-    - name: internal
+    - name: external
       namespace: kube-system
   hostnames:
     - "grafana.taylan.dev"
