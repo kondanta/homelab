@@ -13,6 +13,9 @@ spec:
     - ../../../../components/gatus/external
   interval: 1h
   path: ./infrastructure/apps/observability/grafana/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
