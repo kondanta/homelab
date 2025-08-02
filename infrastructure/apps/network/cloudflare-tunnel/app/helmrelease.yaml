@@ -50,7 +50,12 @@ spec:
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            args: ["tunnel", "run"]
+            args:
+              - tunnel
+              - --config
+              - /etc/cloudflared/config.yaml
+              - run
+              - $(TUNNEL_ID)
             probes:
               liveness: &probes
                 enabled: true
