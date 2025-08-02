@@ -11,6 +11,10 @@ spec:
       app.kubernetes.io/name: *app
   interval: 1h
   path: ./infrastructure/apps/network/cloudflare-tunnel/app
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cloudflare-tunnel-secret
   prune: true
   retryInterval: 2m
   sourceRef:

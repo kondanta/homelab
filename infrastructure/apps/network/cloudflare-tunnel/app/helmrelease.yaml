@@ -52,10 +52,7 @@ spec:
                   name: "{{ .Release.Name }}-secret"
             args:
               - tunnel
-              - --config
-              - /etc/cloudflared/config.yaml
               - run
-              - $(TUNNEL_ID)
             probes:
               liveness: &probes
                 enabled: true
