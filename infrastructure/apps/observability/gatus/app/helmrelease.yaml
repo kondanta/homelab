@@ -33,8 +33,8 @@ spec:
   values:
     controllers:
       gatus:
-        # annotations:
-        #   reloader.stakater.com/auto: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
         initContainers:
           init-config:
             image:
@@ -97,13 +97,19 @@ spec:
         ports:
           http:
             port: *port
-    # serviceMonitor: # I use VM
-    #   app:
-    #     endpoints:
-    #       - port: http
-    # route:
-    #   app:
-    #     hostnames:
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.taylan.dev"
+          - status.taylan.dev
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
     rbac:
       roles:
         gatus:
@@ -123,10 +129,10 @@ spec:
       gatus: {}
     persistence:
       config:
-        existingClaim: gatus
+        existingClaim: "{{ .Release.Name }}"
       config-file:
         type: configMap
-        name: gatus-configmap
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
