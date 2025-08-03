@@ -14,3 +14,13 @@ connectivity:
   checker:
     target: 1.1.1.1:53
     interval: 1m
+endpoints:
+  - name: status
+    group: external
+    url: https://status.taylan.dev
+    interval: 1m
+    clinet:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "len([BODY]) == 0"
+  
