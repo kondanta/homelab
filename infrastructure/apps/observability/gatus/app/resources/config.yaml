@@ -22,6 +22,8 @@ endpoints:
     clinet:
       dns-resolver: tcp://1.1.1.1:53
       insecure: true
+      tls:
+        renegotiation: freely
     conditions:
       - "len([BODY]) == 0"
   
