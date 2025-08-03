@@ -86,7 +86,7 @@ spec:
   path: "./infrastructure/apps/kube-system/cilium/hubble"
   postBuild:
     substitute:
-      APP: *app
+      APP: hubble
   prune: true
   sourceRef:
     kind: GitRepository
