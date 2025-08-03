@@ -1,6 +1,7 @@
 ---
 originRequest:
   originServerName: external.taylan.dev
+  noTLSVerify: true
 
 ingress:
   - hostname: taylan.dev
