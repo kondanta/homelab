@@ -3,7 +3,12 @@ endpoints:
     group: external
     url: "https://${GATUS_SUBDOMAIN:=${APP}}.taylan.dev${GATUS_PATH:=/}"
     interval: 1m
+    alerts:
+      - type: discord 
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == ${GATUS_STATUS:=200}"
+    ui:
+      hide-hostname: true
+      hide-url: true

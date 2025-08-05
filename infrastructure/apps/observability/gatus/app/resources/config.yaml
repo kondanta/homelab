@@ -1,26 +1,34 @@
 ---
-web:
-  port: ${WEB_PORT}
-storage:
-  type: sqlite
-  path: /config/sqlite.db
-  caching: true
-metrics: true
-debug: true
-ui:
-  title: Status | Gatus
-  header: Status
+alerting:
+  discord:
+    webhook-url: https://discord.com/api/webhooks/1401928596326715443/ZRLsf8vB5ZoH5YDaROmYetuPoH9zcOGY-pMZ1cnmLoMDzjfwr3hjNDrrok8sLtAxbTJa
+    default-alert:
+      description: "Health check failed"
+      send-on-resolved: true
+      failure-threshold: 2
+      success-threshold: 2
+
 connectivity:
   checker:
     target: 1.1.1.1:53
     interval: 1m
-endpoints:
-  - name: status
-    group: external
-    url: https://status.taylan.dev
-    interval: 1m
-    clinet:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 200"
-  
+
+ui:
+  title: Status | Gatus
+  header: Status
+  link: https://github.com/kondanta
+  buttons:
+    - name: GitHub
+      link: https://github.com/kondanta
+    - name: Homelab
+      link: https://github.com/kondanta/homelab
+
+metrics: true
+
+storage:
+  type: sqlite
+  path: /config/sqlite.db
+  caching: true
+   
+web:
+  port: ${WEB_PORT}    
