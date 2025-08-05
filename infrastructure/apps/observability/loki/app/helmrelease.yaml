@@ -62,6 +62,7 @@ spec:
 
       storage:
         type: filesystem
+        filesystem: {}
 
       limits_config:
         retention_period: 14d
