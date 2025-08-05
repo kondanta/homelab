@@ -1,7 +1,7 @@
 ---
 alerting:
   discord:
-    webhook-url: https://discord.com/api/webhooks/1401928596326715443/ZRLsf8vB5ZoH5YDaROmYetuPoH9zcOGY-pMZ1cnmLoMDzjfwr3hjNDrrok8sLtAxbTJa
+    webhook-url: ${DISCORD_WEBHOOK}
     default-alert:
       description: "Health check failed"
       send-on-resolved: true

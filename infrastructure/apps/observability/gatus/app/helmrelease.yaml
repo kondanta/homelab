@@ -65,6 +65,9 @@ spec:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 30
               WEB_PORT: &port 80
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-webhooks"
             probes:
               liveness: &probes
                 enabled: true
