@@ -81,7 +81,7 @@ spec:
             port: *healthPort
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.turbo.ac"]
+        hostnames: ["{{ .Release.Name }}.taylan.dev"]
         parentRefs:
           - name: external
             namespace: kube-system
