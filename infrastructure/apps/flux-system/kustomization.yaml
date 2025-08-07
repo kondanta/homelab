@@ -8,3 +8,4 @@ components:
   - ../../components/sops
 resources:
   - capacitor/ks.yaml
+  - flux-operator/ks.yaml
