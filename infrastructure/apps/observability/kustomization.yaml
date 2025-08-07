@@ -14,6 +14,7 @@ resources:
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml
   - prometheus/ks.yaml
+  - kromgo/ks.yaml
 patches:
   - # Patch to set the pod security policy to privileged.
     patch: |
