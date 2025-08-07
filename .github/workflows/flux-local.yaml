@@ -66,11 +66,15 @@ jobs:
           path: default
 
       # Assuming, this is required because I self-host my runners.
-      - name: Trust Git workspace directories
-        run: |
-          git config --global --add safe.directory /github/workspace/pull
-          git config --global --add safe.directory /github/workspace/default
-
+      - name: Mark workspaces as safe (inside container)
+        uses: docker://ghcr.io/allenporter/flux-local:v7.7.1
+        with:
+          args: >-
+            bash -c "
+              git config --global --add safe.directory /github/workspace/pull &&
+              git config --global --add safe.directory /github/workspace/default
+            "
+          
       - name: Run flux-local diff
         uses: docker://ghcr.io/allenporter/flux-local:v7.8.0
         with:
@@ -84,7 +88,7 @@ jobs:
             --all-namespaces
             --sources "flux-system"
             --output-file diff.patch
-
+      
       - name: Generate Diff
         id: diff
         run: |
