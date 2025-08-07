@@ -65,6 +65,12 @@ jobs:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
+      # Assuming, this is required because I self-host my runners.
+      - name: Trust Git workspace directories
+        run: |
+          git config --global --add safe.directory /github/workspace/pull
+          git config --global --add safe.directory /github/workspace/default
+
       - name: Run flux-local diff
         uses: docker://ghcr.io/allenporter/flux-local:v7.8.0
         with:
