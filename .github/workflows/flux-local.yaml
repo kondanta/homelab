@@ -66,20 +66,18 @@ jobs:
           path: default
 
       # Assuming, this is required because I self-host my runners.
-      - name: Mark workspaces as safe (inside container)
-        uses: docker://ghcr.io/allenporter/flux-local:v7.7.1
-        with:
-          args: >-
-            bash -c "
-              git config --global --add safe.directory /github/workspace/pull &&
-              git config --global --add safe.directory /github/workspace/default
-            "
+      - name: Install flux-local CLI
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install flux-local==7.8.0
+          git config --global --add safe.directory /github/workspace/pull
+          git config --global --add safe.directory /github/workspace/default
+
           
       - name: Run flux-local diff
-        uses: docker://ghcr.io/allenporter/flux-local:v7.8.0
-        with:
-          args: >-
-            diff ${{ matrix.resources }}
+        run: |
+          flux-local diff ${{ matrix.resources }}
             --unified 6
             --path /github/workspace/pull/clusters/homelab
             --path-orig /github/workspace/default/clusters/homelab
