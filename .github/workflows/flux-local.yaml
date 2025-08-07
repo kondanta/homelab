@@ -67,7 +67,7 @@ jobs:
 
       # Assuming, this is required because I self-host my runners.
       - name: Mark workspaces as safe (inside container)
-        uses: docker://ghcr.io/allenporter/flux-local:v7.7.1
+        uses: docker://ghcr.io/allenporter/flux-local:v7.8.0
         with:
           args: >-
             bash -c "
