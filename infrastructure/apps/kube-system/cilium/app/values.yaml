@@ -1,5 +1,5 @@
 ---
-autoDirectNodeRoutes: true
+autoDirectNodeRoutes: false # cannot use it with tunnelling
 
 bandwidthManager:
   enabled: true
