@@ -113,7 +113,7 @@ spec:
           - status.taylan.dev
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https
     rbac:
       roles:

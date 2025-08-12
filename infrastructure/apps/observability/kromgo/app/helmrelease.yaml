@@ -84,7 +84,7 @@ spec:
         hostnames: ["{{ .Release.Name }}.taylan.dev"]
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

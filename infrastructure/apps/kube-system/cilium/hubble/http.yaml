@@ -6,7 +6,8 @@ metadata:
 spec:
   parentRefs:
     - name: external
-      namespace: kube-system
+      namespace: network
+      sectionName: https
   hostnames:
     - "hubble.taylan.dev"
   rules:

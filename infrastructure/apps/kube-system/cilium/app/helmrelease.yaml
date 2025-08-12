@@ -18,6 +18,10 @@ spec:
     - kind: ConfigMap
       name: cilium-values
   values:
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: "Network"
     hubble:
       enabled: true
       metrics:
@@ -33,6 +37,8 @@ spec:
           enabled: true
         dashboards:
           enabled: true
+          annotations:
+            grafana_folder: "Network"
       relay:
         enabled: true
         rollOutPods: true
