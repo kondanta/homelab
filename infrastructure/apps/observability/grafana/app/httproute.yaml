@@ -5,7 +5,8 @@ metadata:
 spec:
   parentRefs:
     - name: external
-      namespace: kube-system
+      namespace: network
+      sectionName: https
   hostnames:
     - "grafana.taylan.dev"
   rules:

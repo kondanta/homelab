@@ -1,34 +1,76 @@
 ---
+autoDirectNodeRoutes: true
+
+bandwidthManager:
+  enabled: true
+  bbr: true
+
+bgp:
+  enabled: false
+
+bpf:
+  datapathMode: netkit
+  masquerade: true
+  preallocateMaps: true
+
 cgroup:
   autoMount:
     enabled: false
   hostRoot: /sys/fs/cgroup
+
+cni:
+  exclusive: false
+  
 devices: enp1s0
+
 enableRuntimeDeviceDetection: true
+
 endpointRoutes:
   enabled: true
+  
 envoy:
-  enabled: true
-  prometheus:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-  rollOutPods: true
-gatewayAPI:
-  enabled: true
-  enableAlpn: true
+  enabled: false
+  # prometheus:
+  #   enabled: true
+  #   serviceMonitor:
+  #     enabled: true
+  # rollOutPods: true
+
+# gatewayAPI:
+#   enabled: true
+#   enableAlpn: true
+
 hubble:
   enabled: true
+  serviceMonitor:
+    enabled: true
+  relay:
+    enabled: true
+    rollOutPods: true
+  ui:
+    enabled: true
+    ingress:
+      enabled: false
+    rollOutPods: true
+    
 ipam:
   mode: "kubernetes"
+  
 k8sServiceHost: localhost
 k8sServicePort: 7445
+
 kubeProxyReplacement: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+
 l2announcements:
   enabled: true
+
+l7Proxy: true
+
 loadBalancer:
-  algorithm: maglev
-  mode: snat
+  algorithm: "maglev"
+  mode: "dsr"
+
 operator:
   prometheus:
     enabled: true
@@ -36,13 +78,17 @@ operator:
       enabled: true
   replicas: 1
   rollOutPods: true
+
 prometheus:
   enabled: true
   serviceMonitor:
     enabled: true
     trustCRDsExist: true
+
 rollOutCiliumPods: true
-routingMode: tunnel
+
+routingMode: native
+
 securityContext:
   capabilities:
     ciliumAgent:
@@ -63,4 +109,5 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-tunnelProtocol: vxlan
+
+
