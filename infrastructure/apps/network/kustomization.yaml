@@ -9,3 +9,4 @@ components:
 resources:
   - external-dns/ks.yaml
   - cloudflare-tunnel/ks.yaml
+  - gateway-api-crds/ks.yaml
