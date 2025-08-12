@@ -65,7 +65,7 @@ kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: true
 
-l7Proxy: true
+l7Proxy: false # I'll use standalone envoy-gateway installation for this
 
 loadBalancer:
   algorithm: "maglev"
