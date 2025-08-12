@@ -9,7 +9,7 @@ bgp:
   enabled: false
 
 bpf:
-  datapathMode: netkit
+  datapathMode: veth
   masquerade: true
   preallocateMaps: true
 
