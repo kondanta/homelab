@@ -19,7 +19,7 @@ cgroup:
   hostRoot: /sys/fs/cgroup
 
 cni:
-  exclusive: false
+  exclusive: true # I only use Cilium
   
 devices: enp1s0
 
