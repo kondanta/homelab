@@ -56,7 +56,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname external.taylan.dev
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: envoy
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
