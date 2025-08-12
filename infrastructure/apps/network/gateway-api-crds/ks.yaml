@@ -8,11 +8,6 @@ spec:
   url: https://github.com/kubernetes-sigs/gateway-api.git
   ref:
     tag: v1.3.0
-  ignore: |
-    # exclude
-    /*
-    # include
-    !config/crd/experimental/gateway*.yaml
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

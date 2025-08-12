@@ -24,14 +24,16 @@ spec:
   driftDetection:
     mode: warn
   install:
+    crds: CreateReplace  
+    disableHooks: false
     remediation:
       retries: -1
-    crds: CreateReplace
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
+    disableHooks: false
     remediation:
       retries: 3
-    crds: CreateReplace
   values:
     deployment:
       envoyGateway:
