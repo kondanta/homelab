@@ -10,7 +10,7 @@ bgp:
 
 bpf:
   datapathMode: veth
-  masquerade: true
+  masquerade: false # doesn't work with tunnelling well
   preallocateMaps: true
 
 cgroup:
