@@ -7,7 +7,7 @@
   color: "0e8a16"
 - name: area/github
   color: "0e8a16"
-- name: area/kubernetes
+- name: area/infrastructure
   color: "0e8a16"
 - name: area/renovate
   color: "0e8a16"
@@ -28,6 +28,8 @@
   color: "027fa0"
 - name: renovate/helm
   color: "027fa0"
+- name: renovate/image
+  color: "027fa0"
 # Semantic Types
 - name: type/digest
   color: "ffeC19"
@@ -36,6 +38,12 @@
 - name: type/minor
   color: "ff9800"
 - name: type/major
+  color: "f6412d"
+- name: dep/patch
+  color: "ffeC19"
+- name: dep/minor
+  color: "ff9800"
+- name: dep/major
   color: "f6412d"
 # Uncategorized
 - name: community
