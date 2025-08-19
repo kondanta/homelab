@@ -14,4 +14,11 @@
       datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
     },
   ],
+  packageRules: [
+    {
+      matchDataSource: ["docker"],
+      matchPackageNames: ["ghcr.io/kondanta/gatus-certs-fixed"],
+      lookupName: "ghcr.io/twin/gatus"
+    }
+  ]
 }
