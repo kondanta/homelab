@@ -57,7 +57,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kondanta/gatus-certs-fixed
-              tag: v5.23.1@sha256:663dda0b3ef369062a624eab8da027f9f899e406210e812a6b2f21e4554637c5
+              tag: v5.23.2@sha256:fd11501afa5e20b25c859cd54d7ea44f2a952981546de3f2d673cacbf221e474
             env:
               TZ: Europe/Oslo
               GATUS_CONFIG_PATH: /config
