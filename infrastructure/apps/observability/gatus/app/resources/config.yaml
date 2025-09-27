@@ -32,3 +32,20 @@ storage:
 
 web:
   port: ${WEB_PORT}
+
+endpoints:
+   - name: Youtube
+     url: "https://yt.taylan.dev"
+     interval: 1m
+     conditions:
+       - "[STATUS] == 200"
+   - name: Komga
+     url: "https://komga.taylan.dev"
+     interval: 1m
+     conditions:
+       - "[STATUS] == 200"
+   - name: N8n
+     url: "https://n8n.taylan.dev"
+     interval: 1m
+     conditions:
+       - "[STATUS] == 200"
