@@ -56,8 +56,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/kondanta/gatus-certs-fixed
-              tag: v5.27.1@sha256:c482512894c590c5bfb9c9822a371b19ad3cc77d7f318191d92b437f0b335241
+              repository: ghcr.io/twin/gatus
+              tag: v5.33.1@sha256:7121b5916c069eac6e266875d4984ec9262d84bd1274963939b358b32476d25b
             env:
               TZ: Europe/Oslo
               GATUS_CONFIG_PATH: /config
