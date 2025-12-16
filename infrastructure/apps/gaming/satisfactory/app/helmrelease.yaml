@@ -99,7 +99,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: satisfactory.taylan.dev
-          lbipam.cilium.io/ips: 10.1.20.70
+          lbipam.cilium.io/ips: 10.1.20.203
         ports:
           game-udp:
             primary: true
