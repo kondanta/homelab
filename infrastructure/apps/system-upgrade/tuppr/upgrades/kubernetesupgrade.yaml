@@ -9,10 +9,10 @@ spec:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
     version: v1.35.0
 
-healthChecks:
-  # Check all nodes are ready
-  - apiVersion: v1
-    kind: Node
-    expr: |
-      status.conditions.filter(c, c.type == "Ready").all(c, c.status == "True")
-    timeout: 10m
+  healthChecks:
+    # Check all nodes are ready
+    - apiVersion: v1
+      kind: Node
+      expr: |
+        status.conditions.filter(c, c.type == "Ready").all(c, c.status == "True")
+      timeout: 10m
