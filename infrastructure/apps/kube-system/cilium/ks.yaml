@@ -54,8 +54,6 @@ spec:
     labels:
       app.kubernetes.io/name: &app hubble-ui
       app.kubernetes.io/component: *app
-  components:
-    - ../../../../components/gatus/external
   interval: 30m
   timeout: 5m
   path: "./infrastructure/apps/kube-system/cilium/hubble"
