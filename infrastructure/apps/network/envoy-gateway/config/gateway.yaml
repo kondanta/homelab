@@ -67,7 +67,6 @@ metadata:
       client:
         dns-resolver: tcp://1.1.1.1:53
       group: external
-      guarded: true
       ui:
         hide-hostname: true
         hide-url: true
