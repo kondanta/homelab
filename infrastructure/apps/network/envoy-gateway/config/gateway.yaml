@@ -20,6 +20,14 @@ metadata:
     type: internal
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname internal.taylan.dev
+    gatus.home-operations.com/endpoint: |-
+      client:
+        dns-resolver: tcp://1.1.1.1:53
+      group: internal
+      guarded: true
+      ui:
+        hide-hostname: true
+        hide-url: true
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -55,6 +63,10 @@ metadata:
     type: external
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname external.taylan.dev
+    gatus.home-operations.com/endpoint: |-
+      client:
+        dns-resolver: tcp://1.1.1.1:53
+      group: external
 spec:
   gatewayClassName: envoy
   infrastructure:
