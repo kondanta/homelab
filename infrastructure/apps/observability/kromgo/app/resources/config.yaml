@@ -33,7 +33,7 @@ metrics:
     title: Pods
 
   - name: cluster_cpu_usage
-    query: 100 * (1 - avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])))
+    query: round(100 * (1 - avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m]))),0.1)
     suffix: "%"
     colors:
       - { color: "green", min: 0, max: 35 }
