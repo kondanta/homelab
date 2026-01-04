@@ -48,6 +48,8 @@ spec:
         ref: refs/heads/main
         path: infrastructure/flux/cluster
         interval: 1h
+        secretRef:
+          name: flux-system
       kustomize:
         patches:
           - # increase the number of workers
@@ -139,7 +141,7 @@ spec:
             patch: |-
               - op: add
                 path: /spec/template/spec/containers/0/args/-
-                value: --sops-age-secret=sops-age-secret
+                value: --sops-age-secret=sops-age
             target:
               kind: Deployment
               name: kustomize-controller
