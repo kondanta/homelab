@@ -9,7 +9,7 @@ metadata:
       conditions: ["[STATUS] == 404"]
 spec:
   hostnames:
-    - flux-webhook.turbo.ac
+    - flux-webhook.taylan.dev
   parentRefs:
     - name: external
       namespace: network
