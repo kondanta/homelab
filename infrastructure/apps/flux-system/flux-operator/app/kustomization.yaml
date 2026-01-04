@@ -5,9 +5,6 @@ kind: Kustomization
 resources:
   - helmrelease.yaml
   - podmonitor.yaml
-configMapGenerator:
-  - name: flux-operator-values
-    files:
-      - values.yaml=resources/values.yaml
-configurations:
-  - kustomizeconfig.yaml
+  - httproute.yaml
+  - receiver.yaml
+  - secret.yaml
