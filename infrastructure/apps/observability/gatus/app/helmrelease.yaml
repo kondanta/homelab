@@ -85,7 +85,7 @@ spec:
                 cpu: 100m
               limits:
                 memory: 256Mi
-        statefulSet:
+        statefulset:
           volumeClaimTemplates:
             - name: config
               storageClass: longhorn
