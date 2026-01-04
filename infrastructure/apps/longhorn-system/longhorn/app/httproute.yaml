@@ -3,8 +3,6 @@ kind: HTTPRoute
 metadata:
   name: longhorn-ui
   namespace: longhorn-system
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-dns-namecheap"
 spec:
   parentRefs:
     - name: internal
@@ -16,3 +14,7 @@ spec:
     - backendRefs:
         - name: longhorn-frontend
           port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
