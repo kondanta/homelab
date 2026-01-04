@@ -45,7 +45,8 @@ spec:
       sync:
         kind: GitRepository
         url: https://github.com/kondanta/homelab
-        ref: main
+        ref:
+          branch: main
         path: infrastructure/flux/cluster
         interval: 1h
       kustomize:
