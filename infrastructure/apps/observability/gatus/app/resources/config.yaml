@@ -35,16 +35,19 @@ web:
 
 endpoints:
    - name: Youtube
+     group: out
      url: "https://yt.taylan.dev"
      interval: 1m
      conditions:
        - "[STATUS] == 200"
    - name: Komga
+     group: out
      url: "https://komga.taylan.dev"
      interval: 1m
      conditions:
        - "[STATUS] == 200"
    - name: N8n
+     group: out
      url: "https://n8n.taylan.dev"
      interval: 1m
      conditions:
