@@ -48,8 +48,7 @@ spec:
         ref: refs/heads/main
         path: infrastructure/flux/cluster
         interval: 1h
-        secretRef:
-          name: flux-system
+        pullSecret: flux-system
       kustomize:
         patches:
           - # increase the number of workers
