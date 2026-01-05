@@ -1,0 +1,17 @@
+[pre-commit]
+parallel = true
+
+[pre-commit.commands.format-yaml]
+run = "yamlfmt {staged_files}"
+glob = ["*.yaml"]
+exclude = ["*.sops.yaml", "provision/*"]
+stage_fixed = false                      # I use jj for VCS
+
+[pre-commit.commands.format-just]
+run = """
+for file in {staged_files}; do
+    just --justfile "$file" --fmt --unstable
+done
+"""
+glob = ["*.just", ".justfile"]
+stage_fixed = true
