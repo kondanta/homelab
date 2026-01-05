@@ -15,6 +15,8 @@
     'github>kondanta/homelab//.renovate/groups.json5',    
     'github>kondanta/homelab//.renovate/labels.json5',
     'github>kondanta/homelab//.renovate/semanticCommits.json5',
+    'github>kondanta/homelab//.renovate/overrides.json5',
+    'github>kondanta/homelab//.renovate/changelogs.json5',
   ],
   rebaseWhen: 'behind-base-branch',
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
