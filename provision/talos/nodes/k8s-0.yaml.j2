@@ -1,0 +1,28 @@
+---
+machine:
+    install:
+        diskSelector:
+            model: "512GB SSD"
+        image: <factory_image_url>
+    network:
+        hostname: k8s-0
+        interfaces:
+            - deviceSelector:
+                hardwareAddr: e8:ff:1e:d4:75:d5
+                driver: r8169
+              mtu: 65520
+              dhcp: true
+              vip:
+                ip: 10.1.20.11
+        nodeLabels:
+            intel.feature.node.kubernetes.io/gpu: "true"
+            topology.kubernetes.io/zone: m
+    type: controlplane
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-hostpath
+provisioning:
+    diskSelector:
+        match: disk.transport == "sata"
+    minSize: 512GB
