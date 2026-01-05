@@ -52,7 +52,7 @@
     },
     {
       description: "Auto-merge Mise tools",
-      matchManagers: ["mise"]
+      matchManagers: ["mise"],
       automerge: true,
       automergeType: "branch",
       matchUpdateTypes: ["minor", "patch"],
