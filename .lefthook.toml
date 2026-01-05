@@ -14,4 +14,4 @@ for file in {staged_files}; do
 done
 """
 glob = ["*.just", ".justfile"]
-stage_fixed = true
+stage_fixed = false
