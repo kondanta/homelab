@@ -1,0 +1,27 @@
+# https://mise.jdx.dev/getting-started.html for docs :) 
+[env]
+SOPS_AGE_KEY_FILE = "{{config_root}}/age.agekey"
+TALOSCONFIG = "{{config_root}}/provision/talos/talosconfig"
+KUBECONFIG = "{{config_root}}/provision/talos/kubeconfig"
+JUST_UNSTABLE = "1"
+LEFTHOOK_OUTPUT = "false"
+
+[tools]
+"aqua:cilium/cilium-cli" = "0.18.9"
+"aqua:cli/cli" = "2.83.2"
+"aqua:cloudflare/cloudflared" = "2025.11.1"
+"aqua:cue-lang/cue" = "0.15.3"
+"aqua:evilmartians/lefthook" = "2.0.13"
+"aqua:FiloSottile/age" = "1.3.1"
+"aqua:fluxcd/flux2" = "2.7.5"
+"aqua:getsops/sops" = "3.11.0"
+"aqua:helm/helm" = "3.19.4"
+"aqua:helmfile/helmfile" = "1.2.3"
+"aqua:jqlang/jq" = "1.8.1"
+"aqua:kubernetes-sigs/kustomize" = "5.7.1"
+"aqua:kubernetes/kubernetes/kubectl" = "1.35.0"
+"aqua:mikefarah/yq" = "4.50.1"
+"aqua:siderolabs/talos" = "1.12.0"
+"aqua:yannh/kubeconform" = "0.7.0"
+"pipx:flux-local" = "latest"
+"pipx:makejinja" = "2.8.2"

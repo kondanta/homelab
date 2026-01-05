@@ -1,14 +1,28 @@
 ---
 area/bootstrap:
   - changed-files:
-      - any-glob-to-any-file: "provision**/*"
+      - any-glob-to-any-file:
+          - "provision**/*"
 area/docs:
   - changed-files:
       - any-glob-to-any-file:
           - "README.md"
 area/github:
   - changed-files:
-      - any-glob-to-any-file: ".github/**/*"
+      - any-glob-to-any-file:
+          - ".github/**/*"
 area/infrastructure:
   - changed-files:
-      - any-glob-to-any-file: "infrastructure/**/*"
+      - any-glob-to-any-file:
+          - "infrastructure/**/*"
+area/mise:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".mise.toml"
+
+area/taskfile:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Taskfile.yaml"
+          - .taskfiles/**/*
+
