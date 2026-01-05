@@ -1,0 +1,17 @@
+customization:
+    extraKernelArgs:
+        - talos.platform=metal
+        - init_on_alloc=1
+        - init_on_free=1
+        - pti=on
+        - slab_nomerge
+        - talos.shutdown=poweroff
+    systemExtensions:
+        officialExtensions:
+            - siderolabs/btrfs
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
+            - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/mei
+            - siderolabs/util-linux-tools
