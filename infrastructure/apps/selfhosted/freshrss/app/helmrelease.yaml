@@ -45,7 +45,7 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.taylan.dev"
         parentRefs:
-          - name: envoy-external
+          - name: external
             namespace: network
     persistence:
       config:
