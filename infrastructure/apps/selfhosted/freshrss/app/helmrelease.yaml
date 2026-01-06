@@ -42,7 +42,7 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |
             conditions:
-              - "[STATUS] == 401"
+              - "[STATUS] == 200"
         hostnames:
           - "{{ .Release.Name }}.taylan.dev"
         parentRefs:
