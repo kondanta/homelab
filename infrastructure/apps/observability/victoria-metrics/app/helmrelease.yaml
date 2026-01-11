@@ -46,6 +46,12 @@ spec:
               resources:
                 requests:
                   storage: 2Gi
+      route:
+        enabled: true
+        parentRefs:
+          - name: internal
+            namespace: network
+        hostname: alertmanager.taylan.dev
 
     fullnameOverride: stack
     victoria-metrics-operator:
