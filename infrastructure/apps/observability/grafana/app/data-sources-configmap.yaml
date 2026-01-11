@@ -27,3 +27,5 @@ data:
         type: alertmanager
         access: proxy
         url: http://vmalertmanager-stack.observability.svc.cluster.local:9093
+        jsonData:
+          implementation: prometheus
