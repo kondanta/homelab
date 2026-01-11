@@ -61,7 +61,7 @@ spec:
     vmsingle:
       extraArgs:
         search.enableLabelAPI: "true"
-
+      retentionPeriod: "14d"
       storage:
         volumeClaimTemplate:
           spec:
