@@ -51,7 +51,8 @@ spec:
         parentRefs:
           - name: internal
             namespace: network
-        hostname: alertmanager.taylan.dev
+        hostnames:
+          - "alertmanager.taylan.dev"
         port: "9093"
 
     fullnameOverride: stack
