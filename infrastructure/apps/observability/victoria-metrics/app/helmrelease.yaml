@@ -25,10 +25,28 @@ spec:
     name: vm
   values:
     vmalert:
-      enabled: false
+      enabled: true
+      spec:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            memory: 200Mi
+
     vmalertmanager:
-      enabled: false
-      
+      enabled: true
+      spec:
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: longhorn
+              accessModes:
+                - "ReadWriteOnce"
+              resources:
+                requests:
+                  storage: 2Gi
+
     fullnameOverride: stack
     victoria-metrics-operator:
       enabled: true
