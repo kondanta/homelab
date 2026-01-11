@@ -52,7 +52,7 @@ spec:
           - name: internal
             namespace: network
         hostname: alertmanager.taylan.dev
-        port: 9093
+        port: "9093"
 
     fullnameOverride: stack
     victoria-metrics-operator:
