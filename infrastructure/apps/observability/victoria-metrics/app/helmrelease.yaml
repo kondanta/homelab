@@ -57,7 +57,13 @@ spec:
 
     defaultRules:
       create: true
-          
+
+    coreDns:
+      enabled: true
+
+    kubeApiServer:
+      enabled: true
+
     vmsingle:
       extraArgs:
         search.enableLabelAPI: "true"
