@@ -194,7 +194,7 @@ spec:
       enabled: false
 
     kubeEtcd:
-      enabled: true
+      enabled: false
       service:
         port: 2381
         targetPort: 2381
@@ -208,6 +208,7 @@ spec:
               path: /metrics
 
     kubeScheduler:
+      enabled: false
       vmScrape:
         spec:
           namespaceSelector:
@@ -222,6 +223,7 @@ spec:
                 insecureSkipVerify: true
 
     kubeControllerManager:
+      enabled: false
       vmScrape:
         spec:
           namespaceSelector:
