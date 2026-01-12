@@ -83,12 +83,6 @@ spec:
     defaultRules:
       create: true
 
-    coreDns:
-      enabled: true
-
-    kubeApiServer:
-      enabled: true
-
     vmsingle:
       extraArgs:
         search.enableLabelAPI: "true"
@@ -192,50 +186,6 @@ spec:
         enabled: true
     grafana:
       enabled: false
-
-    kubeEtcd:
-      enabled: false
-      service:
-        port: 2381
-        targetPort: 2381
-        selector:
-          component: kube-apiserver
-      vmScrape:
-        spec:
-          endpoints:
-            - port: http-metrics
-              scheme: http
-              path: /metrics
-
-    kubeScheduler:
-      enabled: false
-      vmScrape:
-        spec:
-          namespaceSelector:
-            matchNames:
-              - "kube-system"
-          endpoints:
-            - port: http-metrics
-              bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-              scheme: https
-              tlsConfig:
-                caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-                insecureSkipVerify: true
-
-    kubeControllerManager:
-      enabled: false
-      vmScrape:
-        spec:
-          namespaceSelector:
-            matchNames:
-              - "kube-system"
-          endpoints:
-            - port: http-metrics
-              bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-              scheme: https
-              tlsConfig:
-                caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-                insecureSkipVerify: true
 
     additionalVictoriaMetricsMap:
       dockerhub-rules:
