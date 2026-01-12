@@ -57,18 +57,13 @@ spec:
       distributor:
         enabled: true
       ingester:
-        enabled: true
         lifecycler:
           ring:
             kvstore:
               store: inmemory
-          wal:
-            enabled: true
-            dir: /var/tempo/wal
-      querier:
-        enabled: true
-      queryFrontend:
-        enabled: true
+        wal:
+          enabled: true
+          dir: /var/tempo/wal
       compactor:
         enabled: true
       metricsGenerator:
