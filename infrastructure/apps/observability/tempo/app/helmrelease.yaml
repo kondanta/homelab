@@ -63,6 +63,13 @@ spec:
       enabled: true
     ingester:
       enabled: true
+      lifecycler:
+        ring:
+          kvstore:
+            store: inmemory
+      wal:
+        enabled: true
+        dir: /var/tempo/wal
     querier:
       enabled: true
     queryFrontend:
