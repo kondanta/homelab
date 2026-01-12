@@ -54,28 +54,28 @@ spec:
           cpu: 1000m
           memory: 1Gi
 
-          distributor:
+      distributor:
+        enabled: true
+      ingester:
+        enabled: true
+        lifecycler:
+          ring:
+            kvstore:
+              store: inmemory
+          wal:
             enabled: true
-          ingester:
-            enabled: true
-            lifecycler:
-              ring:
-                kvstore:
-                  store: inmemory
-            wal:
-              enabled: true
-              dir: /var/tempo/wal
-          querier:
-            enabled: true
-          queryFrontend:
-            enabled: true
-          compactor:
-            enabled: true
-          metricsGenerator:
-            enabled: true
-            remoteWriteUrl: http://vmsingle-stack.observability.svc.cluster.local:8428/api/v1/write
-            storage:
-              path: /var/tempo/metrics
+            dir: /var/tempo/wal
+      querier:
+        enabled: true
+      queryFrontend:
+        enabled: true
+      compactor:
+        enabled: true
+      metricsGenerator:
+        enabled: true
+        remoteWriteUrl: http://vmsingle-stack.observability.svc.cluster.local:8428/api/v1/write
+        storage:
+          path: /var/tempo/metrics
 
     persistence:
       enabled: true
