@@ -81,7 +81,7 @@ spec:
         key: value
 
     defaultRules:
-      create: true
+      create: false
 
     coreDns:
       enabled: true
