@@ -1,12 +1,10 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    'config:recommended',
+    'config:best-practices',
     'docker:enableMajor',
-    'helpers:pinGitHubActionDigests',
     ':automergeBranch',
     ':disableRateLimiting',
-    ':dependencyDashboard',
     ':semanticCommits',
     ':timezone(Europe/Oslo)',
     'github>kondanta/homelab//.renovate/autoMerge.json5',
