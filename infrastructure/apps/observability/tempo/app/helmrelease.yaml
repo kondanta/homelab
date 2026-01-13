@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 1.24.3
+    tag: 1.24.3@sha256:c318b88062b60112d63fde6869419e62c3a078d321d81cd5ad6020d045aefd14
   url: oci://ghcr.io/grafana/helm-charts/tempo
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
