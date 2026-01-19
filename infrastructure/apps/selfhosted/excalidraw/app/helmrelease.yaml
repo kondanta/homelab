@@ -50,15 +50,15 @@ spec:
             port: 80
 
     route:
-      annotations:
+      app:
+        annotations:
         gatus.home-operations.com/endpoint: |
           conditions:
             - "[STATUS] == 200"
-      app:
         hostnames:
           - "{{ .Release.Name }}.taylan.dev"
-      parentRefs:
-        - name: external
-          namespace: network
-          sectionName: https
+        parentRefs:
+          - name: external
+            namespace: network
+            sectionName: https
 
