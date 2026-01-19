@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app excalidraw
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  interval: 1h
+  values:
+    controllers:
+      excalidraw:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: mirror.gcr.io/excalidraw/excalidraw
+              # renovate: datasource=docker depName=docker.io/excalidraw/excalidraw
+              tag: latest@sha256:3c2513e830bb6e195147c05b34ecf8393d0ba2b1cc86e93b407a5777d6135c6c
+              pullPolicy: IfNotPresent
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 5m
+                memory: 10Mi
+              limits:
+                memory: 50Mi
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+        service:
+          app:
+            controller: *app
+            ports:
+              http:
+                port: 80
+
+        route:
+          annotations:
+            gatus.home-operations.com/endpoint: |
+              conditions:
+                - "[STATUS] == 200"
+          app:
+            hostnames:
+              - "{{ .Release.Name }}.taylan.dev"
+          parentRefs:
+            - name: external
+              namespace: network
+              sectionName: https
+
