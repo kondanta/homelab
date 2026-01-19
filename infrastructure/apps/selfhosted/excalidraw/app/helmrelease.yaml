@@ -42,23 +42,23 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: *app
-        service:
-          app:
-            controller: *app
-            ports:
-              http:
-                port: 80
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 80
 
-        route:
-          annotations:
-            gatus.home-operations.com/endpoint: |
-              conditions:
-                - "[STATUS] == 200"
-          app:
-            hostnames:
-              - "{{ .Release.Name }}.taylan.dev"
-          parentRefs:
-            - name: external
-              namespace: network
-              sectionName: https
+    route:
+      annotations:
+        gatus.home-operations.com/endpoint: |
+          conditions:
+            - "[STATUS] == 200"
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.taylan.dev"
+      parentRefs:
+        - name: external
+          namespace: network
+          sectionName: https
 
