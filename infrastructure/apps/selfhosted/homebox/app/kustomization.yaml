@@ -7,4 +7,10 @@ resources:
   - ocirepository.yaml
   - pvc.yaml
   - secret.yaml
-  - cm.yaml
+configMapGenerator:
+  - name: homebox-currency-config
+    files:
+      - ./resources/currency.json
+generatorOptions:
+  disableNameSuffixHash: true
+
