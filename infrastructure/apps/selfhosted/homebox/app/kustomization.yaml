@@ -7,3 +7,4 @@ resources:
   - ocirepository.yaml
   - pvc.yaml
   - secret.yaml
+  - cm.yaml

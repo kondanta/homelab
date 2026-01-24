@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homebox-currency-config
+data:
+  HBOX_OPTIONS_CURRENCY_CONFIG: |-
+    [
+      {"code": "NOK", "local": "Norway", "symbol": "kr", "name": "Norwegian Krone"},
+      {"code": "EUR", "local": "Europe", "symbol": "€", "name": "Euro"},
+      {"code": "TRY", "local": "Turkey", "symbol": "₺", "name": "Turkish Lira"}
+    ]
