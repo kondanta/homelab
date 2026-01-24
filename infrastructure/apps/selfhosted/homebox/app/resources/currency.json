@@ -1,0 +1,5 @@
+[
+    {"code": "NOK", "local": "Norway", "symbol": "kr", "name": "Norwegian Krone"},
+    {"code": "EUR", "local": "Europe", "symbol": "€", "name": "Euro"},
+    {"code": "TRY", "local": "Turkey", "symbol": "₺", "name": "Turkish Lira"}
+]
