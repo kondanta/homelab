@@ -49,6 +49,8 @@ spec:
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}" # homebox
+              - configMapRef:
+                  name: "{{ .Release.Name }}-currency-config"
             probes:
               liveness: &probes
                 enabled: true
