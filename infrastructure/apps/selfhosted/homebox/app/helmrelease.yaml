@@ -46,11 +46,18 @@ spec:
               HBOX_MODE: production
               HBOX_WEB_HOST: 0.0.0.0
               HBOX_WEB_MAX_UPLOAD_SIZE: 25 # in MB
+              HBOX_OPTIONS_CURRENCY_CONFIG: "/etc/homebox/config/currency-config.json"
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}" # homebox
-              - configMapRef:
-                  name: "{{ .Release.Name }}-currency-config"
+            volumeMounts:
+              - name: currency-config
+                mountPath: /etc/homebox/config/currency-config.json
+                subPath: currency-config.json
+            volumes:
+              - name: currency-config
+                configMap:
+                  name: homebox-currency-config
             probes:
               liveness: &probes
                 enabled: true
