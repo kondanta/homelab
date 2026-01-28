@@ -7,6 +7,5 @@ components:
   - ../../components/namespace
   - ../../components/sops
 resources:
-  - capacitor/ks.yaml
   - flux-operator/ks.yaml
   - flux-instance/ks.yaml
