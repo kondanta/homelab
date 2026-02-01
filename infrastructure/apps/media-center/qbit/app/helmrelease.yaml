@@ -72,9 +72,9 @@ spec:
             env:
               VPN_SERVICE_PROVIDER: protonvpn
               VPN_TYPE: wireguard
-              VPN_ENDPOINT_PORT: 51820
               VPN_PORT_FORWARDING: on
               VPN_PORT_FORWARDING_PROVIDER: protonvpn
+              SERVER_COUNTRIES: Sweden
               DOT: off
               DOT_IPV6: off
               DNS_ADDRESS: 10.96.0.10 # Use cluster DNS (CoreDNS) instead of 1.1.1.1
