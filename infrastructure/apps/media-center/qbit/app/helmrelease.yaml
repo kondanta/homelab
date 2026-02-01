@@ -1,0 +1,215 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/common-4.4.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app qbittorrent
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: qbittorrent
+  interval: 1h
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001 #media-user
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups:
+          - 10000
+        seccompProfile: {type: RuntimeDefault}
+    controllers:
+      qbittorrent:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/qbittorrent
+              tag: 5.1.4@sha256:56ecd30a7f5e1357daf5eea2a6935134d329b7b268a3a9b9c67041b65fb87fc6
+            env:
+              TZ: Europe/Oslo
+              QBT_WEBUI_PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 50413
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                10.1.0.0/16
+              QBT_Preferences__WebUI__LocalHostAuth: false
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 6
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 2192Mi
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.41.0
+            env:
+              VPN_SERVICE_PROVIDER: protonvpn
+              VPN_TYPE: wireguard
+              VPN_ENDPOINT_PORT: 51820
+              VPN_PORT_FORWARDING: on
+              VPN_PORT_FORWARDING_PROVIDER: protonvpn
+              DOT: off
+              DOT_IPV6: off
+              DNS_ADDRESS: 10.96.0.10 # Use cluster DNS (CoreDNS) instead of 1.1.1.1
+              FIREWALL_INPUT_PORTS: 80,8000,9000
+              FIREWALL_OUTBOUND_SUBNETS: 10.1.0.0/16,10.96.0.0/16 # Allow access to k8s subnets
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
+              capabilities:
+                add:
+                  - NET_ADMIN
+              allowPrivilegeEscalation: false
+            probes:
+              liveness: &gluetunProbe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v1/publicip/ip
+                    port: 8000
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 6
+              readiness: *gluetunProbe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v1/publicip/ip
+                    port: 8000
+                  timeoutSeconds: 10
+                  failureThreshold: 30
+                  periodSeconds: 5
+          port-forward:
+            image:
+              repository: ghcr.io/bjw-s-labs/gluetun-qb-port-sync
+              tag: 0.0.4@sha256:14ce24f2e054abf06f695f35c8c33612e49d6d0fe80a33896403d85b09a9d329
+            env:
+              GLUETUN_CONTROL_SERVER_HOST: localhost
+              GLUETUN_CONTROL_SERVER_PORT: 8000
+              QBITTORRENT_HOST: localhost
+              QBITTORRENT_WEBUI_PORT: *port
+              CRON_ENABLED: true
+              CRON_SCHEDULE: "*/5 * * * *"
+              LOG_TIMESTAMP: false
+            securityContext:
+              runAsUser: 568
+              runAsGroup: 568
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+                  # seedboxapi:
+                  #   image:
+                  #     repository: ghcr.io/gavinmcfall/seedboxapi
+                  #     tag: v1.0.3@sha256:352075e2b98854cd6a451404a12bd0c517eac4e1224243b6f4793de98b4f9a69
+                  #   env:
+                  #     interval: "1"
+                  #     METRICS_PORT: "9000"
+                  #     mam_id:
+                  #       valueFrom:
+                  #         secretKeyRef:
+                  #           name: qbittorrent-secret
+                  #           key: MAM_ID
+                  #   securityContext:
+                  #     runAsUser: 568
+                  #     runAsGroup: 568
+                  #     runAsNonRoot: true
+                  #     allowPrivilegeEscalation: false
+                  #     readOnlyRootFilesystem: false
+                  #     capabilities:
+                  #       drop:
+                  #         - ALL
+    service:
+      qbittorrent:
+        ports:
+          http:
+            port: *port
+    #   seedboxapi-metrics:
+    #     controller: qbittorrent
+    #     ports:
+    #       metrics:
+    #         port: 9000
+    # serviceMonitor:
+    #   seedboxapi:
+    #     serviceName: qbittorrent-seedboxapi-metrics
+    #     endpoints:
+    #       - port: metrics
+    #         scheme: http
+    #         path: /metrics
+    #         interval: 1m
+    route:
+      app:
+        hostnames:
+          - "qb.taylan.dev"
+        parentRefs:
+          - name: internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: qbittorrent
+                port: 80
+    persistence:
+      config:
+        enabled: true
+        existingClaim: "qbittorrent"
+        advancedMounts:
+          qbittorrent:
+            app:
+              - path: /config
+
+      empty-config:
+        type: emptyDir
+        advancedMounts:
+          qbittorrent:
+            port-forward:
+              - path: /config
+      # mam-config:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     qbittorrent:
+      #       seedboxapi:
+      #         - path: /config
+      media:
+        existingClaim: "nfs-media-pvc"
+        globalMounts:
+          - path: /data
+      qbrr:
+        type: image
+        image: ghcr.io/buroa/qbrr:0.1.3@sha256:b88f45657fd0cbfdf375e6a1e5ba24c8085d14f35116a8631e8b4d4694dd6370
+        globalMounts:
+          - readOnly: true
