@@ -8,6 +8,7 @@ components:
   - ../../components/sops
 resources:
   # TODO: maybe recyclarr and/or configarr?
+  - bazarr/ks.yaml
   - prowlarr/ks.yaml
   - radarr/ks.yaml
   - sonarr/ks.yaml
