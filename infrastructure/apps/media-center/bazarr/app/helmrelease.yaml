@@ -68,5 +68,7 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       media:
         existingClaim: "nfs-media-pvc"
+        globalMounts:
+          - path: /data
       tmp:
         type: emptyDir
