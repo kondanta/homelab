@@ -6,7 +6,7 @@ metadata:
   name: sonarr
 spec:
   interval: 1h
-  path: ./infrastructure/apps/default/sonarr/app
+  path: ./infrastructure/apps/media-center/sonarr/app
   postBuild:
     substitute:
       APP: sonarr
