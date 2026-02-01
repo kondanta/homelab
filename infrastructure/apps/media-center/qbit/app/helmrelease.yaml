@@ -21,7 +21,7 @@ spec:
     controllers:
       qbittorrent:
         annotations:
-          reloader.stakater.com/auto: "true"
+          reloader.stakater.com/auto: "false" # MAM_ID requires the current ip of the gluetun -> it uses a new ip everytime pod is recreaetd -> mam_id gets invalidated becasuse of ASN mismatch
         containers:
           app:
             image:
