@@ -15,5 +15,6 @@ resources:
   - recyclarr/ks.yaml
   - sonarr/ks.yaml
   - qbit/ks.yaml
+  - qui/ks.yaml
   - pvc.yaml
   - namespace.yaml
