@@ -11,6 +11,14 @@ spec:
     - Ingress
     - Egress
   ingress:
+    # Observability namespace
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+      ports:
+        - port: 9000
+          protocol: TCP
     # Envoy Gateway
     - from:
         - namespaceSelector:
@@ -28,30 +36,6 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: autobrr
-      ports:
-        - port: *port
-          protocol: TCP
-    # cross-seed
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: cross-seed
-      ports:
-        - port: *port
-          protocol: TCP
-    # kapowarr
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: kapowarr
-      ports:
-        - port: *port
-          protocol: TCP
-    # mylar
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: mylar
       ports:
         - port: *port
           protocol: TCP
@@ -92,22 +76,6 @@ spec:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: sonarr
-      ports:
-        - port: *port
-          protocol: TCP
-    # sonarr-uhd
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: sonarr-uhd
-      ports:
-        - port: *port
-          protocol: TCP
-    # tqm
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: tqm
       ports:
         - port: *port
           protocol: TCP
