@@ -32,17 +32,20 @@ spec:
         reloader.stakater.com/auto: "true"
       deploymentStrategy:
         type: RollingUpdate
-      envFrom:
+      env:
+        - name: "CHECK"
+          value: "1"
+      envFrom: &envFrom
         - secretRef:
-            name: &secret authentik-secret
+            name: "{{ .Release.Name }}-secret"
+    worker:
+      replicas: 1
     server:
       replicas: 1
       initContainers:
         - name: init-db
           image: ghcr.io/onedr0p/postgres-init:17.4@sha256:43dd04e91e861cf912378bad987afa168fa4f13d05528304907ad0aa351195d6
-          envFrom:
-            - secretRef:
-                name: *secret
+          envFrom: *envFrom
       metrics:
         enabled: true
         serviceMonitor:
