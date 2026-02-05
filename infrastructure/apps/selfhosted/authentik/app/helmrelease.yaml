@@ -35,7 +35,7 @@ spec:
       env:
         - name: "CHECK"
           value: "1"
-      envFrom: &envFrom
+      envFrom:
         - secretRef:
             name: "{{ .Release.Name }}-secret"
     worker:
@@ -45,7 +45,9 @@ spec:
       initContainers:
         - name: init-db
           image: ghcr.io/onedr0p/postgres-init:17.4@sha256:43dd04e91e861cf912378bad987afa168fa4f13d05528304907ad0aa351195d6
-          envFrom: *envFrom
+          envFrom:
+            - secretRef:
+                name: "{{ .Release.Name }}-secret"
       metrics:
         enabled: true
         serviceMonitor:
