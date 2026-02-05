@@ -25,9 +25,7 @@ spec:
       retries: 3
   values:
     global:
-      image:
-        repository: ghcr.io/goauthentik/server
-        tag: 2025.12.3
+      securityClassName: security-critical
       podAnnotations:
         reloader.stakater.com/auto: "true"
       deploymentStrategy:
@@ -37,17 +35,37 @@ spec:
           value: "1"
       envFrom:
         - secretRef:
-            name: "{{ .Release.Name }}-secret"
-    worker:
-      replicas: 1
+            name: &secret authentik-secret
     server:
       replicas: 1
+      env:
+        # Authentik native OTEL support (don't use auto-instrumentation - it conflicts)
+        - name: OTEL_SERVICE_NAME
+          value: "authentik"
+        - name: AUTHENTIK_TRACING__ENABLED
+          value: "true"
+        - name: AUTHENTIK_TRACING__EXPORTER
+          value: "otlp"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://tempo.observability.svc.cluster.local:4318"
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: "http/protobuf"
+        - name: OTEL_TRACES_EXPORTER
+          value: "otlp"
+        # Propagators for trace context extraction from incoming requests
+        - name: OTEL_PROPAGATORS
+          value: "tracecontext,baggage"
+        # Sampler configuration - always continue parent traces
+        - name: OTEL_TRACES_SAMPLER
+          value: "parentbased_always_on"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.name=authentik,service.namespace=security,app.type=identity-provider"
       initContainers:
         - name: init-db
-          image: ghcr.io/onedr0p/postgres-init:17.4@sha256:43dd04e91e861cf912378bad987afa168fa4f13d05528304907ad0aa351195d6
+          image: ghcr.io/home-operations/postgres-init:18.1
           envFrom:
             - secretRef:
-                name: "{{ .Release.Name }}-secret"
+                name: *secret
       metrics:
         enabled: true
         serviceMonitor:
