@@ -17,9 +17,10 @@ spec:
         namespace: flux-system
   values:
     image:
-      instanceManager:
-        repository: longhornio/longhorn-instance-manager
-        tag: v1.11.0-hotfix-1 # as v1.11.0 introduced memory leak https://github.com/longhorn/longhorn/releases/tag/v1.11.0
+      longhorn:
+        instanceManager:
+          repository: longhornio/longhorn-instance-manager
+          tag: v1.11.0-hotfix-1 # as v1.11.0 introduced memory leak https://github.com/longhorn/longhorn/releases/tag/v1.11.0
     persistence:
       defaultClass: true
       reclaimPolicy: Delete
