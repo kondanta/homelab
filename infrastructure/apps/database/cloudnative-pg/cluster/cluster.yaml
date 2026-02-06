@@ -30,10 +30,10 @@ spec:
   postgresql:
     enableAlterSystem: true
     parameters:
-      max_connections: 100
+      max_connections: "100"
       random_page_cost: "1.1"
-      shared_buffers: 192MB
-      work_mem: 4MB
-      effective_cache_size: 512MB
+      shared_buffers: "192MB"
+      work_mem: "4MB"
+      effective_cache_size: "512MB"
   monitoring:
     enablePodMonitor: true
