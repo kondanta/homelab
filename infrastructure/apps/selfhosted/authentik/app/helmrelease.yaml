@@ -96,7 +96,8 @@ spec:
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: "service.name=authentik-worker,service.namespace=selfhosted,app.type=identity-provider,component=worker"
     route:
-      app:
+      main:
+        enabled: true
         hostnames:
           - sso.taylan.dev
         parentRefs:
@@ -106,6 +107,7 @@ spec:
           - name: external
             namespace: network
             sectionName: https
+        https: true
 
     prometheus:
       rules:
