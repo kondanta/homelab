@@ -18,5 +18,21 @@ spec:
   values:
     persistence:
       defaultClass: true
+      reclaimPolicy: Delete
+      recurringJobSelector:
+        enable: false
     ingress:
       enabled: false
+    defaultSettings:
+      autoCleanupSystemGeneratedSnapshot: true
+      autoCleanupRecurringJobBackupSnapshot: true
+      concurrentAutomaticEngineUpgradePerNodeLimit: "1"
+      autoCleanupSnapshotWhenDeleteBackup: true
+      autoCleanupSnapshotAfterOnDemandBackupCompleted: true
+      rwxVolumeFastFailover: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
