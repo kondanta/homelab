@@ -16,6 +16,10 @@ spec:
         name: longhorn
         namespace: flux-system
   values:
+    image:
+      instanceManager:
+        repository: longhornio/longhorn-instance-manager
+        tag: v1.11.0-hotfix-1 # as v1.11.0 introduced memory leak https://github.com/longhorn/longhorn/releases/tag/v1.11.0
     persistence:
       defaultClass: true
       reclaimPolicy: Delete
@@ -36,3 +40,11 @@ spec:
         memory: 128Mi
       limits:
         memory: 256Mi
+    longhornManager:
+      resources:
+        requests:
+          memory: 1Gi
+        limits:
+          memory: 2Gi
+    longhornUI:
+      replicas: 1
