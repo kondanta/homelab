@@ -1,0 +1,60 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: authentik
+  values:
+    global:
+      securityClassName: security-critical
+      deploymentAnnotations:
+        reloader.stakater.com/auto: "true"
+      deploymentStrategy:
+        type: RollingUpdate
+      envFrom: &envFrom
+        - secretRef:
+            name: "{{ .Release.Name }}-secret"
+    authentik:
+      log_level: info
+    server:
+      replicas: 1
+      initContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:18
+          envFrom: *envFrom
+      resources:
+        requests:
+          cpu: 50m
+          memory: 500Mi
+        limits:
+          memory: 750Mi
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - "auth.taylan.dev"
+          parentRefs:
+            - name: external
+              namespace: network
+            - name: internal # useful for splithorizon
+              namespace: network
+    worker:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 5m
+          memory: 250Mi
+        limits:
+          memory: 750Mi
+    postgresql:
+      enabled: false
+    redis:
+      enabled: false
