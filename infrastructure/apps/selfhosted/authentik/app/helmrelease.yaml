@@ -59,17 +59,42 @@ spec:
         - name: OTEL_TRACES_SAMPLER
           value: "parentbased_always_on"
         - name: OTEL_RESOURCE_ATTRIBUTES
-          value: "service.name=authentik,service.namespace=security,app.type=identity-provider"
+          value: "service.name=authentik,service.namespace=selfhosted,app.type=identity-provider"
       initContainers:
         - name: init-db
           image: ghcr.io/home-operations/postgres-init:18.1
           envFrom:
             - secretRef:
                 name: *secret
+
       metrics:
         enabled: true
         serviceMonitor:
           enabled: true
+    worker:
+      replicas: 1
+      env:
+        # Authentik native OTEL support (don't use auto-instrumentation - it conflicts)
+        - name: OTEL_SERVICE_NAME
+          value: "authentik-worker"
+        - name: AUTHENTIK_TRACING__ENABLED
+          value: "true"
+        - name: AUTHENTIK_TRACING__EXPORTER
+          value: "otlp"
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://tempo.observability.svc.cluster.local:4318"
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: "http/protobuf"
+        - name: OTEL_TRACES_EXPORTER
+          value: "otlp"
+        # Propagators for trace context extraction from incoming requests
+        - name: OTEL_PROPAGATORS
+          value: "tracecontext,baggage"
+        # Sampler configuration - always continue parent traces
+        - name: OTEL_TRACES_SAMPLER
+          value: "parentbased_always_on"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.name=authentik-worker,service.namespace=selfhosted,app.type=identity-provider,component=worker"
     route:
       app:
         hostnames:
