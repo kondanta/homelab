@@ -17,7 +17,7 @@ spec:
         type: RollingUpdate
       envFrom: &envFrom
         - secretRef:
-            name: "{{ .Release.Name }}-secret"
+            name: authentik-secret
     authentik:
       log_level: info
     server:
