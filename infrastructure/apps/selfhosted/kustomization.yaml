@@ -6,7 +6,6 @@ namespace: selfhosted
 components:
   - ../../components/namespace
   - ../../components/sops
-  - ../../components/fa
 resources:
   - freshrss/ks.yaml
   - excalidraw/ks.yaml
