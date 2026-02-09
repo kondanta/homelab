@@ -11,7 +11,7 @@ spec:
       - cookie
     http:
       backendRefs:
-        - name: authentik-outpost-proxy
+        - name: ak-outpost-proxy
           namespace: security
           port: 9000
       headersToBackend:
