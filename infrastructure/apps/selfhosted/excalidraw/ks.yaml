@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 1h
   components:
-    - ../../../components/fa
+    - ../../../../components/fa
   path: ./infrastructure/apps/selfhosted/excalidraw/app
   postBuild:
     substitute:
