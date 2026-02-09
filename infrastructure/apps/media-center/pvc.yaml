@@ -5,7 +5,7 @@ metadata:
   name: nfs-media-pv
 spec:
   capacity:
-    storage: 1.7Ti
+    storage: 2Ti
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
@@ -27,5 +27,5 @@ spec:
   storageClassName: ""
   resources:
     requests:
-      storage: 1.7Ti
+      storage: 2Ti
   volumeName: nfs-media-pv
