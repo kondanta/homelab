@@ -13,7 +13,6 @@ resources:
   - prowlarr/ks.yaml
   - radarr/ks.yaml
   - recyclarr/ks.yaml
-  - seedboxapi/ks.yaml
   - sonarr/ks.yaml
   - qbit/ks.yaml
   - qui/ks.yaml
