@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.nerdz.cloud/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app seedboxapi
+spec:
+  dependsOn:
+    - name: qbittorrent
+      namespace: media-center
+  targetNamespace: media-center
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./infrastructure/apps/media-center/seedboxapi/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+  interval: 1h
+  postBuild:
+    substitute:
+      APP: *app
