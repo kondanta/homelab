@@ -20,7 +20,7 @@ spec:
             env:
               TZ: Europe/Oslo
               LOG_LEVEL: info
-              CONFIG_DIRECTORY: /config
+              CONFIG_DIRECTORY: /app/config
               PORT: &port 80
             probes:
               liveness:
