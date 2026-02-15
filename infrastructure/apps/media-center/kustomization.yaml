@@ -9,7 +9,7 @@ resources:
   # TODO: maybe recyclarr and/or configarr?
   - bazarr/ks.yaml
   - jellyfin/ks.yaml
-  - jellyseer/ks.yaml
+  - seer/ks.yaml
   - prowlarr/ks.yaml
   - radarr/ks.yaml
   - recyclarr/ks.yaml

@@ -3,10 +3,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: jellyseer
+  name: seer
 spec:
   interval: 1h
-  path: ./infrastructure/apps/media-center/jellyseer/app
+  path: ./infrastructure/apps/media-center/seer/app
   postBuild:
     substitute:
       APP: jellyseer
