@@ -54,7 +54,7 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1001 # media-user
+        runAsUser: 1000 # match node user's UID
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
@@ -75,6 +75,6 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /config
+          - path: /app/config
       tmp:
         type: emptyDir
