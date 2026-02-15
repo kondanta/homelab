@@ -8,7 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: jellyseer
+    name: seerr
   values:
     controllers:
       app:
@@ -75,7 +75,6 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /config
-            subPath: jellyseerr
+          - path: /app/config
       tmp:
         type: emptyDir
