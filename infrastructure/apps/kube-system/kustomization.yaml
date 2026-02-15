@@ -9,5 +9,5 @@ components:
 resources:
   - cilium/ks.yaml
   - reloader/ks.yaml
-  - intel-device-plugin
-  - node-feature-discovery
+  - intel-device-plugin/ks.yaml
+  - node-feature-discovery/ks.yaml
