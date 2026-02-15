@@ -6,7 +6,7 @@ metadata:
   name: seer
 spec:
   interval: 1h
-  path: ./infrastructure/apps/media-center/seer/app
+  path: ./infrastructure/apps/media-center/seerr/app
   postBuild:
     substitute:
       APP: jellyseer
