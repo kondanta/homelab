@@ -9,7 +9,7 @@ spec:
   path: ./infrastructure/apps/media-center/seerr/app
   postBuild:
     substitute:
-      APP: jellyseer
+      APP: seerr
   prune: true
   sourceRef:
     kind: GitRepository
