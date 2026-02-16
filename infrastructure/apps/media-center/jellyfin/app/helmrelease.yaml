@@ -41,7 +41,8 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 10m
+                gpu.intel.com/i915: 1
+                cpu: 1 # Transcoding is demanding
                 memory: 100Mi
               limits:
                 memory: 2Gi
@@ -52,6 +53,9 @@ spec:
         runAsUser: 1001 # media-user
         runAsGroup: 1000
         fsGroup: 1000
+        supplementalGroups:
+          - 44 # Video GID
+          - 107 # Render GID
     service:
       app:
         controller: *app
