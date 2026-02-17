@@ -8,6 +8,7 @@ components:
 resources:
   # TODO: maybe recyclarr and/or configarr?
   - bazarr/ks.yaml
+  - byparr/ks.yaml
   - jellyfin/ks.yaml
   - seerr/ks.yaml
   - prowlarr/ks.yaml
