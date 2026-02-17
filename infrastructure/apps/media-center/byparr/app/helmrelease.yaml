@@ -10,8 +10,6 @@ spec:
     kind: OCIRepository
     name: byparr
   values:
-    defaultPodOptions:
-      hostUsers: false
     controllers:
       byparr:
         type: deployment
