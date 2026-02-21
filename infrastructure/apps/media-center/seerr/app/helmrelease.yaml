@@ -71,6 +71,8 @@ spec:
         parentRefs:
           - name: external
             namespace: network
+          - name: internal
+            namespace: network
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
