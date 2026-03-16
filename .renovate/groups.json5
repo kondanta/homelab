@@ -46,5 +46,15 @@
       },
       minimumGroupSize: 2,
     },
+    {
+      description: "Gateway API Group",
+      groupName: "gateway-api",
+      matchDatasources: ["github-releases", "git-tags"],
+      matchPackageNames: ["kubernetes-sigs/gateway-api"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
   ],
 }
