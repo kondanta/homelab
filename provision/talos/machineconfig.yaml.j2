@@ -12,6 +12,7 @@ machine:
     hostDNS:
       enabled: true
       forwardKubeDNSToHost: true
+      resolveMemberNames: true
     kubePrism:
       enabled: true
       port: 7445
@@ -152,6 +153,7 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
     disabled: true
+    image: registry.k8s.io/kube-proxy:v1.35.2
   scheduler:
     config:
       apiVersion: kubescheduler.config.k8s.io/v1
