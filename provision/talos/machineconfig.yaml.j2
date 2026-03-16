@@ -2,9 +2,9 @@
 version: v1alpha1
 machine:
   ca:
-    crt: <MACHINE_CA_CRT>
+    crt: {{ ENV.MACHINE_CA_CRT }}
     {% if machinetype == 'controlplane' %}
-    key: <MACHINE_CA_KEY>
+    key: {{ ENV.MACHINE_CA_KEY }}
     {% endif %}
   features:
     apidCheckExtKeyUsage: true
@@ -18,7 +18,8 @@ machine:
     {% if machinetype == 'controlplane' %}
     kubernetesTalosAPIAccess:
       allowedKubernetesNamespaces:
-        - action-runner-system
+        - actions-runner-system
+        - security
         - system-upgrade
       allowedRoles:
         - os:admin
@@ -30,73 +31,85 @@ machine:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
       content: |
-        [plugins."io.containerd.ci.v1.images"]
-	  discard_unpacked_laers = false
-	[plugins."io.container.cri.v1.runtime"]
-	  cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
-	  device_ownersip_from_security_context = true
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+          device_ownership_from_security_context = true
     - op: overwrite
-      path: /etc/nfsmount.cof
+      path: /etc/nfsmount.conf
       permissions: 0o644
       content: |
         [ NFSMount_Global_Options ]
-	nfsvers=4.2
-	hard=True
-	nconnect=16
-	noatime=True
+        nfsvers=4.2
+        hard=True
+        nconnect=16
+        noatime=True
+        rsize=1048576
+        wsize=1048576
   install:
+    diskSelector:
+      model: "512GB SSD"
+    image: factory.talos.dev/metal-installer/89c7d76eb7d8a185c8e80f7e5b6d3c78d8bc31f4f27c12fde293e13f5c4e035f:v1.12.5
     wipe: false
   kernel:
     modules:
-      - nvme_tcp
+      - name: nvme_tcp
       - name: vfio_pci
       - name: uio_pci_generic
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
-    disableManifestsDirecotory: true
+    disableManifestsDirectory: true
     extraConfig:
       serializeImagePulls: false
     extraMounts:
       - destination: /var/lib/longhorn
-        type: bind
-	      source: /var/lib/longhorn
         options:
           - bind
           - rshared
           - rw
-    image: ghcr.io/siderolabs/kubelet:v1.35.0
-    nodeLabels:
-      topology.kubernetes.io/region: main
-    sysctls:
-      vm.nr_hugpages: "1024"
-      fs.inotify.max_user_instances: "8192"
-      fs.inotify.max_user_watches: "1048576"
-      net.core.default_qisc: fq
-      net.core.rmem_max: "67108864"
-      net.core.wmem_max: "67108864"
-      net.ipv4.neigh.default.gc_thresh1: "4096"
-      net.ipv4.neigh.default.gc_thresh2: "8192"
-      net.ipv4.neigh.default.gc_thresh3: "16384"
-      net.ipv4.tcp_congestion_control: bbr
-      net.ipv4.tcp_fastopen: "3"
-      net.ipv4.tcp_mtu_probing: "1"
-      net.ipv4.tcp_rmem: 4096 87380 33554432
-      net.ipv4.tcp_window_scaling: "1"
-      net.ipv4.tcp_wmem: 4096 65536 33554432
-      sunrpc.tcp_max_slot_table_entries: "128"
-      sunrpc.tcp_slot_table_entries: "128"
-      user.max_user_namespaces: "11255"
-    token: <TOKEN>
+        source: /var/lib/longhorn
+        type: bind
+    image: ghcr.io/siderolabs/kubelet:v1.35.2
+  nodeLabels:
+    intel.feature.node.kubernetes.io/gpu: "true"
+    topology.kubernetes.io/region: main
+  sysctls:
+    fs.inotify.max_user_instances: "8192"
+    fs.inotify.max_user_watches: "1048576"
+    net.core.default_qdisc: fq
+    net.core.rmem_max: "67108864"
+    net.core.wmem_max: "67108864"
+    net.ipv4.neigh.default.gc_thresh1: "4096"
+    net.ipv4.neigh.default.gc_thresh2: "8192"
+    net.ipv4.neigh.default.gc_thresh3: "16384"
+    net.ipv4.tcp_congestion_control: bbr
+    net.ipv4.tcp_fastopen: "3"
+    net.ipv4.tcp_mtu_probing: "1"
+    net.ipv4.tcp_rmem: 4096 87380 33554432
+    net.ipv4.tcp_window_scaling: "1"
+    net.ipv4.tcp_wmem: 4096 65536 33554432
+    sunrpc.tcp_max_slot_table_entries: "128"
+    sunrpc.tcp_slot_table_entries: "128"
+    user.max_user_namespaces: "11255"
+    vm.nr_hugepages: "1024"
+  token: {{ ENV.MACHINE_TOKEN }}
 cluster:
   ca:
-    crt: <CLUSTER_CA_CRT>
+    crt: {{ ENV.CLUSTER_CA_CRT }}
     {% if machinetype == 'controlplane' %}
-    key: <CLUSTER_CA_KEY>
+    key: {{ ENV.CLUSTER_CA_KEY }}
     {% endif %}
   clusterName: homelab
   controlPlane:
     endpoint: https://10.1.20.11:6443
-  id: <CLUSTER_ID>
+  discovery:
+    enabled: true
+    registries:
+      kubernetes:
+        disabled: true
+      service: {}
+  id: {{ ENV.CLUSTER_ID }}
   network:
     cni:
       name: none
@@ -105,16 +118,13 @@ cluster:
       - 10.244.0.0/16
     serviceSubnets:
       - 10.96.0.0/12
-  token: <CLUSTER_TOKEN>
-  secret: <CLUSTER_SECRET>
-  secretboxEncryptionSecret: <ENCRYPTION_SECRET>
+  secret: {{ ENV.CLUSTER_SECRET }}
+  token: {{ ENV.CLUSTER_TOKEN }}
   {% if machinetype == 'controlplane' %}
   aggregatorCA:
-    crt: <CLUSTER_AGGREGATOR_CA_CRT>
-    key: <CLUSTER_AGGREGATOR_CA_KEY>
+    crt: {{ ENV.CLUSTER_AGGREGATOR_CA_CRT }}
+    key: {{ ENV.CLUSTER_AGGREGATOR_CA_KEY }}
   allowSchedulingOnControlPlanes: true
-  serviceAccount:
-    key: <CLUSTER_SA_KEY>
   apiServer:
     auditPolicy:
       apiVersion: audit.k8s.io/v1
@@ -128,22 +138,16 @@ cluster:
     extraArgs:
       enable-aggregator-routing: "true"
       feature-gates: MutatingAdmissionPolicy=true
-      runtime-config: admissionregistration.k8s.io/v1alpha1=true
-    image: registry.k8.io/kube-apiserver:v1.35.0
+      runtime-config: admissionregistration.k8s.io/v1beta1=true
+    image: registry.k8s.io/kube-apiserver:v1.35.2
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-controller-manager:v1.35.0
-  discovery:
-    enabled: true
-    registries:
-      kubernetes:
-        disabled: true
-      service: {}
+    image: registry.k8s.io/kube-controller-manager:v1.35.2
   etcd:
     ca:
-      crt: <CLUSTER_ETCD_CA_CRT>
-      key: <CLUSTER_ETCD_CA_KEY>
+      crt: {{ ENV.CLUSTER_ETCD_CA_CRT }}
+      key: {{ ENV.CLUSTER_ETCD_CA_KEY }}
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
@@ -154,20 +158,30 @@ cluster:
       kind: KubeSchedulerConfiguration
       profiles:
         - schedulerName: default-scheduler
-	  plugins:
-	    score:
-	      disabled:
-		      - name: ImageLocality
-    pluginConfig:
-	    - name: PodTopologySpread
-	      args:
-	        defaultingType: List
-	        defaultConstraints:
-	          - maxSkew: 1
-		          topologyKey: kubernetes.io/hostname
-		          whenUnsatisfiable: ScheduleAnyway
+          plugins:
+            score:
+              disabled:
+                - name: ImageLocality
+          pluginConfig:
+            - name: PodTopologySpread
+              args:
+                defaultingType: List
+                defaultConstraints:
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.35.0
+    image: registry.k8s.io/kube-scheduler:v1.35.2
+  secretboxEncryptionSecret: {{ ENV.CLUSTER_SECRETBOX_ENCRYPTION_SECRET }}
+  serviceAccount:
+    key: {{ ENV.CLUSTER_SA_KEY }}
   {% endif %}
-
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-hostpath
+provisioning:
+  diskSelector:
+    match: disk.transport == "sata"
+  minSize: 512GB

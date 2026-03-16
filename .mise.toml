@@ -3,6 +3,7 @@
 SOPS_AGE_KEY_FILE = "{{config_root}}/age.agekey"
 TALOSCONFIG = "{{config_root}}/provision/talos/talosconfig"
 KUBECONFIG = "{{config_root}}/provision/talos/kubeconfig"
+MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 JUST_UNSTABLE = "1"
 LEFTHOOK_OUTPUT = "false"
 
@@ -25,4 +26,4 @@ LEFTHOOK_OUTPUT = "false"
 "aqua:siderolabs/talos" = "1.12.5"
 "aqua:yannh/kubeconform" = "0.7.0"
 "pipx:flux-local" = "latest"
-"pipx:makejinja" = "2.8.2"
+"aqua:minijinja/minijinja-cli" = "latest"
