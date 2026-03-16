@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://schemas.recyclarr.dev/v8/config-schema.json
 sonarr:
-  web-1080p:
+  main:
     base_url: http://sonarr.media-center.svc.cluster.local
     api_key: !env_var SONARR_API_KEY
 
@@ -10,6 +10,9 @@ sonarr:
 
     quality_profiles:
       - trash_id: 72dae194fc92bf828f32cde7744e51a1  # WEB-1080p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 20e0fc959f1f1704bed501f23bdae76f  # [Anime] Remux-1080p
         reset_unmatched_scores:
           enabled: true
 
@@ -32,21 +35,15 @@ sonarr:
         assign_scores_to:
           - name: WEB-1080p
             score: 200
-
-  sonarr-anime:
-    base_url: http://sonarr.media-center.svc.cluster.local
-    api_key: !env_var SONARR_API_KEY
-
-    quality_definition:
-      type: anime
-
-    quality_profiles:
-      - trash_id: 20e0fc959f1f1704bed501f23bdae76f  # [Anime] Remux-1080p
-        reset_unmatched_scores:
-          enabled: true
+      # Neutralize x265 (HD) penalty for anime — anime legitimately uses x265
+      - trash_ids:
+          - 47435ece6b99a0b477caf360e79ba0bb  # x265 (HD)
+        assign_scores_to:
+          - name: "[Anime] Remux-1080p"
+            score: 0
 
 radarr:
-  movies:
+  main:
     base_url: http://radarr.media-center.svc.cluster.local
     api_key: !env_var RADARR_API_KEY
 
@@ -58,6 +55,9 @@ radarr:
         reset_unmatched_scores:
           enabled: true
       - trash_id: fd161a61e3ab826d3a22d53f935696dd  # Remux + WEB 2160p
+        reset_unmatched_scores:
+          enabled: true
+      - trash_id: 722b624f9af1e492284c4bc842153a38  # Remux-1080p - Anime
         reset_unmatched_scores:
           enabled: true
 
@@ -94,15 +94,10 @@ radarr:
         assign_scores_to:
           - name: Remux + WEB 2160p
             score: -10000
-
-  radarr-anime:
-    base_url: http://radarr.media-center.svc.cluster.local
-    api_key: !env_var RADARR_API_KEY
-
-    quality_definition:
-      type: anime
-
-    quality_profiles:
-      - trash_id: 722b624f9af1e492284c4bc842153a38  # Remux-1080p - Anime
-        reset_unmatched_scores:
-          enabled: true
+      # Neutralize x265 penalties for anime — anime legitimately uses x265
+      - trash_ids:
+          - dc98083864ea246d05a42df0d05f81cc  # x265 (HD)
+          - 839bea857ed2c0a8e084f3cbdbd65ecb  # x265 (no HDR/DV)
+        assign_scores_to:
+          - name: Remux-1080p - Anime
+            score: 0
