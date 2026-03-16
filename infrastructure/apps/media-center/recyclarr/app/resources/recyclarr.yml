@@ -33,7 +33,7 @@ sonarr:
           - name: WEB-1080p
             score: 200
 
-  anime:
+  sonarr-anime:
     base_url: http://sonarr.media-center.svc.cluster.local
     api_key: !env_var SONARR_API_KEY
 
@@ -46,7 +46,7 @@ sonarr:
           enabled: true
 
 radarr:
-  remux-web-1080p:
+  movies:
     base_url: http://radarr.media-center.svc.cluster.local
     api_key: !env_var RADARR_API_KEY
 
@@ -57,12 +57,20 @@ radarr:
       - trash_id: 9ca12ea80aa55ef916e3751f4b874151  # Remux + WEB 1080p
         reset_unmatched_scores:
           enabled: true
+      - trash_id: fd161a61e3ab826d3a22d53f935696dd  # Remux + WEB 2160p
+        reset_unmatched_scores:
+          enabled: true
 
     custom_format_groups:
       add:
         - trash_id: f8bf8eab4617f12dfdbd16303d8da245  # [Required] Golden Rule HD
           select:
             - dc98083864ea246d05a42df0d05f81cc  # x265 (HD)
+        - trash_id: ff204bbcecdd487d1cefcefdbf0c278d  # [Required] Golden Rule UHD
+          select:
+            - 839bea857ed2c0a8e084f3cbdbd65ecb  # x265 (no HDR/DV)
+        - trash_id: 1616617ab3a14397a2b2321bcbda44d1  # [HDR Formats] DV Boost
+        - trash_id: b29413a7487478fe98228ce79e5689e4  # [HDR Formats] HDR10+ Boost
         - trash_id: 9337080378236ce4c0b183e35790d2a7  # [Optional] Miscellaneous
           select:
             - b6832f586342ef70d9c128d40c07b872  # Bad Dual Groups
@@ -77,8 +85,17 @@ radarr:
         assign_scores_to:
           - name: Remux + WEB 1080p
             score: 200
+          - name: Remux + WEB 2160p
+            score: 200
+      # SDR penalization for 2160p only — SDR is normal at 1080p
+      - trash_ids:
+          - 9c38ebb7384dada637be8899efa68e6f  # SDR
+          - 25c12f78430a3a23413652cbd1d48d77  # SDR (no WEBDL)
+        assign_scores_to:
+          - name: Remux + WEB 2160p
+            score: -10000
 
-  anime:
+  radarr-anime:
     base_url: http://radarr.media-center.svc.cluster.local
     api_key: !env_var RADARR_API_KEY
 
@@ -89,42 +106,3 @@ radarr:
       - trash_id: 722b624f9af1e492284c4bc842153a38  # Remux-1080p - Anime
         reset_unmatched_scores:
           enabled: true
-
-  remux-web-2160p:
-    base_url: http://radarr.media-center.svc.cluster.local
-    api_key: !env_var RADARR_API_KEY
-
-    quality_definition:
-      type: movie
-
-    quality_profiles:
-      - trash_id: fd161a61e3ab826d3a22d53f935696dd  # Remux + WEB 2160p
-        reset_unmatched_scores:
-          enabled: true
-
-    custom_format_groups:
-      add:
-        - trash_id: ff204bbcecdd487d1cefcefdbf0c278d  # [Required] Golden Rule UHD
-          select:
-            - 839bea857ed2c0a8e084f3cbdbd65ecb  # x265 (no HDR/DV)
-        - trash_id: 1616617ab3a14397a2b2321bcbda44d1  # [HDR Formats] DV Boost
-        - trash_id: b29413a7487478fe98228ce79e5689e4  # [HDR Formats] HDR10+ Boost
-        - trash_id: 47f0d69750de9e16855915fa73bb7b08  # [Optional] SDR
-          select:
-            - 9c38ebb7384dada637be8899efa68e6f  # SDR
-            - 25c12f78430a3a23413652cbd1d48d77  # SDR (no WEBDL)
-        - trash_id: 9337080378236ce4c0b183e35790d2a7  # [Optional] Miscellaneous
-          select:
-            - b6832f586342ef70d9c128d40c07b872  # Bad Dual Groups
-            - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5  # No-RlsGroup
-            - 7357cf5161efbf8c4d5d0c30b4815ee2  # Obfuscated
-            - 5c44f52a8714fdd79bb4d98e2673be1f  # Retags
-            - f537cf427b64c38c8e36298f657e4828  # Scene
-
-    custom_formats:
-      - trash_ids:
-          - 4b900e171accbfb172729b63323ea8ca  # Multi
-        assign_scores_to:
-          - name: Remux + WEB 2160p
-            score: 200
-
