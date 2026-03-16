@@ -33,6 +33,18 @@ sonarr:
           - name: WEB-1080p
             score: 200
 
+  anime:
+    base_url: http://sonarr.media-center.svc.cluster.local
+    api_key: !env_var SONARR_API_KEY
+
+    quality_definition:
+      type: anime
+
+    quality_profiles:
+      - trash_id: 20e0fc959f1f1704bed501f23bdae76f  # [Anime] Remux-1080p
+        reset_unmatched_scores:
+          enabled: true
+
 radarr:
   remux-web-1080p:
     base_url: http://radarr.media-center.svc.cluster.local
@@ -65,6 +77,18 @@ radarr:
         assign_scores_to:
           - name: Remux + WEB 1080p
             score: 200
+
+  anime:
+    base_url: http://radarr.media-center.svc.cluster.local
+    api_key: !env_var RADARR_API_KEY
+
+    quality_definition:
+      type: anime
+
+    quality_profiles:
+      - trash_id: 722b624f9af1e492284c4bc842153a38  # Remux-1080p - Anime
+        reset_unmatched_scores:
+          enabled: true
 
   remux-web-2160p:
     base_url: http://radarr.media-center.svc.cluster.local
