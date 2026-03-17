@@ -1,0 +1,10 @@
+---
+services:
+  adguardhome:
+    image: adguard/adguardhome:v0.107.73
+    container_name: adguardhome
+    restart: unless-stopped
+    network_mode: host # Want to make sure that ips are reported correctly
+    volumes:
+      - ./work:/opt/adguardhome/work
+      - ./conf:/opt/adguardhome/conf
