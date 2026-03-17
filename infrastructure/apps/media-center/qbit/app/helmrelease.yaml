@@ -77,6 +77,7 @@ spec:
               DNS_KEEP_NAMESERVER: "off"
               # DNS_ADDRESS: 10.96.0.10 # Use cluster DNS (CoreDNS) instead of 1.1.1.1
               DNS_ADDRESS: 1.1.1.1
+              WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL: 25s
               FIREWALL_INPUT_PORTS: 80,8000,9000
               FIREWALL_OUTBOUND_SUBNETS: 10.1.0.0/16,10.96.0.0/16 # Allow access to k8s subnets
             envFrom:
