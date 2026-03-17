@@ -1,0 +1,38 @@
+---
+services:
+  komga:
+    image: gotson/komga
+    container_name: komga
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    environment:
+      - TZ=Europe/Oslo
+    ports:
+      - 25600:25600
+#    user: "1000:1000"
+    restart: unless-stopped
+    volumes:
+      - config:/config:rw
+      - data:/data:rw
+      - import:/import-dir
+
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./config
+      o: bind
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data
+      o: bind
+  import:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./import-dir
+      o: bind
