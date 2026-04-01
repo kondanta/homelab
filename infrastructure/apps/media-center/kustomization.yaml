@@ -8,6 +8,7 @@ components:
 resources:
   - audiobookshelf/ks.yaml
   - bazarr/ks.yaml
+  - bookshelf/ks.yaml
   - byparr/ks.yaml
   - jellyfin/ks.yaml
   - seerr/ks.yaml
