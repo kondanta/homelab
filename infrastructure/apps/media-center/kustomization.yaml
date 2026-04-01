@@ -7,12 +7,15 @@ components:
   - ../../components/sops
 resources:
   - audiobookshelf/ks.yaml
+  - audiobookrequest/ks.yaml
   - bazarr/ks.yaml
+  - bookshelf/ks.yaml
   - byparr/ks.yaml
   - jellyfin/ks.yaml
   - seerr/ks.yaml
   - prowlarr/ks.yaml
   - radarr/ks.yaml
+  - rreading-glasses/ks.yaml
   - recyclarr/ks.yaml
   - sonarr/ks.yaml
   - qbit/ks.yaml
