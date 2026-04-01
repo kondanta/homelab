@@ -31,6 +31,11 @@ spec:
               LOG_LEVEL: "info"
               ABR_APP__PORT: &port 8000
               ABR_DB__USE_POSTGRES: false
+              ABR_APP__FORCE_LOGIN_TYPE: oidc
+              ABR_APP__URL: https://abr.taylan.dev
+            envFrom:
+              - secretRef:
+                  name: audiobookrequest-secret
             probes:
               liveness: &probes
                 enabled: true
