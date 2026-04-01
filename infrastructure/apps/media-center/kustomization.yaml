@@ -6,7 +6,7 @@ namespace: media-center
 components:
   - ../../components/sops
 resources:
-  # TODO: maybe recyclarr and/or configarr?
+  - audiobookshelf/ks.yaml
   - bazarr/ks.yaml
   - byparr/ks.yaml
   - jellyfin/ks.yaml
