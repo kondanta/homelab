@@ -79,6 +79,14 @@ spec:
       ports:
         - port: *port
           protocol: TCP
+    # bookshelf
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: bookshelf
+      ports:
+        - port: *port
+          protocol: TCP
 
   #######################################
   #            EGRESS                   #
