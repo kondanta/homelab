@@ -3,14 +3,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app rreading-glasses
+  name: &app audiobookrequest
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
     name: *app
-  driftDetection:
-    mode: enabled
   install:
     remediation:
       retries: -1
@@ -20,45 +18,30 @@ spec:
       retries: 3
   values:
     controllers:
-      rreading-glasses:
+      audiobookrequest:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18.3.0@sha256:6fa1f331cddd2eb0b6afa7b8d3685c864127a81ab01c3d9400bc3ff5263a51cf
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
-              repository: blampe/rreading-glasses
-              tag: hardcover@sha256:47c84d4002ecb614bea74a5fba5156a3e249b66c73cc1e8d9dc159315e2bc96e
-            command:
-              - "/main"
-              - "serve"
-            args:
-              - --verbose
-              - --port=80
-              - --postgres-host=$(INIT_POSTGRES_HOST)
-              - --postgres-user=$(INIT_POSTGRES_USER)
-              - --postgres-password=$(INIT_POSTGRES_PASS)
-              - --postgres-database=$(INIT_POSTGRES_DBNAME)
-              - --hardcover-auth=$(HARDCOVER_API_KEY)
-            envFrom: *envFrom
+              repository: markbeep/audiobookrequest
+              tag: 1
+            env:
+              TZ: Europe/Oslo
+              LOG_LEVEL: "info"
+              ABR_APP__PORT: &port 8000
+              ABR_DB__USE_POSTGRES: false
             probes:
               liveness: &probes
-                enabled: false
+                enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /
-                    port: &port 80
-                  initialDelaySeconds: 0
+                    port: *port
+                  initialDelaySeconds: 30
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 5
                   failureThreshold: 3
               readiness: *probes
             securityContext:
@@ -67,10 +50,10 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 10m
-                memory: 128Mi
+                cpu: 15m
+                memory: 145M
               limits:
-                memory: 512Mi
+                memory: 196M
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -78,18 +61,29 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: {type: RuntimeDefault}
-
     service:
       app:
+        controller: *app
         ports:
           http:
             port: *port
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.taylan.dev"
+          - "abr.taylan.dev"
         parentRefs:
+          - name: external
+            namespace: network
+            sectionName: https
           - name: internal
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+    persistence:
+      config:
+        existingClaim: *app
+        globalMounts:
+          - path: /config
