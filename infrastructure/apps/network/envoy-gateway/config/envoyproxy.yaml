@@ -9,6 +9,14 @@ spec:
   telemetry:
     metrics:
       prometheus: {}
+    tracing:
+      provider:
+        type: OpenTelemetry
+      backendRefs:
+        - name: otel-collector
+          namespace: observability
+          port: 4317
+      samplingRate: 100
   shutdown:
     drainTimeout: 300s
   logging:
