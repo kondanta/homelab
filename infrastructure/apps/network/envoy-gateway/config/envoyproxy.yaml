@@ -14,7 +14,6 @@ spec:
         type: OpenTelemetry
       backendRefs:
         - name: otel-collector
-          namespace: observability
           port: 4317
       samplingRate: 100
   shutdown:
