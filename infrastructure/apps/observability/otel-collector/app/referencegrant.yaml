@@ -5,8 +5,8 @@ metadata:
   name: otel-collector
 spec:
   from:
-    - group: gateway.envoyproxy.io
-      kind: EnvoyProxy
+    - group: gateway.networking.k8s.io
+      kind: Gateway
       namespace: network
   to:
     - group: ""
