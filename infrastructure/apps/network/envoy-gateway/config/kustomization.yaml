@@ -9,4 +9,3 @@ resources:
   - envoyproxy.yaml
   - gateway.yaml
   - httproute.yaml
-  - otel-collector-service.yaml

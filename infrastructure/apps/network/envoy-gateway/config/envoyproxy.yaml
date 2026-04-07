@@ -9,15 +9,6 @@ spec:
   telemetry:
     metrics:
       prometheus: {}
-    tracing:
-      provider:
-        type: OpenTelemetry
-        backendRefs:
-          - name: otel-collector
-            kind: Backend
-            group: gateway.envoyproxy.io
-            port: 4317
-      samplingRate: 100
   shutdown:
     drainTimeout: 300s
   logging:
