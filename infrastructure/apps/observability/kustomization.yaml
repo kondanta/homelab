@@ -9,12 +9,13 @@ components:
 resources:
   - gatus/ks.yaml
   - grafana/ks.yaml
+  - kromgo/ks.yaml
   - loki/ks.yaml
+  - otel-collector/ks.yaml
+  - prometheus/ks.yaml
   - promtail/ks.yaml
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml
-  - prometheus/ks.yaml
-  - kromgo/ks.yaml
 patches:
   - # Patch to set the pod security policy to privileged.
     patch: |
