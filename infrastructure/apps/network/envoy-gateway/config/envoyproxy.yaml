@@ -12,9 +12,9 @@ spec:
     tracing:
       provider:
         type: OpenTelemetry
-      backendRefs:
-        - name: otel-collector
-          port: 4317
+        backendRefs:
+          - name: otel-collector
+            port: 4317
       samplingRate: 100
   shutdown:
     drainTimeout: 300s
