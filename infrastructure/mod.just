@@ -49,5 +49,5 @@ view-secret namespace secret:
 
 [doc('Check port forward for qbittorrent')]
 check-qb:
-    kubectl exec -it -n media-center -c app $(kubectl get pods -l  app.kubernetes.io/name=qbittorrent -o jsonpath='{.items[0].metadata.name}') -- wget -qO- ipaddress.ai
-    kubectl exec -it -n media-center -c app $(kubectl get pods -l  app.kubernetes.io/name=qbittorrent -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://localhost:8000/v1/portforward
+    kubectl exec -it -n media-center -c app $(kubectl get pods -n media-center -l  app.kubernetes.io/name=qbittorrent -o jsonpath='{.items[0].metadata.name}') -- wget -qO- ipaddress.ai
+    kubectl exec -it -n media-center -c app $(kubectl get pods -n media-center -l  app.kubernetes.io/name=qbittorrent -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://localhost:8000/v1/portforward
