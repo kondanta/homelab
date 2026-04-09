@@ -17,6 +17,7 @@ resources:
   - radarr/ks.yaml
   - rreading-glasses/ks.yaml
   - recyclarr/ks.yaml
+  - shoko/ks.yaml
   - sonarr/ks.yaml
   - qbit/ks.yaml
   - qui/ks.yaml
