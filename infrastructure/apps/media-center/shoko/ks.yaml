@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: shoko
+  name: &name shoko
 spec:
   dependsOn:
     - name: longhorn
@@ -12,10 +12,10 @@ spec:
   path: ./infrastructure/apps/media-center/shoko/app
   postBuild:
     substitute:
-      APP: shoko
+      APP: *name
   prune: true
   sourceRef:
-    kind: OCIRepository
+    kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: media-center
