@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: shoko
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: shoko
+  interval: 1h
+  values:
+    controllers:
+      shoko:
+        type: statefulset # SQLite DB
+        containers:
+          app:
+            image:
+              repository: ghcr.io/shokoanime/server
+              tag: v5.3.3@sha256:b841f8249c9edfba102e4072e2b2a3eae4179e5dd553f29e11b9898a44f1e836
+            command:
+              - "/usr/src/app/build/Shoko.CLI" # Entrypoint needs root
+            env:
+              PUID: "1001" #media-user
+              PGID: "1000"
+              TZ: Europe/Oslo
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 700m
+              limits:
+                memory: 4Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001 #media-user
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: 8111
+    route:
+      app:
+        hostnames:
+          - shoko.taylan.dev
+        parentRefs:
+          - name: internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "${{ .Release.Name }}"
+        globalMounts:
+          - path: /.shoko
+      metadata:
+        accessMode: ReadWriteOnce
+        size: 20Gi
+        suffix: metadata
+        globalMounts:
+          - path: /.shoko/Shoko.CLI/images
+      media:
+        existingClaim: "nfs-media-pvc"
+        globalMounts:
+          - path: /data
