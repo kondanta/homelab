@@ -38,6 +38,6 @@ spec:
         memory: 256Mi
     longhornManager:
       resources:
-        memory: 128mi
+        memory: 128Mi
     longhornUI:
       replicas: 1
