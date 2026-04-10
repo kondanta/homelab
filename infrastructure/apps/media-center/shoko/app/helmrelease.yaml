@@ -55,13 +55,13 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /.shoko
+          - path: /home/shoko/.shoko
       metadata:
         accessMode: ReadWriteOnce
         size: 20Gi
         suffix: metadata
         globalMounts:
-          - path: /.shoko/Shoko.CLI/images
+          - path: /home/shoko/.shoko/Shoko.CLI/images
       media:
         existingClaim: "nfs-media-pvc"
         globalMounts:
