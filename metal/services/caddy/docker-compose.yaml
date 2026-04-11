@@ -1,0 +1,38 @@
+---
+services:
+  caddy:
+    build: .
+    image: caddy-custom:latest
+    container_name: caddy
+    restart: unless-stopped
+    hostname: caddy
+    ports:
+      - "443:443"
+      - "6697:6697"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy
+    driver: bridge
+
+volumes:
+  caddy_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/projects/caddy/data
+      o: bind
+  caddy_config:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/projects/caddy/config
+      o: bind

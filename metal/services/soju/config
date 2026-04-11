@@ -1,0 +1,9 @@
+listen irc+insecure://0.0.0.0:6667
+accept-proxy-ip 0.0.0.0/0
+listen unix+admin:///var/lib/soju/admin
+
+db sqlite3 /var/lib/soju/main.db
+
+message-store fs /var/lib/soju/logs
+
+title "soju bouncer"
