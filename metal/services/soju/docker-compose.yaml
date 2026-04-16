@@ -1,0 +1,25 @@
+---
+services:
+  soju:
+    # renovate: datasource=docker depName=codeberg.org/emersion/soju
+    image: codeberg.org/emersion/soju:0.10.1
+    container_name: soju
+    restart: unless-stopped
+    hostname: ${SOJU_DOMAIN}
+    volumes:
+      - ./config:/soju-config:ro
+      - soju_data:/var/lib/soju
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  soju_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/projects/soju/data
+      o: bind

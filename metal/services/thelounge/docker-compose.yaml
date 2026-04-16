@@ -1,0 +1,23 @@
+---
+services:
+  thelounge:
+    # renovate: datasource=docker depName=ghcr.io/thelounge/thelounge
+    image: ghcr.io/thelounge/thelounge:4.4.3
+    container_name: thelounge
+    restart: unless-stopped
+    volumes:
+      - thelounge_data:/var/opt/thelounge
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  thelounge_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/projects/thelounge/data
+      o: bind

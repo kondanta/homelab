@@ -1,0 +1,13 @@
+---
+services:
+  shepherd:
+    image: ghcr.io/kondanta/shepherd:0.2.2
+    restart: unless-stopped
+    container_name: "shepherd"
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/services:/opt/services
+    env_file:
+      - .env
