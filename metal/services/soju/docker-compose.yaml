@@ -2,7 +2,7 @@
 services:
   soju:
     # renovate: datasource=docker depName=codeberg.org/emersion/soju
-    image: codeberg.org/emersion/soju:0.10.1
+    image: codeberg.org/emersion/soju:v0.10.1
     container_name: soju
     restart: unless-stopped
     hostname: ${SOJU_DOMAIN}
