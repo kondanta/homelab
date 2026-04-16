@@ -6,6 +6,7 @@ services:
     container_name: thelounge
     restart: unless-stopped
     volumes:
+      - ./config.js:/var/opt/thelounge/config.js:ro
       - thelounge_data:/var/opt/thelounge
     networks:
       - proxy
