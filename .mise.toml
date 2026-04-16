@@ -10,7 +10,7 @@ LEFTHOOK_OUTPUT = "false"
 [tools]
 "aqua:casey/just" = "1.49.0"
 "aqua:cilium/cilium-cli" = "0.19.2"
-"aqua:cli/cli" = "2.89.0"
+"aqua:cli/cli" = "2.90.0"
 "aqua:cloudflare/cloudflared" = "2026.3.0"
 "aqua:cue-lang/cue" = "0.16.1"
 "aqua:evilmartians/lefthook" = "2.1.6"
