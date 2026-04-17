@@ -24,6 +24,7 @@ spec:
     kind: OCIRepository
     name: tempo
   values:
+    replicas: 0
     tempo:
       reportingEnabled: false
 
