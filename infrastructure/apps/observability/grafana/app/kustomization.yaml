@@ -6,4 +6,5 @@ resources:
   - helmrelease.yaml
   - data-sources-configmap.yaml
   - admin-secret.sops.yaml
+  - grafana-oidc-secret.sops.yaml
   - httproute.yaml

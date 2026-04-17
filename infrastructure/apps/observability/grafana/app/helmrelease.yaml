@@ -42,8 +42,15 @@ spec:
         org_name: Main Org.
         role: Viewer
 
+      auth.generic_oauth:
+        enabled: true
+
       news:
         news_feed_enabled: false
+
+    envFrom:
+      - secretRef:
+          name: grafana-oidc
 
     sidecar:
       datasources:
