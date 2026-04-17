@@ -8,6 +8,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
   interval: 1h
   path: ./infrastructure/apps/media-center/bazarr/app
   postBuild:

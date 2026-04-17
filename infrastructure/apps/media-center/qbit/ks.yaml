@@ -9,6 +9,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
   path: ./infrastructure/apps/media-center/qbit/app
   prune: true
   sourceRef:
