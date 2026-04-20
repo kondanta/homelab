@@ -8,7 +8,7 @@ JUST_UNSTABLE = "1"
 LEFTHOOK_OUTPUT = "false"
 
 [tools]
-"aqua:casey/just" = "1.49.0"
+"aqua:casey/just" = "1.50.0"
 "aqua:cilium/cilium-cli" = "0.19.2"
 "aqua:cli/cli" = "2.90.0"
 "aqua:cloudflare/cloudflared" = "2026.3.0"
