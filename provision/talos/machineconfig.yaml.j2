@@ -72,6 +72,8 @@ machine:
         source: /var/lib/longhorn
         type: bind
     image: ghcr.io/siderolabs/kubelet:v1.35.2
+  nodeAnnotations:
+    tuppr.home-operations.com/schematic: "89c7d76eb7d8a185c8e80f7e5b6d3c78d8bc31f4f27c12fde293e13f5c4e035f"
   nodeLabels:
     intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
