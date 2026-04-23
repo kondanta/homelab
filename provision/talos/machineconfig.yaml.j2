@@ -71,7 +71,7 @@ machine:
           - rw
         source: /var/lib/longhorn
         type: bind
-    image: ghcr.io/siderolabs/kubelet:v1.36.0
+    image: ghcr.io/siderolabs/kubelet:v1.35.2
   nodeAnnotations:
     tuppr.home-operations.com/schematic: "89c7d76eb7d8a185c8e80f7e5b6d3c78d8bc31f4f27c12fde293e13f5c4e035f"
   nodeLabels:
@@ -142,11 +142,11 @@ cluster:
       enable-aggregator-routing: "true"
       feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
-    image: registry.k8s.io/kube-apiserver:v1.36.0
+    image: registry.k8s.io/kube-apiserver:v1.35.2
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-controller-manager:v1.36.0
+    image: registry.k8s.io/kube-controller-manager:v1.35.2
   etcd:
     ca:
       crt: {{ ENV.CLUSTER_ETCD_CA_CRT }}
@@ -155,7 +155,7 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v1.36.0
+    image: registry.k8s.io/kube-proxy:v1.35.2
   scheduler:
     config:
       apiVersion: kubescheduler.config.k8s.io/v1
@@ -176,7 +176,7 @@ cluster:
                     whenUnsatisfiable: ScheduleAnyway
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.36.0
+    image: registry.k8s.io/kube-scheduler:v1.35.2
   secretboxEncryptionSecret: {{ ENV.CLUSTER_SECRETBOX_ENCRYPTION_SECRET }}
   serviceAccount:
     key: {{ ENV.CLUSTER_SA_KEY }}
