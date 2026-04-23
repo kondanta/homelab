@@ -46,6 +46,7 @@
   kubernetes: {
     managerFilePatterns: [
       '/(^|/)infrastructure/.+\\.ya?ml$/',
+      '/(^|/)provision/.+\\.ya?ml(\\.j2)?$/',
     ],
   },
 }
