@@ -5,6 +5,8 @@ kind: Kustomization
 metadata:
   name: &name shoko
 spec:
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
