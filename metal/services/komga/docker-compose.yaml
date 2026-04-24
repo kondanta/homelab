@@ -1,7 +1,7 @@
 ---
 services:
   komga:
-    image: gotson/komga:1.24.3
+    image: gotson/komga:1.24.4
     container_name: komga
     dns:
       - 1.1.1.1
