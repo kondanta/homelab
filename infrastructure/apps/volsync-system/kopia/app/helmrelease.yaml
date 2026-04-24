@@ -70,6 +70,10 @@ spec:
           - name: internal
             namespace: network
     persistence:
+      config-dir:
+        type: emptyDir
+        globalMounts:
+          - path: /config
       config-file:
         type: secret
         name: kopia-secret
