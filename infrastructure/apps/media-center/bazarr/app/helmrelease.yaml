@@ -73,10 +73,3 @@ spec:
           - path: /data
       tmp:
         type: emptyDir
-      anisub:
-        type: configMap
-        name: bazarr-anisub
-        globalMounts:
-          - path: /app/bin/custom_libs/subliminal_patch/providers/anisub.py
-            subPath: anisub.py
-            readOnly: true
