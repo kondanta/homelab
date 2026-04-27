@@ -6,3 +6,10 @@ resources:
   - helmrelease.yaml
   - ocirepository.yaml
   - pvc.yaml
+
+configMapGenerator:
+  - name: bazarr-anisub
+    files:
+      - anisub.py=resources/anisub.py
+    options:
+      disableNameSuffixHash: true
