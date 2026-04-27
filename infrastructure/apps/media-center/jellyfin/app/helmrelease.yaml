@@ -53,6 +53,7 @@ spec:
         runAsUser: 1001 # media-user
         runAsGroup: 1000
         fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
           - 44 # Video GID
           - 107 # Render GID
