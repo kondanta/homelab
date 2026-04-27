@@ -1,0 +1,51 @@
+---
+services:
+  yourspotify:
+    image: ghcr.io/linuxserver/your_spotify:1.19.0-ls152
+    container_name: yourspotify
+    restart: unless-stopped
+    networks:
+      - yourspotify
+    env_file:
+      - .env
+    ports:
+      - 8585:80
+    healthcheck:
+      test:
+        - "CMD"
+        - "curl"
+        - "--fail"
+        - "http://localhost"
+        - "||"
+        - "exit"
+        - "1"
+      interval: 1m
+      timeout: 10s
+      retries: 3
+  yourspotify-db:
+    image: mongo:8.2.7
+    container_name: yourspotify-db
+    restart: unless-stopped
+    networks:
+      - yourspotify
+    environment:
+      - TZ=Europe/Oslo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db:rw
+    tmpfs:
+      - /data/configdb
+    healthcheck:
+      test:
+        - "CMD"
+        - "echo 'db.runCommand(\"ping\").ok' | mongosh localhost:27017/test --quiet"
+      interval: 1m
+      timeout: 10s
+      retries: 3
+
+networks:
+  yourspotify:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1450
