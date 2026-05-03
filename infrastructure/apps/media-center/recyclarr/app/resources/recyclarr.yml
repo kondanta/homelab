@@ -21,13 +21,6 @@ sonarr:
         - trash_id: 158188097a58d7687dee647e04af0da3 # [Required] Golden Rule HD
           select:
             - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD)
-        - trash_id: f4a0410a1df109a66d6e47dcadcce014 # [Optional] Miscellaneous
-          select:
-            - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups
-            - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
-            - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
-            - 06d66ab109d4d2eddb2794d21526d140 # Retags
-            - 1b3994c551cbb92a2c781af061f4ab44 # Scene
 
     custom_formats:
       - trash_ids:
@@ -41,11 +34,33 @@ sonarr:
         assign_scores_to:
           - name: "[Anime] Remux-1080p"
             score: 500
+      # Bad release indicators — penalize across all profiles
       - trash_ids:
-          - b2be17d608fc88818940cd1833b0b24c
+          - 32b367365729d530ca1c124a0b180c64 # Bad Dual Groups
+          - 82d40da2bc6923f41e14394075dd4b03 # No-RlsGroup
+          - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
+          - 06d66ab109d4d2eddb2794d21526d140 # Retags
+          - 1b3994c551cbb92a2c781af061f4ab44 # Scene
         assign_scores_to:
+          - name: WEB-1080p
+            score: -10000
           - name: "[Anime] Remux-1080p"
-            score: 300
+            score: -10000
+      # Audio preferences
+      - trash_ids:
+          - 851bd64e04c9374c51102be3dd9ae4cc # FLAC
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 500
+          - name: "[Anime] Remux-1080p"
+            score: 500
+      - trash_ids:
+          - 28f6ef16d61e2d1adfce3156ed8257e3 # Opus
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 100
+          - name: "[Anime] Remux-1080p"
+            score: 100
 
 radarr:
   radarr:
@@ -76,13 +91,6 @@ radarr:
             - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV)
         - trash_id: 1616617ab3a14397a2b2321bcbda44d1 # [HDR Formats] DV Boost
         - trash_id: b29413a7487478fe98228ce79e5689e4 # [HDR Formats] HDR10+ Boost
-        - trash_id: 9337080378236ce4c0b183e35790d2a7 # [Optional] Miscellaneous
-          select:
-            - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups
-            - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
-            - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
-            - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
-            - f537cf427b64c38c8e36298f657e4828 # Scene
 
     custom_formats:
       - trash_ids:
@@ -106,8 +114,36 @@ radarr:
         assign_scores_to:
           - name: "[Anime] Remux-1080p"
             score: 500
+      # Bad release indicators — penalize across all profiles
       - trash_ids:
-          - b2be17d608fc88818940cd1833b0b24c
+          - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups
+          - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
+          - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
+          - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
+          - f537cf427b64c38c8e36298f657e4828 # Scene
         assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: -10000
+          - name: Remux + WEB 2160p
+            score: -10000
           - name: "[Anime] Remux-1080p"
-            score: 300
+            score: -10000
+      # Audio preferences
+      - trash_ids:
+          - a570d4a0e56a2874b64e5bfa55202a1b # FLAC
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 500
+          - name: Remux + WEB 2160p
+            score: 500
+          - name: "[Anime] Remux-1080p"
+            score: 500
+      - trash_ids:
+          - a061e2e700f81932daf888599f8a8273 # Opus
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 100
+          - name: Remux + WEB 2160p
+            score: 100
+          - name: "[Anime] Remux-1080p"
+            score: 100
