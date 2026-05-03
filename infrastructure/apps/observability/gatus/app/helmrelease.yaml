@@ -93,6 +93,7 @@ spec:
               accessMode: ReadWriteOnce
               size: 5Gi
     defaultPodOptions:
+      serviceAccountName: gatus
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
