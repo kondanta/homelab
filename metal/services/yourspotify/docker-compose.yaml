@@ -23,7 +23,7 @@ services:
       timeout: 10s
       retries: 3
   yourspotify-db:
-    image: mongo:8.2.7
+    image: mongo:8.3.1
     container_name: yourspotify-db
     restart: unless-stopped
     networks:
