@@ -86,6 +86,8 @@ spec:
                 cpu: 10m
               limits:
                 memory: 256Mi
+        serviceAccount:
+          identifier: gatus
         statefulset:
           volumeClaimTemplates:
             - name: config
