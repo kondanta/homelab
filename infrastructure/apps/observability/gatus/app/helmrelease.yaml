@@ -45,6 +45,7 @@ spec:
               - --auto-httproute
               - --enable-httproute
               - --enable-service
+              - --output=/config/gatus-sidecar.yaml
             resources:
               requests:
                 cpu: 10m
@@ -95,6 +96,7 @@ spec:
               accessMode: ReadWriteOnce
               size: 5Gi
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
