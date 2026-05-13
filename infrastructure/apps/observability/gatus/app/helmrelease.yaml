@@ -86,6 +86,8 @@ spec:
                 cpu: 10m
               limits:
                 memory: 256Mi
+        serviceAccount:
+          identifier: gatus
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -93,7 +95,6 @@ spec:
               accessMode: ReadWriteOnce
               size: 5Gi
     defaultPodOptions:
-      serviceAccountName: gatus
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
