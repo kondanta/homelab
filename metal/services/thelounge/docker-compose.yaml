@@ -2,7 +2,7 @@
 services:
   thelounge:
     # renovate: datasource=docker depName=ghcr.io/thelounge/thelounge
-    image: ghcr.io/thelounge/thelounge:4.4.3
+    image: ghcr.io/thelounge/thelounge:4.5.0
     container_name: thelounge
     restart: unless-stopped
     volumes:
