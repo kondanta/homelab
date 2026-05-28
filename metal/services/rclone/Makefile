@@ -6,7 +6,7 @@ build:
 # Run interactively to set up garage + proton remotes in rclone.conf.
 # Run this before 'make up'. Creates rclone.conf if it doesn't exist.
 configure:
-	touch rclone.conf
+	mkdir -p config
 	docker compose run --rm --entrypoint rclone rclone config
 
 up:
