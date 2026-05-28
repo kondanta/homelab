@@ -47,6 +47,12 @@ spec:
               HBOX_WEB_HOST: 0.0.0.0
               HBOX_WEB_MAX_UPLOAD_SIZE: 25 # in MB
               HBOX_OPTIONS_CURRENCY_CONFIG: "/etc/homebox/currency.json"
+              HBOX_OIDC_ENABLED: "true"
+              HBOX_OIDC_ISSUER_URL: "https://auth.taylan.dev/application/o/homebox/"
+              HBOX_OIDC_BUTTON_TEXT: "Sign in with Authentik"
+              HBOX_OIDC_AUTO_REDIRECT: "true"
+              HBOX_OPTIONS_ALLOW_LOCAL_LOGIN: "false"
+              HBOX_OPTIONS_TRUST_PROXY: "true"
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}" # homebox
