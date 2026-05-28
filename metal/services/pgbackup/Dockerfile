@@ -1,4 +1,4 @@
-FROM postgres:18.1-alpine
+FROM postgres:18.4-alpine
 RUN apk add --no-cache aws-cli dcron tzdata
 COPY backup.sh /usr/local/bin/backup.sh
 COPY entrypoint.sh /entrypoint.sh
