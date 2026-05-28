@@ -26,21 +26,27 @@ for DB in $POSTGRES_DBS; do
 done
 
 # Prune old backups — keep the BACKUP_KEEP_DAYS most recent per database.
-# Lists S3 objects (sorted ascending by date in filename), deletes the oldest
-# ones if count exceeds the retention limit.
+# busybox head doesn't support negative counts, so we calculate how many to
+# delete first and pass a positive count to head.
 if [ -n "$BACKUP_KEEP_DAYS" ] && [ "$BACKUP_KEEP_DAYS" -gt 0 ]; then
   for DB in $POSTGRES_DBS; do
-    aws s3 ls "s3://${S3_BUCKET}/${DB}/" \
+    TOTAL=$(aws s3 ls "s3://${S3_BUCKET}/${DB}/" \
         --endpoint-url "$S3_ENDPOINT" \
-      | sort \
-      | head -n -"$BACKUP_KEEP_DAYS" \
-      | awk '{print $4}' \
-      | while read -r fname; do
-          [ -z "$fname" ] && continue
-          aws s3 rm "s3://${S3_BUCKET}/${DB}/${fname}" \
-            --endpoint-url "$S3_ENDPOINT"
-          echo "[$(date)] Pruned: $fname"
-        done
+      | wc -l)
+    TO_DELETE=$(( TOTAL - BACKUP_KEEP_DAYS ))
+    if [ "$TO_DELETE" -gt 0 ]; then
+      aws s3 ls "s3://${S3_BUCKET}/${DB}/" \
+          --endpoint-url "$S3_ENDPOINT" \
+        | sort \
+        | head -n "$TO_DELETE" \
+        | awk '{print $4}' \
+        | while read -r fname; do
+            [ -z "$fname" ] && continue
+            aws s3 rm "s3://${S3_BUCKET}/${DB}/${fname}" \
+              --endpoint-url "$S3_ENDPOINT"
+            echo "[$(date)] Pruned: $fname"
+          done
+    fi
   done
 fi
 
