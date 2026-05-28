@@ -1,2 +1,2 @@
-rclone.conf
+config/
 .env
