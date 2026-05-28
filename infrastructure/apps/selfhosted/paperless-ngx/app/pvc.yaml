@@ -1,0 +1,26 @@
+---
+# Media PVC — actual document files. Backed up via volsync (named to match APP).
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-ngx
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: longhorn
+---
+# Data PVC — search index, thumbnails. Reconstructible; no backup needed.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-ngx-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn
