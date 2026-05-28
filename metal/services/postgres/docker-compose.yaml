@@ -1,0 +1,41 @@
+---
+services:
+  postgres:
+    # renovate: datasource=docker depName=postgres
+    image: postgres:18.1-trixie
+    container_name: postgres
+    restart: unless-stopped
+    user: "999:999"
+    shm_size: 256mb
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=100"
+      - "-c"
+      - "shared_buffers=192MB"
+      - "-c"
+      - "work_mem=4MB"
+      - "-c"
+      - "effective_cache_size=512MB"
+      - "-c"
+      - "random_page_cost=1.1"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/pi/services/postgres/data
+      o: bind
