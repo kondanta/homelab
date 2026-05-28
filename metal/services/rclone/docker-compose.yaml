@@ -1,0 +1,11 @@
+---
+services:
+  rclone:
+    build: .
+    image: rclone-sync:local
+    container_name: rclone-sync
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./rclone.conf:/config/rclone/rclone.conf

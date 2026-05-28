@@ -13,4 +13,4 @@ echo "$BACKUP_SCHEDULE /usr/local/bin/backup.sh >> /proc/1/fd/1 2>&1" \
 echo "Backup scheduled: $BACKUP_SCHEDULE"
 echo "Databases: $POSTGRES_DBS"
 
-exec dcron -f -l 2
+crond -f -l 2
