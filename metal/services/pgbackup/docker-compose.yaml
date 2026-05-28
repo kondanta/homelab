@@ -1,0 +1,9 @@
+---
+services:
+  pgbackup:
+    build: .
+    image: pgbackup:local
+    container_name: pgbackup
+    restart: unless-stopped
+    env_file:
+      - .env
