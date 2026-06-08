@@ -14,7 +14,7 @@ spec:
       excalidraw:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 1
+        replicas: 0
         strategy: RollingUpdate
         containers:
           app:
@@ -52,9 +52,7 @@ spec:
     route:
       app:
         annotations:
-          gatus.home-operations.com/endpoint: |
-            conditions:
-              - "[STATUS] == 200"
+          gatus.home-operations.com/enabled: "false"
         hostnames:
           - "{{ .Release.Name }}.taylan.dev"
         parentRefs:
