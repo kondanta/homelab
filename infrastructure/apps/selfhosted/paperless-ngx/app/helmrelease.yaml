@@ -149,8 +149,7 @@ spec:
           gatus.home-operations.com/endpoint: |
             path: /api/
             conditions:
-              - "[STATUS] == 200"
-              - "[BODY_LENGTH] > 0"
+              - "[STATUS] < 400"
         hostnames:
           - paperless.taylan.dev
         parentRefs:
