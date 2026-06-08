@@ -125,11 +125,9 @@ spec:
               repository: gotenberg/gotenberg
               tag: 8.33.0@sha256:bddd8ea9d076e2d08b6ddaa6efae6403185202c6dab65a6488ed0a6923d6d8e8
             resources:
-              limits:
-                memory: 256Mi
               requests:
                 cpu: 10m
-                memory: 256Mi
+                memory: 128Mi
 
     defaultPodOptions:
       securityContext:
