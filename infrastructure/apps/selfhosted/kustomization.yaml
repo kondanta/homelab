@@ -12,3 +12,4 @@ resources:
   - home-assistant/ks.yaml
   - homebox/ks.yaml
   - paperless-ngx/ks.yaml
+  - silverbullet/ks.yaml
