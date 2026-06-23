@@ -53,7 +53,13 @@ sonarr:
           - name: WEB-1080p
             score: 2250
           - name: "[Anime] Remux-1080p"
-            score: 2250
+            score: 500
+      # Mild preference against dual audio — tiebreaker only, not a veto
+      - trash_ids:
+          - 418f50b10f1907201b6cfdf881f467b7 # Anime Dual Audio
+        assign_scores_to:
+          - name: "[Anime] Remux-1080p"
+            score: -100
       - trash_ids:
           - 28f6ef16d61e2d1adfce3156ed8257e3 # Opus
         assign_scores_to:
@@ -77,6 +83,23 @@ sonarr:
         assign_scores_to:
           - name: WEB-1080p
             score: 1600
+      # Anime BD encode groups — best quality for BD-sourced anime (x265 10-bit)
+      # T2→T3 gap is intentionally 50 so the -100 dual audio penalty flips dual-audio T2 below JP-only T3
+      - trash_ids:
+          - 949c16fe0a8147f50ba82cc2df9411c9 # Anime BD Tier 01
+        assign_scores_to:
+          - name: "[Anime] Remux-1080p"
+            score: 2000
+      - trash_ids:
+          - ed7f1e315e000aef424a58517fa48727 # Anime BD Tier 02
+        assign_scores_to:
+          - name: "[Anime] Remux-1080p"
+            score: 1900
+      - trash_ids:
+          - 096e406c92baa713da4a72d88030b815 # Anime BD Tier 03
+        assign_scores_to:
+          - name: "[Anime] Remux-1080p"
+            score: 1850
       # Anime WEB release groups
       - trash_ids:
           - e0014372773c8f0e1bef8824f00c7dc4 # Anime Web Tier 01
