@@ -51,9 +51,9 @@ sonarr:
           - 851bd64e04c9374c51102be3dd9ae4cc # FLAC
         assign_scores_to:
           - name: WEB-1080p
-            score: 500
+            score: 2250
           - name: "[Anime] Remux-1080p"
-            score: 500
+            score: 2250
       - trash_ids:
           - 28f6ef16d61e2d1adfce3156ed8257e3 # Opus
         assign_scores_to:
@@ -66,17 +66,17 @@ sonarr:
           - e6258996055b9fbab7e9cb2f75819294 # WEB Tier 01
         assign_scores_to:
           - name: WEB-1080p
-            score: 1000
+            score: 1700
       - trash_ids:
           - 58790d4e2fdcd9733aa7ae68ba2bb503 # WEB Tier 02
         assign_scores_to:
           - name: WEB-1080p
-            score: 750
+            score: 1650
       - trash_ids:
           - d84935abd3f8556dcd51d4f27e22d0a6 # WEB Tier 03
         assign_scores_to:
           - name: WEB-1080p
-            score: 500
+            score: 1600
       # Anime WEB release groups
       - trash_ids:
           - e0014372773c8f0e1bef8824f00c7dc4 # Anime Web Tier 01
@@ -173,11 +173,11 @@ radarr:
           - a570d4a0e56a2874b64e5bfa55202a1b # FLAC
         assign_scores_to:
           - name: Remux + WEB 1080p
-            score: 500
+            score: 2250
           - name: Remux + WEB 2160p
-            score: 500
+            score: 2250
           - name: "[Anime] Remux-1080p"
-            score: 500
+            score: 2250
       - trash_ids:
           - a061e2e700f81932daf888599f8a8273 # Opus
         assign_scores_to:
@@ -231,54 +231,54 @@ radarr:
           - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01
         assign_scores_to:
           - name: Remux + WEB 1080p
-            score: 1750
+            score: 1950
           - name: Remux + WEB 2160p
-            score: 1750
+            score: 1950
           - name: "[Anime] Remux-1080p"
-            score: 1750
+            score: 1950
       - trash_ids:
           - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02
         assign_scores_to:
           - name: Remux + WEB 1080p
-            score: 1500
+            score: 1900
           - name: Remux + WEB 2160p
-            score: 1500
+            score: 1900
           - name: "[Anime] Remux-1080p"
-            score: 1500
+            score: 1900
       - trash_ids:
           - 8baaf0b3142bf4d94c42a724f034e27a # Remux Tier 03
         assign_scores_to:
           - name: Remux + WEB 1080p
-            score: 1250
+            score: 1850
           - name: Remux + WEB 2160p
-            score: 1250
+            score: 1850
           - name: "[Anime] Remux-1080p"
-            score: 1250
+            score: 1850
       # WEB release groups
       - trash_ids:
           - c20f169ef63c5f40c2def54abaf4438e # WEB Tier 01
         assign_scores_to:
           - name: Remux + WEB 1080p
-            score: 1000
+            score: 1700
           - name: Remux + WEB 2160p
-            score: 1000
+            score: 1700
           - name: "[Anime] Remux-1080p"
-            score: 1000
+            score: 1700
       - trash_ids:
           - 403816d65392c79236dcb6dd591aeda4 # WEB Tier 02
         assign_scores_to:
           - name: Remux + WEB 1080p
-            score: 750
+            score: 1650
           - name: Remux + WEB 2160p
-            score: 750
+            score: 1650
           - name: "[Anime] Remux-1080p"
-            score: 750
+            score: 1650
       - trash_ids:
           - af94e0fe497124d1f9ce732069ec8c3b # WEB Tier 03
         assign_scores_to:
           - name: Remux + WEB 1080p
-            score: 500
+            score: 1600
           - name: Remux + WEB 2160p
-            score: 500
+            score: 1600
           - name: "[Anime] Remux-1080p"
-            score: 500
+            score: 1600
