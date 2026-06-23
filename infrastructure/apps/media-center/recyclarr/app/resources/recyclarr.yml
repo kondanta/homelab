@@ -61,6 +61,38 @@ sonarr:
             score: 100
           - name: "[Anime] Remux-1080p"
             score: 100
+      # WEB release groups
+      - trash_ids:
+          - e6258996055b9fbab7e9cb2f75819294 # WEB Tier 01
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 1000
+      - trash_ids:
+          - 58790d4e2fdcd9733aa7ae68ba2bb503 # WEB Tier 02
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 750
+      - trash_ids:
+          - d84935abd3f8556dcd51d4f27e22d0a6 # WEB Tier 03
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 500
+      # Anime WEB release groups
+      - trash_ids:
+          - e0014372773c8f0e1bef8824f00c7dc4 # Anime Web Tier 01
+        assign_scores_to:
+          - name: "[Anime] Remux-1080p"
+            score: 1000
+      - trash_ids:
+          - 19180499de5ef2b84b6ec59aae444696 # Anime Web Tier 02
+        assign_scores_to:
+          - name: "[Anime] Remux-1080p"
+            score: 750
+      - trash_ids:
+          - c27f2ae6a4e82373b0f1da094e2489ad # Anime Web Tier 03
+        assign_scores_to:
+          - name: "[Anime] Remux-1080p"
+            score: 500
 
 radarr:
   radarr:
@@ -107,9 +139,17 @@ radarr:
         assign_scores_to:
           - name: Remux + WEB 2160p
             score: -10000
-      # Neutralize x265 penalties for anime — anime legitimately uses x265
+      # x265 (HD) — moderate penalty for 1080p so Tier 1 groups can overcome it;
+      # neutralized for anime which legitimately uses x265
       - trash_ids:
           - dc98083864ea246d05a42df0d05f81cc # x265 (HD)
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: -1000
+          - name: "[Anime] Remux-1080p"
+            score: 500
+      # x265 (no HDR/DV) — neutralize for anime only; 2160p keeps Golden Rule default
+      - trash_ids:
           - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV)
         assign_scores_to:
           - name: "[Anime] Remux-1080p"
@@ -147,3 +187,98 @@ radarr:
             score: 100
           - name: "[Anime] Remux-1080p"
             score: 100
+      # HD Bluray encode groups — high-quality x265 1080p encodes from Blu-ray source
+      # net scores after -1000 x265 (HD) penalty: T1=3000, T2=2500, T3=2000
+      - trash_ids:
+          - ed27ebfef2f323e964fb1f61391bcb35 # HD Bluray Tier 01
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 4000
+          - name: "[Anime] Remux-1080p"
+            score: 4000
+      - trash_ids:
+          - c20c8647f2746a1f4c4262b0fbbeeeae # HD Bluray Tier 02
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 3500
+          - name: "[Anime] Remux-1080p"
+            score: 3500
+      - trash_ids:
+          - 5608c71bcebba0a5e666223bae8c9227 # HD Bluray Tier 03 (includes BHDStudio)
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 3000
+          - name: "[Anime] Remux-1080p"
+            score: 3000
+      # UHD Bluray encode groups — high-quality x265 4K encodes from Blu-ray source
+      - trash_ids:
+          - 4d74ac4c4db0b64bff6ce0cffef99bf0 # UHD Bluray Tier 01
+        assign_scores_to:
+          - name: Remux + WEB 2160p
+            score: 2500
+      - trash_ids:
+          - a58f517a70193f8e578056642178419d # UHD Bluray Tier 02
+        assign_scores_to:
+          - name: Remux + WEB 2160p
+            score: 2250
+      - trash_ids:
+          - e71939fae578037e7aed3ee219bbe7c1 # UHD Bluray Tier 03
+        assign_scores_to:
+          - name: Remux + WEB 2160p
+            score: 2000
+      # Remux release groups
+      - trash_ids:
+          - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 1750
+          - name: Remux + WEB 2160p
+            score: 1750
+          - name: "[Anime] Remux-1080p"
+            score: 1750
+      - trash_ids:
+          - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 1500
+          - name: Remux + WEB 2160p
+            score: 1500
+          - name: "[Anime] Remux-1080p"
+            score: 1500
+      - trash_ids:
+          - 8baaf0b3142bf4d94c42a724f034e27a # Remux Tier 03
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 1250
+          - name: Remux + WEB 2160p
+            score: 1250
+          - name: "[Anime] Remux-1080p"
+            score: 1250
+      # WEB release groups
+      - trash_ids:
+          - c20f169ef63c5f40c2def54abaf4438e # WEB Tier 01
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 1000
+          - name: Remux + WEB 2160p
+            score: 1000
+          - name: "[Anime] Remux-1080p"
+            score: 1000
+      - trash_ids:
+          - 403816d65392c79236dcb6dd591aeda4 # WEB Tier 02
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 750
+          - name: Remux + WEB 2160p
+            score: 750
+          - name: "[Anime] Remux-1080p"
+            score: 750
+      - trash_ids:
+          - af94e0fe497124d1f9ce732069ec8c3b # WEB Tier 03
+        assign_scores_to:
+          - name: Remux + WEB 1080p
+            score: 500
+          - name: Remux + WEB 2160p
+            score: 500
+          - name: "[Anime] Remux-1080p"
+            score: 500
