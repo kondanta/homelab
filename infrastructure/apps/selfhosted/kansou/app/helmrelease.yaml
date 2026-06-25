@@ -28,7 +28,7 @@ spec:
       gateway:
         name: internal
         namespace: network
-        sectionName: http
+        sectionName: https
       hostnames:
         - kansou.taylan.dev
 
