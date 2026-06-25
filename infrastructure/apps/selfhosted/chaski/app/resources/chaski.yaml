@@ -1,0 +1,55 @@
+targets:
+  discord:
+    apprise:
+      url: 'discord://{{ env "DISCORD_WEBHOOK_ID" }}/{{ env "DISCORD_WEBHOOK_TOKEN" }}/'
+
+routes:
+  sonarr-download:
+    target: discord
+    title: "Episode {{ if .payload.isUpgrade }}Upgraded{{ else }}Downloaded{{ end }}"
+    message: |-
+      {{ .payload.series.title }} ({{ printf "S%02dE%02d" (toInt (index .payload.episodes 0).seasonNumber) (toInt (index .payload.episodes 0).episodeNumber) }})
+      {{ (index .payload.episodes 0).title }}
+      Client: {{ .payload.downloadClient | default "unknown" }}
+    whenExpr: 'payload.eventType == "Download"'
+
+  sonarr-manual:
+    target: discord
+    title: "Episode Requires Manual Interaction"
+    message: |-
+      {{ .payload.series.title }}
+      Client: {{ .payload.downloadClient | default "unknown" }}
+    whenExpr: 'payload.eventType == "ManualInteractionRequired"'
+
+  radarr-download:
+    target: discord
+    title: "Movie {{ if .payload.isUpgrade }}Upgraded{{ else }}Downloaded{{ end }}"
+    message: |-
+      {{ .payload.movie.title }} ({{ .payload.movie.year }})
+      {{ .payload.movie.overview | ellipsis 200 }}
+      Client: {{ .payload.downloadClient | default "unknown" }}
+    whenExpr: 'payload.eventType == "Download"'
+
+  radarr-manual:
+    target: discord
+    title: "Movie Requires Manual Interaction"
+    message: |-
+      {{ .payload.movie.title }} ({{ .payload.movie.year }})
+      Client: {{ .payload.downloadClient | default "unknown" }}
+    whenExpr: 'payload.eventType == "ManualInteractionRequired"'
+
+  flux-error:
+    target: discord
+    title: "⚠️ Flux {{ .payload.involvedObject.kind }}/{{ .payload.involvedObject.name }}"
+    message: |-
+      Namespace: {{ .payload.involvedObject.namespace }}
+      {{ .payload.message }}
+    whenExpr: 'payload.severity == "error"'
+
+  alertmanager:
+    target: discord
+    title: "{{ if eq .payload.status \"firing\" }}🔥{{ else }}✅{{ end }} {{ .payload.commonLabels.alertname }}"
+    message: |-
+      Status: {{ .payload.status | title }}
+      {{ .payload.commonAnnotations.summary }}
+    whenExpr: 'payload.status == "firing" || payload.status == "resolved"'
