@@ -17,14 +17,6 @@ spec:
           name: chaski-secret
     config:
       existingConfigMap: chaski-config
-    httpRoute:
-      enabled: true
-      hostnames:
-        - chaski.taylan.dev
-      parentRefs:
-        - name: internal
-          namespace: network
-          sectionName: https
     resources:
       requests:
         cpu: 10m
