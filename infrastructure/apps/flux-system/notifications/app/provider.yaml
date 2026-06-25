@@ -6,4 +6,4 @@ metadata:
   name: chaski
 spec:
   type: generic
-  url: http://chaski.selfhosted.svc.cluster.local:8080/hooks/flux-error
+  address: http://chaski.selfhosted.svc.cluster.local:8080/hooks/flux-error
