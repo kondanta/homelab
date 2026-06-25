@@ -57,7 +57,7 @@ spec:
       app:
         annotations:
           gatus.home-operations.com/endpoint: |
-            path: /service_worker.js
+            url: http://silverbullet.selfhosted.svc.cluster.local:3000/service_worker.js
             conditions:
               - "[STATUS] == 200"
               - "len([BODY]) > 0"
