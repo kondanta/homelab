@@ -48,6 +48,8 @@ spec:
       enabled: false
     prometheus:
       enabled: false
+    defaultRules:
+      create: false
     kubeControllerManager:
       enabled: false
     kubeScheduler:
