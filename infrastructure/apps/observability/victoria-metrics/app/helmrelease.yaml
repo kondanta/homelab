@@ -82,6 +82,8 @@ spec:
 
     defaultRules:
       create: true
+      rules:
+        kubeScheduler: false
 
     coreDns:
       enabled: true
