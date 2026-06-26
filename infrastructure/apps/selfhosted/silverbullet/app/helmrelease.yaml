@@ -56,12 +56,7 @@ spec:
     route:
       app:
         annotations:
-          gatus.home-operations.com/endpoint: |
-            guarded: false
-            url: http://silverbullet.selfhosted.svc.cluster.local:3000/service_worker.js
-            conditions:
-              - "[STATUS] == 200"
-              - "len([BODY]) > 0"
+          gatus.home-operations.com/enabled: "false"
         forceRename: silverbullet
         hostnames:
           - notes.taylan.dev
