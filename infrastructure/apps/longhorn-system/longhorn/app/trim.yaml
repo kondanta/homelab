@@ -8,4 +8,4 @@ spec:
   task: "filesystem-trim"
   retain: 1
   groups:
-    - default # Applies to all PVCs in the default group
+    - trim
