@@ -144,7 +144,6 @@ spec:
           cpu: 10m
           memory: 48Mi
         limits:
-          cpu: 10m
           memory: 48Mi
       vmScrape:
         spec:
