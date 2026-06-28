@@ -63,6 +63,7 @@ spec:
     sources: ["crd", "gateway-httproute"]
     registry: txt
     txtOwnerId: adguard
+    txtPrefix: k8s.
     resources:
       requests:
         cpu: 25m
