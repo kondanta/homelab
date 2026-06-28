@@ -35,6 +35,7 @@ spec:
                 metadata:
                   name: _
                 spec:
+                  maxHistory: 1
                   install:
                     crds: CreateReplace
                     strategy:
