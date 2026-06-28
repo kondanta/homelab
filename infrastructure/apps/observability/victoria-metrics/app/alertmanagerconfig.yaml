@@ -12,8 +12,15 @@ spec:
     group_wait: 30s
     group_interval: 5m
     repeat_interval: 4h
+    routes:
+      - receiver: null
+        matchers:
+          - name: alertname
+            value: InfoInhibitor|Watchdog
+            matchType: =~
   receivers:
     - name: chaski-discord
       webhook_configs:
         - url: http://chaski.selfhosted.svc.cluster.local:8080/hooks/alertmanager
           send_resolved: true
+    - name: "null"
