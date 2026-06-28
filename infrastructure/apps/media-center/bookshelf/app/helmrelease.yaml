@@ -49,6 +49,11 @@ spec:
                     path: /ping
                     port: *port
               readiness: *probe
+            resources:
+              requests:
+                memory: 256Mi
+              limits:
+                memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: {drop: ["ALL"]}

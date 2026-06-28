@@ -35,6 +35,12 @@ spec:
     config:
       clients:
         - url: http://loki.observability.svc.cluster.local:3100/loki/api/v1/push
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
     loki:
       tracing:
         enabled: true

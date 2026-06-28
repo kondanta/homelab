@@ -155,6 +155,22 @@ spec:
           datasource:
             - { name: DS_PROMETHEUS, value: VictoriaMetrics }
 
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+
+    sidecar:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 192Mi
+        limits:
+          cpu: 10m
+          memory: 192Mi
+
     persistence:
       enabled: true
       storageClassName: longhorn

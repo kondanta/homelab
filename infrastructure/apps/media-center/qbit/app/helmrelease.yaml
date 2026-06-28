@@ -63,6 +63,12 @@ spec:
               limits:
                 memory: 2192Mi
           gluetun:
+            resources:
+              requests:
+                cpu: 75m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
             image:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.41.1
@@ -114,6 +120,11 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 5
           port-forward:
+            resources:
+              requests:
+                memory: 16Mi
+              limits:
+                memory: 64Mi
             image:
               repository: ghcr.io/bjw-s-labs/gluetun-qb-port-sync
               tag: 0.0.4@sha256:14ce24f2e054abf06f695f35c8c33612e49d6d0fe80a33896403d85b09a9d329
@@ -135,6 +146,11 @@ spec:
                 drop:
                   - ALL
           seedboxapi:
+            resources:
+              requests:
+                memory: 8Mi
+              limits:
+                memory: 32Mi
             image:
               repository: ghcr.io/gavinmcfall/seedboxapi
               tag: v1.0.3@sha256:352075e2b98854cd6a451404a12bd0c517eac4e1224243b6f4793de98b4f9a69

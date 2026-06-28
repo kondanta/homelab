@@ -30,14 +30,25 @@ spec:
       autoCleanupSnapshotWhenDeleteBackup: true
       autoCleanupSnapshotAfterOnDemandBackupCompleted: true
       rwxVolumeFastFailover: true
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        memory: 256Mi
     longhornManager:
       resources:
-        memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
+    longhornDriver:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          memory: 128Mi
     longhornUI:
       replicas: 1
+      resources:
+        requests:
+          cpu: 25m
+          memory: 64Mi
+        limits:
+          memory: 128Mi
