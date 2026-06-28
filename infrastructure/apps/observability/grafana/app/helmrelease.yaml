@@ -54,6 +54,13 @@ spec:
     envFromSecret: grafana-oidc
 
     sidecar:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 192Mi
+        limits:
+          cpu: 10m
+          memory: 192Mi
       datasources:
         enabled: true
         label: grafana_datasource
@@ -161,15 +168,6 @@ spec:
         memory: 256Mi
       limits:
         memory: 512Mi
-
-    sidecar:
-      resources:
-        requests:
-          cpu: 10m
-          memory: 192Mi
-        limits:
-          cpu: 10m
-          memory: 192Mi
 
     persistence:
       enabled: true
