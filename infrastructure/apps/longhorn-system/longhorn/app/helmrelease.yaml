@@ -20,7 +20,8 @@ spec:
       defaultClass: true
       reclaimPolicy: Delete
       recurringJobSelector:
-        enable: false
+        enable: true
+        jobList: '[{"name":"trim","isGroup":true}]'
     ingress:
       enabled: false
     defaultSettings:
