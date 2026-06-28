@@ -40,6 +40,8 @@ spec:
               secretKeyRef:
                 name: *secret
                 key: ADGUARD_PASSWORD
+          - name: LOG_LEVEL
+            value: debug
         livenessProbe:
           httpGet:
             path: /healthz
@@ -59,8 +61,7 @@ spec:
     triggerLoopOnEvent: true
     policy: upsert-only
     sources: ["crd", "gateway-httproute"]
-    txtOwnerId: adguard
-    txtPrefix: k8s.
+    registry: noop
     resources:
       requests:
         cpu: 25m
