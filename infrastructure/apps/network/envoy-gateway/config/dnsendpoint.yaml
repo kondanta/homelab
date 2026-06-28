@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: internal-gateway
+spec:
+  endpoints:
+    - dnsName: internal.taylan.dev
+      recordType: A
+      targets: ["10.1.20.201"]
+      # external-dns-adguard creates CNAME filtering rules pointing *.taylan.dev → internal.taylan.dev.
+      # AdGuard resolves CNAME targets via upstream DNS (Cloudflare), not its own DNS Rewrites,
+      # so internal.taylan.dev must exist in Cloudflare for AdGuard to return a complete answer.
+      # Without it, AdGuard returns CNAME + NXDOMAIN, which CoreDNS passes through and pod
+      # resolvers treat as a hard failure (breaking in-cluster OIDC and similar calls).
+      # Not proxied: Cloudflare cannot proxy traffic to a private IP.
+      providerSpecific:
+        - name: "external-dns.alpha.kubernetes.io/cloudflare-proxied"
+          value: "false"
