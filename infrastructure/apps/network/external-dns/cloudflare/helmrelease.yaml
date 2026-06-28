@@ -58,7 +58,6 @@ spec:
         cpu: 25m
         memory: 96Mi
       limits:
-        cpu: 25m
         memory: 96Mi
     serviceMonitor:
       enabled: true
