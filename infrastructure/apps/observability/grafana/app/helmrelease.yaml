@@ -54,6 +54,13 @@ spec:
     envFromSecret: grafana-oidc
 
     sidecar:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 192Mi
+        limits:
+          cpu: 10m
+          memory: 192Mi
       datasources:
         enabled: true
         label: grafana_datasource
@@ -154,6 +161,13 @@ spec:
           revision: 3
           datasource:
             - { name: DS_PROMETHEUS, value: VictoriaMetrics }
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 512Mi
 
     persistence:
       enabled: true

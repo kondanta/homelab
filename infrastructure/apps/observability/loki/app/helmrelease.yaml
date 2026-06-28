@@ -71,20 +71,36 @@ spec:
       tracing:
         enabled: true
 
-      resources:
-        requests:
-          cpu: 10m
-          memory: 128Mi
-        limits:
-          cpu: 100m
-          memory: 256Mi
-
       persistence:
         enabled: true
         storageClassName: longhorn
         size: 10Gi
     singleBinary:
       replicas: 1
+      resources:
+        requests:
+          cpu: 50m
+          memory: 256Mi
+        limits:
+          memory: 512Mi
+    sidecar:
+      rules:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 192Mi
+          limits:
+            cpu: 10m
+            memory: 192Mi
+
+    gateway:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          cpu: 10m
+          memory: 64Mi
 
     backend:
       replicas: 0

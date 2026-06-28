@@ -59,6 +59,12 @@ spec:
     victoria-metrics-operator:
       enabled: true
       createCRD: true
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 256Mi
       operator:
         disable_prometheus_converter: false
         enable_converter_ownership: true
@@ -124,7 +130,7 @@ spec:
           limits:
             memory: 1Gi
           requests:
-            cpu: 500m
+            cpu: 200m
             memory: 500Mi
 
         serviceMonitorNamespaceSelector: {}
@@ -133,6 +139,13 @@ spec:
         podMonitorSelector: {}
 
     prometheus-node-exporter:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 48Mi
+        limits:
+          cpu: 10m
+          memory: 48Mi
       vmScrape:
         spec:
           endpoints:
@@ -198,6 +211,13 @@ spec:
 
     kube-state-metrics:
       enabled: true # TODO: This doesn't support customResourceState. I'll deploy it separately.
+      resources:
+        requests:
+          cpu: 25m
+          memory: 96Mi
+        limits:
+          cpu: 25m
+          memory: 96Mi
       vmScrape:
         enabled: true
     grafana:

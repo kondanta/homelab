@@ -53,6 +53,13 @@ spec:
     txtPrefix: k8s.
     domainFilters:
       - taylan.dev
+    resources:
+      requests:
+        cpu: 25m
+        memory: 96Mi
+      limits:
+        cpu: 25m
+        memory: 96Mi
     serviceMonitor:
       enabled: true
     podAnnotations:
