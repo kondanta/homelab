@@ -57,7 +57,7 @@ spec:
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=internal
     triggerLoopOnEvent: true
-    policy: sync
+    policy: upsert-only
     sources: ["crd", "gateway-httproute"]
     txtOwnerId: adguard
     txtPrefix: k8s.
