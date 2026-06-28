@@ -85,6 +85,13 @@ spec:
       rules:
         kubeScheduler:
           enabled: false
+        "count:up0":
+          enabled: false
+      groups:
+        "kube-scheduler.rules":
+          enabled: false
+        "k8s.rules.container_memory_swap":
+          enabled: false
 
     coreDns:
       enabled: true

@@ -50,6 +50,8 @@ spec:
       enabled: false
     defaultRules:
       create: false
+    kubelet:
+      enabled: false
     kubeControllerManager:
       enabled: false
     kubeScheduler:
