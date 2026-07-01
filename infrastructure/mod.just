@@ -47,6 +47,26 @@ logs namespace resource:
 view-secret namespace secret:
     kubectl view-secret -n {{ namespace }} {{ secret }}
 
+[doc('Check release scores for a series in Sonarr')]
+check-score series:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    SONARR_API_KEY=$(kubectl get secret -n media-center recyclarr-secret -o jsonpath='{.data.SONARR_API_KEY}' | base64 -d)
+    POD=$(kubectl get pods -n media-center -l app.kubernetes.io/name=sonarr -o jsonpath='{.items[0].metadata.name}')
+    kubectl port-forward -n media-center "pod/$POD" 8989:80 &>/dev/null &
+    PF_PID=$!
+    trap "kill $PF_PID 2>/dev/null" EXIT
+    sleep 1
+    SERIES_ID=$(curl -sf -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://localhost:8989/api/v3/series" \
+      | jq -r --arg name "{{ series }}" '.[] | select(.title | test($name; "i")) | .id' | head -1)
+    EPISODE_ID=$(curl -sf -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://localhost:8989/api/v3/episode?seriesId=${SERIES_ID}&seasonNumber=1" \
+      | jq '.[0].id')
+    curl -sf -H "X-Api-Key: ${SONARR_API_KEY}" \
+      "http://localhost:8989/api/v3/release?episodeId=${EPISODE_ID}" \
+      | jq '.[] | {title, quality: .quality.quality.name, customFormatScore, qualityScore, rejected, rejections}'
+
 [doc('Check port forward for qbittorrent')]
 check-qb:
     kubectl exec -it -n media-center -c app $(kubectl get pods -n media-center -l  app.kubernetes.io/name=qbittorrent -o jsonpath='{.items[0].metadata.name}') -- wget -qO- ipaddress.ai
