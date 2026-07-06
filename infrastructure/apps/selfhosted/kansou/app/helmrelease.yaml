@@ -18,7 +18,7 @@ spec:
     image:
       repository: ghcr.io/kondanta/kansou
       # renovate: datasource=docker depName=ghcr.io/kondanta/kansou
-      tag: "1.4.0"
+      tag: "1.5.0"
     liveConfig:
       enabled: true
       persistence:
