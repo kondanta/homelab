@@ -1,0 +1,35 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: envoy-gateway-crds
+spec:
+  interval: 30m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+  ref:
+    # renovate: datasource=docker depName=envoyproxy/gateway-helm
+    tag: 1.8.2
+  url: oci://docker.io/envoyproxy/gateway-helm
+  ignore: |
+      # exclude
+      /*
+      # include
+      !gateway-helm/charts/crds/crds/generated/*.yaml
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &name envoy-gateway-crds
+  namespace: &namespace network
+spec:
+  targetNamespace: *namespace
+  prune: true
+  sourceRef:
+    kind: OCIRepository
+    name: *name
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  wait: true
