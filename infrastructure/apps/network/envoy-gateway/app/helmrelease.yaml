@@ -24,13 +24,13 @@ spec:
   driftDetection:
     mode: warn
   install:
-    crds: Create
+    crds: Skip
     disableHooks: false
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
-    crds: Create
+    crds: Skip
     disableHooks: false
     remediation:
       retries: 3
