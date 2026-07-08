@@ -116,6 +116,15 @@ sonarr:
         assign_scores_to:
           - name: "[Anime] Remux-1080p"
             score: 500
+      # Season Pack — prefer season packs over individual episodes so Sonarr
+      # auto-upgrades a full season once one drops, instead of manual episode cleanup
+      - trash_ids:
+          - 3bc5f395426614e155e585a2f056cdf1 # Season Pack
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 300
+          - name: "[Anime] Remux-1080p"
+            score: 300
 
 radarr:
   radarr:
