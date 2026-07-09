@@ -15,6 +15,10 @@ spec:
       valuesKey: ANILIST_TOKEN
       targetPath: anilistToken
   values:
+    image:
+      # Well, the TRIBBIE UI had a problematic release, so I cut a release with a local build as I don't have
+      # admin access to the Tribbie repository. This version works, properly.
+      tag: 1.9.0-patched
     envFrom:
       - secretRef:
           name: kansou-secret
