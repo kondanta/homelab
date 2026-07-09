@@ -9,33 +9,16 @@ spec:
     kind: OCIRepository
     name: kansou
   interval: 1h
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              kind: Deployment
-              name: kansou
-            patch: |
-              - op: add
-                path: /spec/template/spec/affinity
-                value:
-                  nodeAffinity:
-                    requiredDuringSchedulingIgnoredDuringExecution:
-                      nodeSelectorTerms:
-                        - matchExpressions:
-                            - key: node-role.kubernetes.io/control-plane
-                              operator: DoesNotExist
   valuesFrom:
     - kind: Secret
       name: kansou-secret
       valuesKey: ANILIST_TOKEN
       targetPath: anilistToken
   values:
-    image:
-    liveConfig:
-      enabled: true
-      persistence:
-        size: 100Mi
+    envFrom:
+      - secretRef:
+          name: kansou-secret
+
     httpRoute:
       enabled: true
       gateway:
@@ -48,6 +31,7 @@ spec:
     config: |
       max_multiplier = 2.0
       primary_genre_weight = 0.6
+      max_history = -1
 
       [dimensions.story]
       label = "Story"
@@ -175,13 +159,6 @@ spec:
       world_building = 1.2
       pacing = 1.1
 
-      [server]
-      port = 8080
-      cors_allowed_origins = [
-          "http://localhost:3000",
-          "http://localhost:5173",
-          "http://localhost:8080",
-      ]
     resources:
       requests:
         cpu: 10m
