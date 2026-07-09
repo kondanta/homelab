@@ -165,3 +165,22 @@ spec:
       limits:
         cpu: 50m
         memory: 128Mi
+
+#TODO(taylan): Current chart does not handle init-db
+# Until chart supports this natively in the values
+# I'll handle it in postRenderer
+postRenderers:
+  - kustomize:
+      patches:
+        - target:
+            kind: Deployment
+            name: kansou
+          patch: |-
+            - op: add
+              path: /spec/template/spec/initContainers/-
+              value:
+                name: init-db
+                image: ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec
+                envFrom:
+                  - secretRef:
+                       name: kansou-secret
