@@ -75,6 +75,17 @@ sonarr:
             score: 100
           - name: "[Anime] Remux-1080p"
             score: 100
+      # Remux release groups — score in WEB-1080p so remuxes aren't displaced by WEBDL season packs
+      - trash_ids:
+          - 9965a052eb87b0d10313b1cea89eb451 # Remux Tier 01
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 1950
+      - trash_ids:
+          - 8a1d0c3d7497e741736761a1da866a2e # Remux Tier 02
+        assign_scores_to:
+          - name: WEB-1080p
+            score: 1900
       # WEB release groups
       - trash_ids:
           - e6258996055b9fbab7e9cb2f75819294 # WEB Tier 01
