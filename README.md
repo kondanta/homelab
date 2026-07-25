@@ -39,11 +39,11 @@ My Kubernetes cluster is deployed with [Talos Linux](https://www.talos.dev), a m
 
 ### Core Components
 
-- **Networking & Ingress**: [Cilium](https://github.com/cilium/cilium) for eBPF-based networking, [Envoy Gateway](https://gateway.envoyproxy.io) as the ingress controller implementing the Gateway API, [Towonel](https://codeberg.org/towonel/towonel) for secure external ingress via a self-hosted QUIC tunnel (previously [Cloudflared](https://github.com/cloudflare/cloudflared) / Cloudflare Tunnel, migrated away due to ToS restrictions on streaming media), and [External-DNS](https://github.com/kubernetes-sigs/external-dns) for automatic DNS record management.
+- **Networking & Ingress**: [Cilium](https://github.com/cilium/cilium) for eBPF-based networking, [Envoy Gateway](https://gateway.envoyproxy.io) as the ingress controller implementing the Gateway API, [Towonel](https://codeberg.org/towonel/towonel) for secure external ingress via a self-hosted QUIC tunnel (migrated from Cloudflare Tunnel), and [External-DNS](https://github.com/kubernetes-sigs/external-dns) for automatic DNS record management.
 - **Security & Identity**: [Authentik](https://goauthentik.io) as the SSO/OIDC provider for internal services. [Cert-Manager](https://github.com/cert-manager/cert-manager) for automated TLS. [SOPS](https://github.com/getsops/sops) for encrypted secrets in Git.
 - **Observability**: [VictoriaMetrics](https://victoriametrics.com) for metrics, [Loki](https://github.com/grafana/loki) for logs, [Grafana](https://github.com/grafana/grafana) for dashboards, [Gatus](https://github.com/TwiN/gatus) for uptime monitoring.
-- **Storage & Data**: [Longhorn](https://github.com/longhorn/longhorn) for distributed block storage. [CloudNative-PG](https://cloudnative-pg.io) for PostgreSQL.
-- **Automation & CI/CD**: [Renovate](https://github.com/renovatebot/renovate) for automated dependency updates. [Actions Runner Controller](https://github.com/actions/actions-runner-controller) for self-hosted GitHub Actions runners.
+- **Storage & Data**: [Longhorn](https://github.com/longhorn/longhorn) for distributed block storage. [Volsync](https://github.com/backube/volsync) + [Kopia](https://kopia.io) for PVC backups.
+- **Automation & CI/CD**: [Renovate](https://github.com/renovatebot/renovate) for automated dependency updates.
 
 ### GitOps
 
@@ -57,9 +57,12 @@ Flux recursively searches `infrastructure/apps` until it finds the top-level `ku
 
 ```sh
 📁 infrastructure
-├── 📁 apps       # applications
-├── 📁 components # re-useable kustomize components
-└── 📁 flux       # flux system configuration
+├── 📁 apps        # applications
+├── 📁 components  # re-useable kustomize components
+├── 📁 flux        # flux system configuration
+└── 📁 sources     # helm repositories and OCI sources
+📁 metal           # docker compose services (external host)
+📁 provision       # talos machine configuration
 ```
 
 ### Flux Dependency Graph
@@ -69,9 +72,8 @@ A high-level view of how Flux orders deployments. Storage is always provisioned 
 ```mermaid
 graph TD
     A>Kustomization: longhorn] -->|Creates| B[HelmRelease: longhorn]
-    C>Kustomization: cloudnative-pg] -->|Creates| D[HelmRelease: cloudnative-pg]
-    E>Kustomization: authentik] -->|Depends on| D
-    F>Kustomization: media-center apps] -->|Depends on| B
+    C>Kustomization: media-center apps] -->|Depends on| B
+    D>Kustomization: selfhosted apps] -->|Depends on| B
 ```
 
 ---
@@ -104,15 +106,19 @@ graph TD
 | | [qBittorrent](https://www.qbittorrent.org) | Torrent client |
 | | [Seerr](https://github.com/seerr-team/seerr) | Media request management |
 | | [Bookshelf](https://github.com/pennydreadful/bookshelf) | Book library (Hardcover metadata) |
+| | [Audiobookrequest](https://github.com/markbeep/audiobookrequest) | Audiobook request management |
+| | [rreading-glasses](https://github.com/blampe/rreading-glasses) | Goodreads-compatible book discovery |
 | **Self-hosted** | [FreshRSS](https://freshrss.org) | RSS reader |
 | | [Homebox](https://github.com/sysadminsmedia/homebox) | Home inventory management |
 | | [Excalidraw](https://github.com/excalidraw/excalidraw) | Collaborative whiteboard |
+| | [Home Assistant](https://www.home-assistant.io) | Home automation |
+| | [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) | Document management |
+| | [SilverBullet](https://silverbullet.md) | Self-hosted notes & wiki |
+| | [Kansou](https://github.com/kondanta/kansou) | Personal anime/manga rating tracker |
 
 ---
 
 _This README is a living document and will be updated as the homelab evolves._
-
----
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f64f/512.gif" alt="🙏" width="20" height="20"> Thanks
 
