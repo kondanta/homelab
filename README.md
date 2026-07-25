@@ -39,7 +39,7 @@ My Kubernetes cluster is deployed with [Talos Linux](https://www.talos.dev), a m
 
 ### Core Components
 
-- **Networking & Ingress**: [Cilium](https://github.com/cilium/cilium) for eBPF-based networking, [Envoy Gateway](https://gateway.envoyproxy.io) as the ingress controller implementing the Gateway API, [Cloudflared](https://github.com/cloudflare/cloudflared) for secure external ingress via Cloudflare Tunnel, and [External-DNS](https://github.com/kubernetes-sigs/external-dns) for automatic DNS record management.
+- **Networking & Ingress**: [Cilium](https://github.com/cilium/cilium) for eBPF-based networking, [Envoy Gateway](https://gateway.envoyproxy.io) as the ingress controller implementing the Gateway API, [Towonel](https://codeberg.org/towonel/towonel) for secure external ingress via a self-hosted QUIC tunnel (previously [Cloudflared](https://github.com/cloudflare/cloudflared) / Cloudflare Tunnel, migrated away due to ToS restrictions on streaming media), and [External-DNS](https://github.com/kubernetes-sigs/external-dns) for automatic DNS record management.
 - **Security & Identity**: [Authentik](https://goauthentik.io) as the SSO/OIDC provider for internal services. [Cert-Manager](https://github.com/cert-manager/cert-manager) for automated TLS. [SOPS](https://github.com/getsops/sops) for encrypted secrets in Git.
 - **Observability**: [VictoriaMetrics](https://victoriametrics.com) for metrics, [Loki](https://github.com/grafana/loki) for logs, [Grafana](https://github.com/grafana/grafana) for dashboards, [Gatus](https://github.com/TwiN/gatus) for uptime monitoring.
 - **Storage & Data**: [Longhorn](https://github.com/longhorn/longhorn) for distributed block storage. [CloudNative-PG](https://cloudnative-pg.io) for PostgreSQL.
