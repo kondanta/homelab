@@ -9,7 +9,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
   ref:
     # renovate: datasource=docker depName=envoyproxy/gateway-helm
-    tag: 1.8.2
+    tag: 1.8.3
   url: oci://docker.io/envoyproxy/gateway-helm
   ignore: |
       # exclude
