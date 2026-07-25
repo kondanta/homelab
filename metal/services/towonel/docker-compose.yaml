@@ -1,0 +1,28 @@
+---
+services:
+  towonel:
+    # renovate: datasource=docker depName=codeberg.org/towonel/towonel-node versioning=semver-coerced
+    image: codeberg.org/towonel/towonel-node:1.4.1
+    container_name: towonel
+    restart: unless-stopped
+    ports:
+      - "8443:8443/tcp"
+      - "51820:51820/udp"
+    env_file:
+      - .env
+    volumes:
+      - towonel_data:/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  towonel_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/projects/towonel/data
+      o: bind
