@@ -8,6 +8,7 @@ spec:
   endpoints:
     - dnsName: external.taylan.dev
       recordType: A
+      recordTTL: 300
       targets: ["46.62.237.128"]
       providerSpecific:
         - name: "external-dns.kubernetes.io/cloudflare-proxied"
