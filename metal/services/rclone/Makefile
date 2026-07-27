@@ -1,7 +1,7 @@
 .PHONY: build configure up down logs sync
 
 build:
-	docker compose build
+	docker build -t ghcr.io/kondanta/homelab/metal/rclone-sync:local .
 
 # Run interactively to set up garage + proton remotes in rclone.conf.
 # Run this before 'make up'. Creates rclone.conf if it doesn't exist.
