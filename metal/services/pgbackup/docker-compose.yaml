@@ -1,8 +1,7 @@
 ---
 services:
   pgbackup:
-    build: .
-    image: pgbackup:local
+    image: ghcr.io/kondanta/homelab/metal/pgbackup:18.4-alpine
     container_name: pgbackup
     restart: unless-stopped
     env_file:

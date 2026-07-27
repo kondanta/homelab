@@ -1,7 +1,7 @@
 .PHONY: build up down logs backup
 
 build:
-	docker compose build
+	docker build -t ghcr.io/kondanta/homelab/metal/pgbackup:local .
 
 up:
 	docker compose up -d
