@@ -1,0 +1,17 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: towonel
+  namespace: network
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: towonel
+  namespaceSelector:
+    matchNames:
+      - network
+  endpoints:
+    - port: http
+      interval: 30s
+      path: /metrics

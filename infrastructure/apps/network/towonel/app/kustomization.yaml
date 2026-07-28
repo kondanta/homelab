@@ -6,3 +6,4 @@ resources:
   - towonel-secret.sops.yaml
   - dnsendpoint.yaml
   - helmrelease.yaml
+  - vmservicescrape.yaml

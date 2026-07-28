@@ -6,4 +6,5 @@ resources:
   - helmrelease.yaml
   - httproute.yaml
   - trim.yaml
+  - vmservicescrape.yaml
   - volumesnapshotclass.yaml
