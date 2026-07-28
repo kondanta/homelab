@@ -214,36 +214,6 @@ spec:
 
     kube-state-metrics:
       enabled: true # TODO: This doesn't support customResourceState. I'll deploy it separately.
-      collectors:
-        - certificatesigningrequests
-        - configmaps
-        - cronjobs
-        - daemonsets
-        - deployments
-        - endpointslices
-        - horizontalpodautoscalers
-        - ingresses
-        - jobs
-        - leases
-        - limitranges
-        - mutatingwebhookconfigurations
-        - namespaces
-        - networkpolicies
-        - nodes
-        - persistentvolumeclaims
-        - persistentvolumes
-        - poddisruptionbudgets
-        - pods
-        - replicasets
-        - replicationcontrollers
-        - resourcequotas
-        - secrets
-        - services
-        - statefulsets
-        - storageclasses
-        - validatingwebhookconfigurations
-        - volumeattachments
-        - volumesnapshots
       resources:
         requests:
           cpu: 25m
