@@ -87,6 +87,9 @@ spec:
         ports:
           http:
             port: *port
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
     route:
       app:
         hostnames:
