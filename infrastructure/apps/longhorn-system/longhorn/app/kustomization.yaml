@@ -9,3 +9,4 @@ resources:
   - vmservicescrape.yaml
   - prometheusrule.yaml
   - volumesnapshotclass.yaml
+  - grafanadashboard.yaml
