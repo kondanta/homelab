@@ -39,7 +39,7 @@ spec:
             env:
               ATUIN_HOST: "0.0.0.0"
               ATUIN_PORT: &port 80
-              ATUIN_OPEN_REGISTRATION: "true" # set to "false" after registering your account
+              ATUIN_OPEN_REGISTRATION: "false"
               TZ: Europe/Oslo
             envFrom:
               - secretRef:
