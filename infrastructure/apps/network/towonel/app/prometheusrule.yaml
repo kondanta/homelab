@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: towonel
+spec:
+  groups:
+    - name: towonel.rules
+      rules:
+        - alert: TowonelTunnelDown
+          expr: |-
+            towonel_agent_edge_session_state == 0
+          annotations:
+            summary: >-
+              Towonel tunnel is down — all *.taylan.dev ingress is unreachable
+          for: 2m
+          labels:
+            severity: critical

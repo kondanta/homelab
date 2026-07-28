@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: longhorn
+spec:
+  groups:
+    - name: longhorn.rules
+      rules:
+        - alert: LonghornVolumeDegraded
+          expr: |-
+            longhorn_volume_robustness{state="degraded"} == 1
+          annotations:
+            summary: >-
+              Longhorn volume {{ $labels.pvc_namespace }}/{{ $labels.pvc }} is degraded
+          for: 5m
+          labels:
+            severity: warning
+
+        - alert: LonghornVolumeFaulted
+          expr: |-
+            longhorn_volume_robustness{state="faulted"} == 1
+          annotations:
+            summary: >-
+              Longhorn volume {{ $labels.pvc_namespace }}/{{ $labels.pvc }} is faulted
+          for: 2m
+          labels:
+            severity: critical
+
+        - alert: LonghornNodeNotReady
+          expr: |-
+            longhorn_node_status{condition="ready"} == 0
+          annotations:
+            summary: >-
+              Longhorn node {{ $labels.node }} is not ready
+          for: 2m
+          labels:
+            severity: critical
+
+        - alert: LonghornDiskSpaceLow
+          expr: |-
+            longhorn_disk_usage_bytes / longhorn_disk_capacity_bytes > 0.85
+          annotations:
+            summary: >-
+              Longhorn disk on {{ $labels.node }} is above 85% capacity
+          for: 15m
+          labels:
+            severity: warning
