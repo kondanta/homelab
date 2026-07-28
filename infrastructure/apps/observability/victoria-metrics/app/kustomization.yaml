@@ -6,3 +6,4 @@ resources:
   - helmrelease.yaml
   - alertmanagerconfig.yaml
   - httproute.yaml
+  - ksm-volumesnapshot-rbac.yaml
