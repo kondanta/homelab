@@ -38,7 +38,7 @@ spec:
               - start
             env:
               ATUIN_HOST: "0.0.0.0"
-              ATUIN_PORT: &port 8888
+              ATUIN_PORT: &port 80
               ATUIN_OPEN_REGISTRATION: "true" # set to "false" after registering your account
               TZ: Europe/Oslo
             envFrom:
@@ -73,7 +73,6 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 64Mi
               limits:
                 memory: 256Mi
     defaultPodOptions:
