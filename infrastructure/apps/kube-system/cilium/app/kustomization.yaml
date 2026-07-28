@@ -6,6 +6,7 @@ resources:
   - helmrepository.yaml
   - helmrelease.yaml
   - crds.yaml
+  - grafanadashboard.yaml
 configMapGenerator:
   - name: cilium-values
     files:
