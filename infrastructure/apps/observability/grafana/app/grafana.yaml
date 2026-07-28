@@ -39,6 +39,17 @@ spec:
         spec:
           containers:
             - name: grafana
+              env:
+                - name: GF_SECURITY_ADMIN_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin
+                      key: admin-user
+                - name: GF_SECURITY_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin
+                      key: admin-password
               envFrom:
                 - secretRef:
                     name: grafana-oidc
@@ -48,7 +59,4 @@ spec:
                   memory: 256Mi
                 limits:
                   memory: 512Mi
-  adminCredentials:
-    secretName: grafana-admin
-    userKey: admin-user
-    passwordKey: admin-password
+  disableDefaultAdminSecret: true
