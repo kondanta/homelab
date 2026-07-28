@@ -7,4 +7,5 @@ resources:
   - httproute.yaml
   - trim.yaml
   - vmservicescrape.yaml
+  - prometheusrule.yaml
   - volumesnapshotclass.yaml

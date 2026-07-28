@@ -7,3 +7,4 @@ resources:
   - dnsendpoint.yaml
   - helmrelease.yaml
   - vmservicescrape.yaml
+  - prometheusrule.yaml
