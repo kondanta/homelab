@@ -27,3 +27,14 @@ spec:
           for: 5m
           labels:
             severity: critical
+
+        - alert: VolSyncSnapshotStuck
+          expr: |-
+            increase(volsync_kopia_snapshot_creation_failure_total{failure_reason="prerequisites_failed"}[2h]) > 20
+          annotations:
+            summary: >-
+              {{ $labels.obj_namespace }}/{{ $labels.obj_name }} VolSync VolumeSnapshot is
+              stuck — prerequisite failures accumulating, manual snapshot cleanup likely required
+          for: 10m
+          labels:
+            severity: warning
