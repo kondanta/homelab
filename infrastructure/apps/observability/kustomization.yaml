@@ -9,7 +9,7 @@ components:
 resources:
   - gatus/ks.yaml
   - grafana-operator/ks.yaml
-  - grafana/ks.yaml
+  - grafana-operator/instance/ks.yaml
   - kromgo/ks.yaml
   - loki/ks.yaml
   - prometheus/ks.yaml
