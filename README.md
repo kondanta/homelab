@@ -115,6 +115,7 @@ graph TD
 | | [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) | Document management |
 | | [SilverBullet](https://silverbullet.md) | Self-hosted notes & wiki |
 | | [Kansou](https://github.com/kondanta/kansou) | Personal anime/manga rating tracker |
+| | [Atuin](https://atuin.sh) | Shell history sync |
 
 ---
 
