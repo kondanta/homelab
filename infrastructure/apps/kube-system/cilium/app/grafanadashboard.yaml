@@ -26,19 +26,7 @@ spec:
     name: hubble-dashboard
     key: hubble-dashboard.json
 
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDashboard
-metadata:
-  name: hubble-l7-http-metrics-by-workload
-spec:
-  allowCrossNamespaceImport: true
-  instanceSelector:
-    matchLabels:
-      dashboards: grafana
-  configMapRef:
-    name: hubble-l7-http-metrics-by-workload
-    key: hubble-l7-http-metrics-by-workload.json
+
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
