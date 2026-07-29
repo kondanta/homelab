@@ -50,6 +50,8 @@ routes:
     target: discord
     title: "{{ if eq .payload.status \"firing\" }}🔥{{ else }}✅{{ end }} {{ .payload.commonLabels.alertname }}"
     message: |-
-      Status: {{ .payload.status }}
-      {{ .payload.commonAnnotations.summary | default "no description" }}
+      Status: {{ .payload.status }}{{ with .payload.commonLabels.severity }} | Severity: {{ . }}{{ end }}
+      {{- range .payload.alerts }}
+      • {{ .annotations.summary | default "no description" }}
+      {{- end }}
     whenExpr: 'payload.status == "firing" || payload.status == "resolved"'
