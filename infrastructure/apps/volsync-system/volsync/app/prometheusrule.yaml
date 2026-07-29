@@ -31,6 +31,8 @@ spec:
         - alert: VolSyncSnapshotStuck
           expr: |-
             increase(volsync_kopia_snapshot_creation_failure_total{failure_reason="prerequisites_failed"}[2h]) > 20
+              and on(obj_name, obj_namespace, role)
+            increase(volsync_kopia_operation_success_total[2h]) == 0
           annotations:
             summary: >-
               {{ $labels.obj_namespace }}/{{ $labels.obj_name }} VolSync VolumeSnapshot is
