@@ -27,6 +27,16 @@ spec:
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
+  postRenderers:
+    - kustomize:
+        patches:
+          - patch: |
+              - op: add
+                path: /spec/disableNamespaceMatcher
+                value: true
+            target:
+              kind: VMAlertmanager
+              name: stack
   values:
     vmalert:
       enabled: true
@@ -41,7 +51,6 @@ spec:
     vmalertmanager:
       enabled: true
       spec:
-        disableNamespaceMatcher: true
         storage:
           volumeClaimTemplate:
             spec:
