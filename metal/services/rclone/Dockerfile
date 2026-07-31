@@ -1,4 +1,4 @@
-FROM rclone/rclone:1.74.4
+FROM rclone/rclone:1.75.0
 LABEL org.opencontainers.image.source="https://github.com/kondanta/homelab"
 RUN apk add --no-cache dcron tzdata
 COPY sync.sh /usr/local/bin/sync.sh
