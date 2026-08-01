@@ -1,0 +1,6 @@
+---
+# Worker role overlay — patched on top of cluster.yaml.j2 for worker nodes.
+# No secrets required: workers receive no CA keys, no etcd config, no apiserver config.
+version: v1alpha1
+machine:
+  type: worker
