@@ -1,0 +1,118 @@
+---
+# STAGED DRAFT — targets Talos 1.14 multi-document config format
+# CP-only overlay — patched on top of cluster.yaml.j2 for control-plane nodes.
+#
+# v1alpha1 block: CA private keys, serviceAccount key, etcd CA keys.
+# These stay in v1alpha1 because the new CA document kinds take raw PEM; SOPS stores base64.
+# The shim handles base64→PEM decoding only for v1alpha1 CA fields.
+version: v1alpha1
+machine:
+  ca:
+    # Repeat crt alongside key: strategic merge replaces the entire machine.ca object.
+    # Without crt here, the merge would send only the key and clear the crt written by cluster.yaml.j2.
+    crt: {{ MACHINE_CA_CRT }}
+    key: {{ MACHINE_CA_KEY }}
+  features:
+    kubernetesTalosAPIAccess:
+      allowedKubernetesNamespaces:
+        - actions-runner-system
+        - security
+        - system-upgrade
+      allowedRoles:
+        - os:admin
+      enabled: true
+  type: controlplane
+cluster:
+  ca:
+    # Same crt-alongside-key requirement as machine.ca above.
+    crt: {{ CLUSTER_CA_CRT }}
+    key: {{ CLUSTER_CA_KEY }}
+  aggregatorCA:
+    crt: {{ CLUSTER_AGGREGATOR_CA_CRT }}
+    key: {{ CLUSTER_AGGREGATOR_CA_KEY }}
+  serviceAccount:
+    key: {{ CLUSTER_SA_KEY }}
+  etcd:
+    ca:
+      crt: {{ CLUSTER_ETCD_CA_CRT }}
+      key: {{ CLUSTER_ETCD_CA_KEY }}
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+image: registry.k8s.io/kube-apiserver:v1.36.3
+certSANs:
+  - 127.0.0.1
+  - 10.1.20.11
+disablePodSecurityPolicy: true
+extraArgs:
+  enable-aggregator-routing: "true"
+  feature-gates: MutatingAdmissionPolicy=true
+  runtime-config: admissionregistration.k8s.io/v1beta1=true
+---
+apiVersion: v1alpha1
+kind: KubeAuditPolicyConfig
+rules:
+  - level: Metadata
+---
+# Explicit authorizers required: InjectDefaultAuthorizers() returns false with multi-doc format.
+# Order is load-bearing: node must precede rbac.
+apiVersion: v1alpha1
+kind: KubeAuthorizerConfig
+authorizationModes:
+  - node
+  - rbac
+---
+# VERIFY: KubeAuthenticationConfig schema — confirm empty body uses built-in defaults
+# Required to avoid missing-authenticator errors when the v1alpha1 shim is not injecting defaults.
+apiVersion: v1alpha1
+kind: KubeAuthenticationConfig
+---
+# key2 is hardcoded by the v1alpha1 shim (not key1). Must match for decryption to succeed on existing data.
+apiVersion: v1alpha1
+kind: KubeEtcdEncryptionConfig
+encryptionConfig:
+  resources:
+    - secrets
+  providers:
+    - secretbox:
+        keys:
+          - name: key2
+            secret: {{ CLUSTER_SECRETBOX_ENCRYPTION_SECRET }}
+    - identity: {}
+---
+# apiVersion/kind stripped from embedded config — KubeSchedulerConfig establishes the type.
+apiVersion: v1alpha1
+kind: KubeSchedulerConfig
+image: registry.k8s.io/kube-scheduler:v1.36.3
+extraArgs:
+  bind-address: 0.0.0.0
+config:
+  profiles:
+    - schedulerName: default-scheduler
+      plugins:
+        score:
+          disabled:
+            - name: ImageLocality
+      pluginConfig:
+        - name: PodTopologySpread
+          args:
+            defaultingType: List
+            defaultConstraints:
+              - maxSkew: 1
+                topologyKey: kubernetes.io/hostname
+                whenUnsatisfiable: ScheduleAnyway
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+image: registry.k8s.io/kube-controller-manager:v1.36.3
+extraArgs:
+  bind-address: 0.0.0.0
+---
+# No taints = scheduling allowed on control plane (replaces allowSchedulingOnControlPlanes: true).
+# Labels merge with the base KubeNodeConfig from cluster.yaml.j2.
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  node-role.kubernetes.io/control-plane: ""
