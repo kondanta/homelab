@@ -10,6 +10,7 @@ services:
       - ./conf:/opt/adguardhome/conf
 
   adguard-exporter:
+    # renovate: datasource=docker depName=ghcr.io/henrywhitaker3/adguard-exporter
     image: ghcr.io/henrywhitaker3/adguard-exporter:v1.2.1
     container_name: adguard-exporter
     restart: unless-stopped

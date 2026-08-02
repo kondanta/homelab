@@ -1,0 +1,36 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: backup-host
+  namespace: observability
+spec:
+  targetEndpoints:
+    - targets:
+        - "10.1.20.51:9100"
+      labels:
+        job: node-exporter
+        instance: backup-host
+      interval: 30s
+      path: /metrics
+    - targets:
+        - "10.1.20.51:8080"
+      labels:
+        job: cadvisor
+        instance: backup-host
+      interval: 30s
+      path: /metrics
+    - targets:
+        - "10.1.20.51:9187"
+      labels:
+        job: postgres-exporter
+        instance: backup-host
+      interval: 30s
+      path: /metrics
+    - targets:
+        - "10.1.20.51:3903"
+      labels:
+        job: garage
+        instance: backup-host
+      interval: 30s
+      path: /metrics
