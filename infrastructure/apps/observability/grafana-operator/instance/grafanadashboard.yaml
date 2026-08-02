@@ -227,6 +227,54 @@ spec:
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
+  name: adguard-home
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+  grafanaCom:
+    # renovate: depName="AdGuard Home Exporter"
+    id: 20799
+    revision: 8
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: cadvisor
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+  grafanaCom:
+    # renovate: depName="Cadvisor exporter"
+    id: 14282
+    revision: 1
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: postgresql
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+  grafanaCom:
+    # renovate: depName="PostgreSQL Database"
+    id: 9628
+    revision: 8
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
   name: volsync
 spec:
   instanceSelector:
