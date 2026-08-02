@@ -7,8 +7,16 @@ metadata:
 spec:
   targetEndpoints:
     - targets:
+        - "10.1.20.52:9100"
+      labels:
+        job: node-exporter
+        instance: adguard-host
+      interval: 30s
+      path: /metrics
+    - targets:
         - "10.1.20.52:9618"
       labels:
         job: adguard
+        instance: adguard-host
       interval: 30s
       path: /metrics
