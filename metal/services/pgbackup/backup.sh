@@ -50,4 +50,9 @@ if [ -n "$BACKUP_KEEP_DAYS" ] && [ "$BACKUP_KEEP_DAYS" -gt 0 ]; then
   done
 fi
 
+if [ -n "${PUSHGATEWAY_URL}" ]; then
+  echo "pgbackup_last_success_timestamp $(date +%s)" \
+    | curl -s --data-binary @- "${PUSHGATEWAY_URL}/metrics/job/pgbackup" || true
+fi
+
 echo "[$(date)] Backup complete"
