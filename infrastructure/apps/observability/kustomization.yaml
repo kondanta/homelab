@@ -14,6 +14,7 @@ resources:
   - loki/ks.yaml
   - prometheus/ks.yaml
   - promtail/ks.yaml
+  - pushgateway/ks.yaml
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml
 patches:
