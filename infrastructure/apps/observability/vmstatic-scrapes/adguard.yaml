@@ -1,0 +1,14 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: adguard
+  namespace: observability
+spec:
+  targetEndpoints:
+    - targets:
+        - "10.1.20.52:9618"
+      labels:
+        job: adguard
+      interval: 30s
+      path: /metrics
