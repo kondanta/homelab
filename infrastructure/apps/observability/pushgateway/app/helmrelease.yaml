@@ -18,9 +18,11 @@ spec:
       retries: 3
   values:
     fullnameOverride: pushgateway
+    namespaceOverride: observability
 
     serviceMonitor:
       enabled: true
+      namespace: observability
       honorLabels: true
 
     persistentVolume:
