@@ -9,6 +9,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: victoria-metrics
+      namespace: observability
   interval: 1h
   path: ./infrastructure/apps/observability/pushgateway/app
   prune: true
