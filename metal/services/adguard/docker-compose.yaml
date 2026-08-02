@@ -8,3 +8,13 @@ services:
     volumes:
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf
+
+  adguard-exporter:
+    image: ghcr.io/henrywhitaker3/adguard-exporter:v1.2.1
+    container_name: adguard-exporter
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - .env
+    environment:
+      ADGUARD_SERVERS: http://localhost
