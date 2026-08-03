@@ -1,8 +1,8 @@
 ---
 services:
   smartctl-exporter:
-    # renovate: datasource=docker depName=quay.io/prometheuscommunity/smartctl-exporter
-    image: quay.io/prometheuscommunity/smartctl-exporter:v0.14.0
+    # renovate: datasource=docker depName=ghcr.io/kondanta/homelab/metal/smartctl-exporter
+    image: ghcr.io/kondanta/homelab/metal/smartctl-exporter:0.14.0
     container_name: smartctl-exporter
     restart: unless-stopped
     privileged: true
