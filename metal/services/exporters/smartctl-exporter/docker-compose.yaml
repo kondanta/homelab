@@ -1,8 +1,16 @@
 ---
+# smartctl-exporter is not used on the QNAP NAS — the QNAP storage controller
+# does not expose individual drives as block devices, so smartctl cannot query
+# per-bay SMART data. Use qnapexporter (App Center) instead: it reads SMART
+# status via the proprietary getsysinfo binary and exposes node_hdtmp_C with
+# a smart= label per bay.
+#
+# This file is kept as a reference in case smartctl-exporter is needed on an
+# amd64 host with direct disk access in future.
 services:
   smartctl-exporter:
-    # renovate: datasource=docker depName=ghcr.io/kondanta/homelab/metal/smartctl-exporter
-    image: ghcr.io/kondanta/homelab/metal/smartctl-exporter:0.14.0
+    # renovate: datasource=docker depName=quay.io/prometheuscommunity/smartctl-exporter
+    image: quay.io/prometheuscommunity/smartctl-exporter:v0.14.0
     container_name: smartctl-exporter
     restart: unless-stopped
     privileged: true
