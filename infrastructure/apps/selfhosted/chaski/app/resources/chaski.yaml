@@ -53,5 +53,10 @@ routes:
       Status: {{ .payload.status }}{{ with .payload.commonLabels.severity }} | Severity: {{ . }}{{ end }}
       {{- range .payload.alerts }}
       • {{ .annotations.summary | default "no description" }}
+        {{- with .labels.namespace }}  `ns/{{ . }}`{{ end }}
+        {{- with .labels.pod }}  `{{ . }}`{{ end }}
+        {{- with .labels.instance }}  `{{ . }}`{{ end }}
+        {{- with .labels.container }}  `ctr/{{ . }}`{{ end }}
+        {{- with .labels.job }}  `job/{{ . }}`{{ end }}
       {{- end }}
     whenExpr: 'payload.status == "firing" || payload.status == "resolved"'
