@@ -51,10 +51,10 @@ spec:
               PAPERLESS_PORT: &port 8000
               PAPERLESS_TIME_ZONE: Europe/Oslo
               PAPERLESS_DBENGINE: postgresql
-              PAPERLESS_DBHOST: backup.internal
+              PAPERLESS_DBHOST: postgres.network.svc.cluster.local
               PAPERLESS_DBPORT: "5432"
               PAPERLESS_DBNAME: paperless
-              PAPERLESS_REDIS: redis://backup.internal:6379
+              PAPERLESS_REDIS: redis://redis.network.svc.cluster.local:6379
               PAPERLESS_OCR_LANGUAGE: eng
               PAPERLESS_TIKA_ENABLED: "1"
               PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
