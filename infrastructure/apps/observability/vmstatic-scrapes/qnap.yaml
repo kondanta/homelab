@@ -12,3 +12,9 @@ spec:
         instance: qnap-nas
       interval: 30s
       path: /metrics
+    - targets: ["10.1.20.100:9633"]
+      labels:
+        job: smartctl
+        instance: qnap-nas
+      interval: 10m
+      path: /metrics
