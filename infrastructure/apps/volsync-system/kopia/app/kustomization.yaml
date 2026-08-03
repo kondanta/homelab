@@ -5,3 +5,5 @@ resources:
   - helmrelease.yaml
   - kopia-secret.sops.yaml
   - ocirepository.yaml
+  - configmap-policies.yaml
+  - cronjob-policy-enforce.yaml
