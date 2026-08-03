@@ -35,6 +35,7 @@ spec:
             - 1.3.6.1.4.1.24681.1.3.11  # systemHdTableEX
             - 1.3.6.1.4.1.55062.1.10.9  # volumeTable (QTS-MIB)
             - 1.3.6.1.4.1.55062.1.12.9  # systemFanTable (QTS-MIB)
+            - 1.3.6.1.2.1.2.2          # IF-MIB ifTable (byte counters)
           metrics:
             - name: qnap_cpu_usage_percent
               oid: 1.3.6.1.4.1.24681.1.3.1
@@ -143,6 +144,30 @@ spec:
                 - labels: [volumeIndex]
                   labelname: volumeName
                   oid: 1.3.6.1.4.1.55062.1.10.9.1.8
+                  type: DisplayString
+            - name: qnap_if_rx_bytes_total
+              oid: 1.3.6.1.2.1.2.2.1.10
+              type: counter
+              help: Network bytes received per interface (IF-MIB ifInOctets)
+              indexes:
+                - labelname: ifIndex
+                  type: Integer32
+              lookups:
+                - labels: [ifIndex]
+                  labelname: ifDescr
+                  oid: 1.3.6.1.2.1.2.2.1.2
+                  type: DisplayString
+            - name: qnap_if_tx_bytes_total
+              oid: 1.3.6.1.2.1.2.2.1.16
+              type: counter
+              help: Network bytes sent per interface (IF-MIB ifOutOctets)
+              indexes:
+                - labelname: ifIndex
+                  type: Integer32
+              lookups:
+                - labels: [ifIndex]
+                  labelname: ifDescr
+                  oid: 1.3.6.1.2.1.2.2.1.2
                   type: DisplayString
             - name: qnap_fan_speed_rpm
               oid: 1.3.6.1.4.1.55062.1.12.9.1.3
