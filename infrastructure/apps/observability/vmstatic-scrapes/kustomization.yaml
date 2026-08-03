@@ -6,3 +6,4 @@ resources:
   - adguard.yaml
   - backup-host.yaml
   - qnap.yaml
+  - prometheusrule-metal.yaml
