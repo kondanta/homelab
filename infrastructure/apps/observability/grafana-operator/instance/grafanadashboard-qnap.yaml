@@ -26,7 +26,7 @@ spec:
           "type": "stat",
           "title": "CPU Usage",
           "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
             "orientation": "auto",
@@ -49,7 +49,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_cpu_usage_percent",
               "legendFormat": "CPU"
             }
@@ -60,7 +60,7 @@ spec:
           "type": "stat",
           "title": "Memory Used",
           "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
             "orientation": "auto",
@@ -83,7 +83,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "(1 - qnap_memory_free_bytes / qnap_memory_total_bytes) * 100",
               "legendFormat": "Memory"
             }
@@ -94,7 +94,7 @@ spec:
           "type": "stat",
           "title": "CPU Temperature",
           "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
             "orientation": "auto",
@@ -117,7 +117,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_cpu_temperature_celsius",
               "legendFormat": "CPU"
             }
@@ -128,7 +128,7 @@ spec:
           "type": "stat",
           "title": "System Temperature",
           "gridPos": {"x": 12, "y": 0, "w": 4, "h": 4},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
             "orientation": "auto",
@@ -151,7 +151,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_system_temperature_celsius",
               "legendFormat": "System"
             }
@@ -162,7 +162,7 @@ spec:
           "type": "stat",
           "title": "Uptime",
           "gridPos": {"x": 16, "y": 0, "w": 8, "h": 4},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
             "orientation": "auto",
@@ -181,7 +181,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_uptime_centiseconds / 100",
               "legendFormat": "Uptime"
             }
@@ -192,7 +192,7 @@ spec:
           "type": "timeseries",
           "title": "CPU Usage",
           "gridPos": {"x": 0, "y": 4, "w": 12, "h": 8},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "tooltip": {"mode": "single"},
             "legend": {"displayMode": "list", "placement": "bottom"}
@@ -208,7 +208,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_cpu_usage_percent",
               "legendFormat": "CPU %"
             }
@@ -219,7 +219,7 @@ spec:
           "type": "timeseries",
           "title": "Memory Usage",
           "gridPos": {"x": 12, "y": 4, "w": 12, "h": 8},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "tooltip": {"mode": "single"},
             "legend": {"displayMode": "list", "placement": "bottom"}
@@ -233,12 +233,12 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_memory_total_bytes",
               "legendFormat": "Total"
             },
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_memory_total_bytes - qnap_memory_free_bytes",
               "legendFormat": "Used"
             }
@@ -249,7 +249,7 @@ spec:
           "type": "bargauge",
           "title": "Volume Usage",
           "gridPos": {"x": 0, "y": 12, "w": 24, "h": 8},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
             "orientation": "horizontal",
@@ -274,7 +274,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "1 - (qnap_volume_free_bytes / qnap_volume_capacity_bytes)",
               "legendFormat": "{{volumeName}}"
             }
@@ -285,7 +285,7 @@ spec:
           "type": "table",
           "title": "Disk Status & Temperature",
           "gridPos": {"x": 0, "y": 20, "w": 12, "h": 8},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "sortBy": [{"displayName": "Disk", "desc": false}],
             "footer": {"show": false}
@@ -351,14 +351,14 @@ spec:
           ],
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_disk_temperature_celsius",
               "legendFormat": "{{diskDescr}}",
               "instant": true,
               "refId": "A"
             },
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_disk_status",
               "legendFormat": "{{diskDescr}}",
               "instant": true,
@@ -371,7 +371,7 @@ spec:
           "type": "timeseries",
           "title": "Network Packets",
           "gridPos": {"x": 12, "y": 20, "w": 12, "h": 8},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "tooltip": {"mode": "multi"},
             "legend": {"displayMode": "list", "placement": "bottom"}
@@ -385,12 +385,12 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "rate(qnap_if_packets_received_total[5m])",
               "legendFormat": "rx {{ifDescr}}"
             },
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "rate(qnap_if_packets_sent_total[5m])",
               "legendFormat": "tx {{ifDescr}}"
             }
@@ -401,7 +401,7 @@ spec:
           "type": "gauge",
           "title": "Fan Speed",
           "gridPos": {"x": 0, "y": 28, "w": 24, "h": 6},
-          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
             "orientation": "auto",
@@ -425,7 +425,7 @@ spec:
           },
           "targets": [
             {
-              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
               "expr": "qnap_fan_speed_rpm",
               "legendFormat": "{{fanDescr}}"
             }
