@@ -315,6 +315,136 @@ spec:
             }
           },
           "targets": [{"datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"}, "expr": "1 - (qnap_volume_free_bytes / qnap_volume_capacity_bytes)", "legendFormat": "{{volumeName}}"}]
+        },
+        {
+          "id": 18, "type": "row", "title": "Disk Health (SMART)",
+          "gridPos": {"x": 0, "y": 39, "w": 24, "h": 1}, "collapsed": false
+        },
+        {
+          "id": 19,
+          "type": "stat",
+          "title": "SMART Status",
+          "gridPos": {"x": 0, "y": 40, "w": 24, "h": 5},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "horizontal", "colorMode": "background",
+            "graphMode": "none", "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "mappings": [
+                {"type": "value", "options": {"0": {"text": "FAIL", "color": "red"}, "1": {"text": "PASS", "color": "green"}}}
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "red", "value": null},
+                  {"color": "green", "value": 1}
+                ]
+              }
+            }
+          },
+          "targets": [{"datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"}, "expr": "smartctl_device_smart_status{instance=\"qnap-nas\"}", "legendFormat": "{{device}}"}]
+        },
+        {
+          "id": 20,
+          "type": "stat",
+          "title": "Reallocated Sectors",
+          "gridPos": {"x": 0, "y": 45, "w": 12, "h": 5},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "horizontal", "colorMode": "background",
+            "graphMode": "none", "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "red", "value": 1}
+                ]
+              }
+            }
+          },
+          "targets": [{"datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"}, "expr": "smartctl_device_attribute{attribute_name=\"Reallocated_Sector_Ct\", value_type=\"raw\", instance=\"qnap-nas\"}", "legendFormat": "{{device}}"}]
+        },
+        {
+          "id": 21,
+          "type": "stat",
+          "title": "Pending Sectors",
+          "gridPos": {"x": 12, "y": 45, "w": 12, "h": 5},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "horizontal", "colorMode": "background",
+            "graphMode": "none", "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "orange", "value": 1},
+                  {"color": "red", "value": 5}
+                ]
+              }
+            }
+          },
+          "targets": [{"datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"}, "expr": "smartctl_device_attribute{attribute_name=\"Current_Pending_Sector\", value_type=\"raw\", instance=\"qnap-nas\"}", "legendFormat": "{{device}}"}]
+        },
+        {
+          "id": 22,
+          "type": "timeseries",
+          "title": "Disk Temperature (SMART)",
+          "gridPos": {"x": 0, "y": 50, "w": 12, "h": 8},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
+          "options": {
+            "tooltip": {"mode": "multi"},
+            "legend": {"displayMode": "table", "placement": "right", "calcs": ["last", "max", "mean"]}
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "celsius",
+              "color": {"mode": "palette-classic"},
+              "custom": {"lineWidth": 1, "fillOpacity": 15},
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 40},
+                  {"color": "orange", "value": 50},
+                  {"color": "red", "value": 55}
+                ]
+              }
+            }
+          },
+          "targets": [{"datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"}, "expr": "smartctl_device_temperature_celsius{instance=\"qnap-nas\"}", "legendFormat": "{{device}}"}]
+        },
+        {
+          "id": 23,
+          "type": "stat",
+          "title": "Power-On Hours",
+          "gridPos": {"x": 12, "y": 50, "w": 12, "h": 8},
+          "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "horizontal", "colorMode": "background",
+            "graphMode": "none", "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "h",
+              "thresholds": {"mode": "absolute", "steps": [{"color": "purple", "value": null}]}
+            }
+          },
+          "targets": [{"datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"}, "expr": "smartctl_device_attribute{attribute_name=\"Power_On_Hours\", value_type=\"raw\", instance=\"qnap-nas\"}", "legendFormat": "{{device}}"}]
         }
       ]
     }
