@@ -19,8 +19,5 @@ spec:
       fsGroup: ${VOLSYNC_PGID:=568}
     parallelism: 2
     repository: volsync-secret
-    retain:
-      daily: ${VOLSYNC_RETAIN_DAILY:=14}
-      weekly: ${VOLSYNC_RETAIN_WEEKLY:=0}
     storageClassName: ${VOLSYNC_STORAGECLASS:=longhorn}
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=longhorn}
