@@ -9,7 +9,7 @@ spec:
     - targets:
         - "10.1.20.52:9100"
       labels:
-        job: node-exporter
+        job: node-exporter-metal
         instance: adguard-host
       interval: 30s
       path: /metrics
