@@ -1,0 +1,435 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: qnap-nas
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+  json: |
+    {
+      "title": "QNAP NAS",
+      "uid": "qnap-nas-snmp",
+      "tags": ["qnap", "nas", "snmp"],
+      "timezone": "browser",
+      "schemaVersion": 38,
+      "version": 1,
+      "refresh": "1m",
+      "time": {"from": "now-3h", "to": "now"},
+      "panels": [
+        {
+          "id": 1,
+          "type": "stat",
+          "title": "CPU Usage",
+          "gridPos": {"x": 0, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "auto",
+            "colorMode": "background",
+            "graphMode": "area",
+            "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 70},
+                  {"color": "red", "value": 90}
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_cpu_usage_percent",
+              "legendFormat": "CPU"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "stat",
+          "title": "Memory Used",
+          "gridPos": {"x": 4, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "auto",
+            "colorMode": "background",
+            "graphMode": "area",
+            "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 75},
+                  {"color": "red", "value": 90}
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "(1 - qnap_memory_free_bytes / qnap_memory_total_bytes) * 100",
+              "legendFormat": "Memory"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "stat",
+          "title": "CPU Temperature",
+          "gridPos": {"x": 8, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "auto",
+            "colorMode": "background",
+            "graphMode": "none",
+            "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "celsius",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 65},
+                  {"color": "red", "value": 80}
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_cpu_temperature_celsius",
+              "legendFormat": "CPU"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "stat",
+          "title": "System Temperature",
+          "gridPos": {"x": 12, "y": 0, "w": 4, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "auto",
+            "colorMode": "background",
+            "graphMode": "none",
+            "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "celsius",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 55},
+                  {"color": "red", "value": 70}
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_system_temperature_celsius",
+              "legendFormat": "System"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "stat",
+          "title": "Uptime",
+          "gridPos": {"x": 16, "y": 0, "w": 8, "h": 4},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "auto",
+            "colorMode": "value",
+            "graphMode": "none",
+            "textMode": "auto"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [{"color": "green", "value": null}]
+              }
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_uptime_centiseconds / 100",
+              "legendFormat": "Uptime"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "timeseries",
+          "title": "CPU Usage",
+          "gridPos": {"x": 0, "y": 4, "w": 12, "h": 8},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "tooltip": {"mode": "single"},
+            "legend": {"displayMode": "list", "placement": "bottom"}
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 0,
+              "max": 100,
+              "color": {"mode": "palette-classic"},
+              "custom": {"lineWidth": 1, "fillOpacity": 10}
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_cpu_usage_percent",
+              "legendFormat": "CPU %"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "timeseries",
+          "title": "Memory Usage",
+          "gridPos": {"x": 12, "y": 4, "w": 12, "h": 8},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "tooltip": {"mode": "single"},
+            "legend": {"displayMode": "list", "placement": "bottom"}
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "decbytes",
+              "color": {"mode": "palette-classic"},
+              "custom": {"lineWidth": 1, "fillOpacity": 10}
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_memory_total_bytes",
+              "legendFormat": "Total"
+            },
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_memory_total_bytes - qnap_memory_free_bytes",
+              "legendFormat": "Used"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "bargauge",
+          "title": "Volume Usage",
+          "gridPos": {"x": 0, "y": 12, "w": 24, "h": 8},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "horizontal",
+            "displayMode": "gradient",
+            "valueMode": "color",
+            "showUnfilled": true
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit",
+              "min": 0,
+              "max": 1,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 0.75},
+                  {"color": "red", "value": 0.90}
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "1 - (qnap_volume_free_bytes / qnap_volume_capacity_bytes)",
+              "legendFormat": "{{volumeName}}"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "table",
+          "title": "Disk Status & Temperature",
+          "gridPos": {"x": 0, "y": 20, "w": 12, "h": 8},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "sortBy": [{"displayName": "Disk", "desc": false}],
+            "footer": {"show": false}
+          },
+          "fieldConfig": {
+            "defaults": {"custom": {"align": "auto"}},
+            "overrides": [
+              {
+                "matcher": {"id": "byName", "options": "Temperature"},
+                "properties": [
+                  {"id": "unit", "value": "celsius"},
+                  {
+                    "id": "thresholds",
+                    "value": {
+                      "mode": "absolute",
+                      "steps": [
+                        {"color": "green", "value": null},
+                        {"color": "yellow", "value": 45},
+                        {"color": "red", "value": 55}
+                      ]
+                    }
+                  },
+                  {"id": "custom.displayMode", "value": "color-background"}
+                ]
+              },
+              {
+                "matcher": {"id": "byName", "options": "Status"},
+                "properties": [
+                  {
+                    "id": "mappings",
+                    "value": [
+                      {"type": "value", "options": {"0": {"text": "Ready", "color": "green", "index": 0}}},
+                      {"type": "value", "options": {"-4": {"text": "Unknown", "color": "yellow", "index": 1}}},
+                      {"type": "value", "options": {"-5": {"text": "No Disk", "color": "blue", "index": 2}}},
+                      {"type": "value", "options": {"-6": {"text": "Invalid", "color": "red", "index": 3}}},
+                      {"type": "value", "options": {"-9": {"text": "R/W Error", "color": "red", "index": 4}}}
+                    ]
+                  },
+                  {"id": "custom.displayMode", "value": "color-background"}
+                ]
+              }
+            ]
+          },
+          "transformations": [
+            {"id": "merge", "options": {}},
+            {
+              "id": "organize",
+              "options": {
+                "renameByName": {
+                  "diskDescr": "Disk",
+                  "Value #A": "Temperature",
+                  "Value #B": "Status"
+                },
+                "excludeByName": {
+                  "Time": true,
+                  "diskIndex": true,
+                  "instance": true,
+                  "job": true,
+                  "prometheus": true
+                }
+              }
+            }
+          ],
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_disk_temperature_celsius",
+              "legendFormat": "{{diskDescr}}",
+              "instant": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_disk_status",
+              "legendFormat": "{{diskDescr}}",
+              "instant": true,
+              "refId": "B"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "timeseries",
+          "title": "Network Packets",
+          "gridPos": {"x": 12, "y": 20, "w": 12, "h": 8},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "tooltip": {"mode": "multi"},
+            "legend": {"displayMode": "list", "placement": "bottom"}
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "pps",
+              "color": {"mode": "palette-classic"},
+              "custom": {"lineWidth": 1, "fillOpacity": 5}
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "rate(qnap_if_packets_received_total[5m])",
+              "legendFormat": "rx {{ifDescr}}"
+            },
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "rate(qnap_if_packets_sent_total[5m])",
+              "legendFormat": "tx {{ifDescr}}"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "gauge",
+          "title": "Fan Speed",
+          "gridPos": {"x": 0, "y": 28, "w": 24, "h": 6},
+          "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+          "options": {
+            "reduceOptions": {"calcs": ["lastNotNull"]},
+            "orientation": "auto",
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "rotrpm",
+              "min": 0,
+              "max": 5000,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "red", "value": null},
+                  {"color": "green", "value": 500},
+                  {"color": "yellow", "value": 3500}
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+              "expr": "qnap_fan_speed_rpm",
+              "legendFormat": "{{fanDescr}}"
+            }
+          ]
+        }
+      ]
+    }
