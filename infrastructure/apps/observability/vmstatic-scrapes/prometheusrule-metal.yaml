@@ -54,8 +54,8 @@ spec:
 
         - alert: MetalHostDiskWarning
           expr: >-
-            (1 - node_filesystem_avail_bytes{job="node-exporter-metal", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
-               / node_filesystem_size_bytes{job="node-exporter-metal", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}) * 100 > 80
+            (1 - node_filesystem_avail_bytes{job="node-exporter-metal", instance!="qnap-nas", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+               / node_filesystem_size_bytes{job="node-exporter-metal", instance!="qnap-nas", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}) * 100 > 80
           for: 10m
           labels:
             severity: warning
@@ -65,8 +65,8 @@ spec:
 
         - alert: MetalHostDiskCritical
           expr: >-
-            (1 - node_filesystem_avail_bytes{job="node-exporter-metal", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
-               / node_filesystem_size_bytes{job="node-exporter-metal", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}) * 100 > 90
+            (1 - node_filesystem_avail_bytes{job="node-exporter-metal", instance!="qnap-nas", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+               / node_filesystem_size_bytes{job="node-exporter-metal", instance!="qnap-nas", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}) * 100 > 90
           for: 5m
           labels:
             severity: critical
