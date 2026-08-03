@@ -1,0 +1,10 @@
+---
+services:
+  smartctl-exporter:
+    # renovate: datasource=docker depName=quay.io/prometheuscommunity/smartctl-exporter
+    image: quay.io/prometheuscommunity/smartctl-exporter:v0.14.0
+    container_name: smartctl-exporter
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "9633:9633"
