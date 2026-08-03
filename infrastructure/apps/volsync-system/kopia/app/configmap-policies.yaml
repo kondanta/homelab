@@ -7,7 +7,7 @@ metadata:
 data:
   policies.sh: |
     set -e
-    KOPIA="kopia --config-file /config/repository.config --cache-directory /tmp/cache --log-level=info"
+    KOPIA="kopia --config-file /config/repository.config --log-level=info"
 
     echo "=== global: h24 d14 w4 m0 a0 l5 ==="
     $KOPIA policy set --global \
