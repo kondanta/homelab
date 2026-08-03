@@ -193,10 +193,14 @@ spec:
           "fieldConfig": {
             "defaults": {
               "unit": "celsius",
+              "mappings": [
+                {"type": "value", "options": {"0": {"text": "Not Attached", "color": "gray", "index": 0}}}
+              ],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
-                  {"color": "green", "value": null},
+                  {"color": "gray", "value": null},
+                  {"color": "green", "value": 25},
                   {"color": "yellow", "value": 40},
                   {"color": "orange", "value": 50},
                   {"color": "red", "value": 60}
@@ -399,10 +403,21 @@ spec:
           "gridPos": {"x": 0, "y": 47, "w": 24, "h": 1}, "collapsed": false
         },
         {
+          "id": 30,
+          "type": "text",
+          "title": "Disk Inventory",
+          "gridPos": {"x": 0, "y": 48, "w": 24, "h": 4},
+          "options": {
+            "mode": "markdown",
+            "content": "| Bay | Model | Capacity | Interface | Status |\n|-----|-------|----------|-----------|--------|\n| HD1 | WD Red Plus WD80EFPX | 8 TB | SATA-600 3.5\" | In Use |\n| HD2 | — | — | — | Empty |\n| HD3 | — | — | — | Empty |\n| HD4 | — | — | — | Empty |"
+          },
+          "fieldConfig": {"defaults": {}, "overrides": []}
+        },
+        {
           "id": 19,
           "type": "stat",
           "title": "Disk Health",
-          "gridPos": {"x": 0, "y": 48, "w": 24, "h": 5},
+          "gridPos": {"x": 0, "y": 52, "w": 24, "h": 5},
           "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
@@ -412,10 +427,14 @@ spec:
           "fieldConfig": {
             "defaults": {
               "unit": "celsius",
+              "mappings": [
+                {"type": "value", "options": {"0": {"text": "Not Attached", "color": "gray", "index": 0}}}
+              ],
               "thresholds": {
                 "mode": "absolute",
                 "steps": [
-                  {"color": "green", "value": null},
+                  {"color": "gray", "value": null},
+                  {"color": "green", "value": 25},
                   {"color": "yellow", "value": 40},
                   {"color": "orange", "value": 50},
                   {"color": "red", "value": 60}
@@ -429,7 +448,7 @@ spec:
           "id": 20,
           "type": "timeseries",
           "title": "Disk Temperature History",
-          "gridPos": {"x": 0, "y": 53, "w": 24, "h": 8},
+          "gridPos": {"x": 0, "y": 57, "w": 24, "h": 8},
           "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "tooltip": {"mode": "multi"},
@@ -442,17 +461,17 @@ spec:
               "custom": {"lineWidth": 1, "fillOpacity": 15}
             }
           },
-          "targets": [{"datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"}, "expr": "node_hdtmp_C{instance=\"qnap-nas\"}", "legendFormat": "HD{{hd}} ({{smart}})"}]
+          "targets": [{"datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"}, "expr": "node_hdtmp_C{instance=\"qnap-nas\"} > 0", "legendFormat": "HD{{hd}} ({{smart}})"}]
         },
         {
           "id": 23, "type": "row", "title": "Disk I/O",
-          "gridPos": {"x": 0, "y": 61, "w": 24, "h": 1}, "collapsed": false
+          "gridPos": {"x": 0, "y": 65, "w": 24, "h": 1}, "collapsed": false
         },
         {
           "id": 24,
           "type": "timeseries",
           "title": "Disk Throughput",
-          "gridPos": {"x": 0, "y": 62, "w": 12, "h": 8},
+          "gridPos": {"x": 0, "y": 66, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "tooltip": {"mode": "multi"},
@@ -474,7 +493,7 @@ spec:
           "id": 25,
           "type": "timeseries",
           "title": "Disk IOPS",
-          "gridPos": {"x": 12, "y": 62, "w": 12, "h": 8},
+          "gridPos": {"x": 12, "y": 66, "w": 12, "h": 8},
           "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "tooltip": {"mode": "multi"},
@@ -495,13 +514,13 @@ spec:
         ,
         {
           "id": 27, "type": "row", "title": "RAID Arrays",
-          "gridPos": {"x": 0, "y": 70, "w": 24, "h": 1}, "collapsed": false
+          "gridPos": {"x": 0, "y": 74, "w": 24, "h": 1}, "collapsed": false
         },
         {
           "id": 28,
           "type": "stat",
           "title": "Array Status",
-          "gridPos": {"x": 0, "y": 71, "w": 12, "h": 5},
+          "gridPos": {"x": 0, "y": 75, "w": 12, "h": 5},
           "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
@@ -529,7 +548,7 @@ spec:
           "id": 29,
           "type": "stat",
           "title": "Failed Disks",
-          "gridPos": {"x": 12, "y": 71, "w": 12, "h": 5},
+          "gridPos": {"x": 12, "y": 75, "w": 12, "h": 5},
           "datasource": {"type": "prometheus", "uid": "$${DS_PROMETHEUS}"},
           "options": {
             "reduceOptions": {"calcs": ["lastNotNull"]},
