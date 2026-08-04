@@ -34,8 +34,9 @@ spec:
                   httpGet:
                     path: /health
                     port: *port
-                  failureThreshold: 3
+                  failureThreshold: 5
                   periodSeconds: 10
+                  timeoutSeconds: 5
               readiness: *probes
               startup:
                 enabled: true
