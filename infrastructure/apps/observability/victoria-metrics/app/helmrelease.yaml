@@ -94,11 +94,7 @@ spec:
     defaultDashboards:
       enabled: true
       grafanaOperator:
-        enabled: false
-      labels:
-        key: value
-      annotations:
-        key: value
+        enabled: true
 
     defaultRules:
       create: true
