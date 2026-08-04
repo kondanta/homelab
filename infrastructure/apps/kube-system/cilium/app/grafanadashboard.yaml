@@ -5,6 +5,7 @@ kind: GrafanaDashboard
 metadata:
   name: cilium-dashboard
 spec:
+  folder: Networking
   allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
@@ -18,6 +19,7 @@ kind: GrafanaDashboard
 metadata:
   name: hubble-dashboard
 spec:
+  folder: Networking
   allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
@@ -33,6 +35,7 @@ kind: GrafanaDashboard
 metadata:
   name: hubble-network-overview-namespace
 spec:
+  folder: Networking
   allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:

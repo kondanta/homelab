@@ -4,6 +4,7 @@ kind: GrafanaDashboard
 metadata:
   name: qnap-nas
 spec:
+  folder: Metal
   instanceSelector:
     matchLabels:
       dashboards: grafana
