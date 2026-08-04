@@ -74,6 +74,18 @@ spec:
             summary: >-
               {{ $labels.instance }} {{ $labels.mountpoint }} disk above 90% ({{ $value | printf "%.0f" }}%)
 
+        - alert: NASSwapHigh
+          expr: >-
+            (node_memory_SwapTotal_bytes{job="node-exporter-metal", instance="qnap-nas"}
+             - node_memory_SwapFree_bytes{job="node-exporter-metal", instance="qnap-nas"})
+            > 500 * 1024 * 1024
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              NAS swap above 500MB for 30m ({{ $value | humanize1024 }}B used)
+
         - alert: MetalHostHighLoad
           expr: >-
             node_load15{job="node-exporter-metal"}
