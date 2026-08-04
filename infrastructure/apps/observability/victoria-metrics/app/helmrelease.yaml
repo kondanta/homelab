@@ -95,6 +95,33 @@ spec:
       enabled: true
       grafanaOperator:
         enabled: true
+        spec:
+          allowCrossNamespaceImport: false
+          instanceSelector:
+            matchLabels:
+              dashboards: grafana
+          folder: VictoriaMetrics
+      dashboards:
+        controller-manager:
+          enabled: false
+        grafana-overview:
+          enabled: false
+        node-exporter-full:
+          clusterMetric: node_uname_info
+        k8s-resources-windows-cluster:
+          enabled: false
+        k8s-resources-windows-namespace:
+          enabled: false
+        k8s-resources-windows-pod:
+          enabled: false
+        k8s-windows-cluster-rsrc-use:
+          enabled: false
+        k8s-windows-node-rsrc-use:
+          enabled: false
+        nodes-darwin:
+          enabled: false
+        nodes-aix:
+          enabled: false
 
     defaultRules:
       create: true

@@ -5,6 +5,7 @@ kind: GrafanaDashboard
 metadata:
   name: longhorn
 spec:
+  folder: Storage
   allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:

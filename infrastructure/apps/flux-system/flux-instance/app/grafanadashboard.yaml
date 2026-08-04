@@ -5,6 +5,7 @@ kind: GrafanaDashboard
 metadata:
   name: flux-cluster
 spec:
+  folder: Flux
   allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
@@ -19,6 +20,7 @@ kind: GrafanaDashboard
 metadata:
   name: flux-control-plane
 spec:
+  folder: Flux
   allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
