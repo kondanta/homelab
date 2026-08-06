@@ -15,7 +15,6 @@ resources:
   - prometheus/ks.yaml
   - promtail/ks.yaml
   - pushgateway/ks.yaml
-  - snmp-exporter/ks.yaml
   - vmstatic-scrapes/ks.yaml
   - tempo/ks.yaml
   - victoria-metrics/ks.yaml

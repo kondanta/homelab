@@ -76,8 +76,8 @@ spec:
 
         - alert: NASSwapHigh
           expr: >-
-            (node_memory_SwapTotal_bytes{job="node-exporter-metal", instance="qnap-nas"}
-             - node_memory_SwapFree_bytes{job="node-exporter-metal", instance="qnap-nas"})
+            (node_memory_SwapTotal_bytes{job="qnapexporter"}
+             - node_memory_SwapFree_bytes{job="qnapexporter"})
             > 500 * 1024 * 1024
           for: 30m
           labels:
