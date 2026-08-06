@@ -6,12 +6,6 @@ metadata:
   namespace: observability
 spec:
   targetEndpoints:
-    - targets: ["10.1.20.100:9100"]
-      labels:
-        job: node-exporter-metal
-        instance: qnap-nas
-      interval: 30s
-      path: /metrics
     - targets: ["10.1.20.100:9094"]
       labels:
         job: qnapexporter
