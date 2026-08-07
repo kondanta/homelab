@@ -1,0 +1,11 @@
+---
+# machine.type is set by workers.yaml.j2 — not repeated here.
+# KubeNodeConfig labels merge with base (cluster.yaml.j2) overlay.
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: k8s-1
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: m

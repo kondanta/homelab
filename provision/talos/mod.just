@@ -9,14 +9,48 @@ default:
     just --list --justfile {{ justfile() }}
 
 # Render the machineconfig for a node (dry-run, prints to stdout)
+# Requires secrets in environment — call via render-config-sops in normal use.
 [doc("Usage: just talos render-config k8s-0")]
 render-config NODE:
     #!/usr/bin/env bash
     set -euo pipefail
-    type=$(yq --exit-status 'select(documentIndex == 0) | .machine.type' "{{ NODES_DIR }}/{{ NODE }}.yaml.j2")
-    base=$(minijinja-cli --env --define "machinetype=${type}" "{{ TALOS_DIR }}/machineconfig.yaml.j2")
-    patch=$(minijinja-cli --env --define "machinetype=${type}" "{{ NODES_DIR }}/{{ NODE }}.yaml.j2")
-    talosctl machineconfig patch <(echo "${base}") --patch "@"<(echo "${patch}")
+    if [[ -f "{{ NODES_DIR }}/controlplane/{{ NODE }}.yaml.j2" ]]; then
+        role="controlplane"
+    elif [[ -f "{{ NODES_DIR }}/workers/{{ NODE }}.yaml.j2" ]]; then
+        role="workers"
+    else
+        echo "error: no config found for '{{ NODE }}' in nodes/controlplane/ or nodes/workers/" >&2
+        exit 1
+    fi
+    node_file="{{ NODES_DIR }}/${role}/{{ NODE }}.yaml.j2"
+
+    cluster=$(minijinja-cli \
+        -D MACHINE_CA_CRT="${MACHINE_CA_CRT}" \
+        -D MACHINE_TOKEN="${MACHINE_TOKEN}" \
+        -D CLUSTER_CA_CRT="${CLUSTER_CA_CRT}" \
+        -D CLUSTER_ID="${CLUSTER_ID}" \
+        -D CLUSTER_SECRET="${CLUSTER_SECRET}" \
+        -D CLUSTER_TOKEN="${CLUSTER_TOKEN}" \
+        "{{ TALOS_DIR }}/cluster.yaml.j2")
+
+    role_config=$(minijinja-cli \
+        -D MACHINE_CA_CRT="${MACHINE_CA_CRT}" \
+        -D MACHINE_CA_KEY="${MACHINE_CA_KEY}" \
+        -D CLUSTER_CA_CRT="${CLUSTER_CA_CRT}" \
+        -D CLUSTER_CA_KEY="${CLUSTER_CA_KEY}" \
+        -D CLUSTER_AGGREGATOR_CA_CRT="${CLUSTER_AGGREGATOR_CA_CRT}" \
+        -D CLUSTER_AGGREGATOR_CA_KEY="${CLUSTER_AGGREGATOR_CA_KEY}" \
+        -D CLUSTER_SA_KEY="${CLUSTER_SA_KEY}" \
+        -D CLUSTER_ETCD_CA_CRT="${CLUSTER_ETCD_CA_CRT}" \
+        -D CLUSTER_ETCD_CA_KEY="${CLUSTER_ETCD_CA_KEY}" \
+        -D CLUSTER_SECRETBOX_ENCRYPTION_SECRET="${CLUSTER_SECRETBOX_ENCRYPTION_SECRET}" \
+        "{{ TALOS_DIR }}/${role}.yaml.j2")
+
+    node_config=$(minijinja-cli "${node_file}")
+
+    talosctl machineconfig patch <(echo "${cluster}") \
+        --patch "@"<(echo "${role_config}") \
+        --patch "@"<(echo "${node_config}")
 
 # Render the machineconfig for a node, loading secrets from sops
 [doc("Usage: just talos render-config-sops k8s-0")]
