@@ -1,7 +1,7 @@
 ---
 services:
   rclone:
-    image: ghcr.io/kondanta/homelab/metal/rclone-sync:1.75.0
+    image: ghcr.io/kondanta/homelab/metal/rclone-sync:1.74.4
     container_name: rclone-sync
     restart: unless-stopped
     env_file:
