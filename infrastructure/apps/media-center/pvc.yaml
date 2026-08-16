@@ -15,6 +15,8 @@ spec:
   mountOptions:
     - nfsvers=4.1
     - hard
+    - nconnect=16
+    - noatime
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
