@@ -40,6 +40,11 @@ spec:
         enabled: false
     deployment:
       envoyGateway:
+        resources:
+          requests:
+            cpu: 25m
+          limits:
+            cpu: 100m
         rbac:
           cluster: true
         gateway:

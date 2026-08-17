@@ -138,6 +138,14 @@ spec:
             target:
               kind: Deployment
               name: kustomize-controller
+          - # Tune notification-controller CPU request (p99=7m over 90d, limit kept at current 1 CPU)
+            patch: |-
+              - op: replace
+                path: /spec/template/spec/containers/0/resources/requests/cpu
+                value: 15m
+            target:
+              kind: Deployment
+              name: notification-controller
               
               
               
