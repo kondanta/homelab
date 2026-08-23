@@ -1,7 +1,7 @@
 ---
 services:
   shepherd:
-    image: ghcr.io/kondanta/shepherd:2026.8.1
+    image: ghcr.io/kondanta/shepherd:2026.8.2
     restart: unless-stopped
     container_name: "shepherd"
     ports:
