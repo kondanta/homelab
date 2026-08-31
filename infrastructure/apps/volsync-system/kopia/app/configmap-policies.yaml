@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kopia-policies
+  namespace: volsync-system
+data:
+  policies.sh: |
+    set -e
+    KOPIA="kopia --config-file /config/repository.config --log-level=info"
+
+    echo "=== global: h24 d14 w4 m0 a0 l5 ==="
+    $KOPIA policy set --global \
+      --keep-hourly=24 --keep-daily=14 --keep-weekly=4 \
+      --keep-monthly=0 --keep-annual=0 --keep-latest=5
+
+    # --- per-app overrides ---
+    # Format: kopia policy set APP@NAMESPACE:/data --keep-*=N ...
+    # All 6 tiers must be set explicitly to avoid inheriting stale per-path values.
+    # Add one block per app that deviates from the global baseline.
+
+    echo "=== paperless-ngx: monthly:6 ==="
+    $KOPIA policy set paperless-ngx@selfhosted:/data \
+      --keep-hourly=24 --keep-daily=14 --keep-weekly=4 \
+      --keep-monthly=6 --keep-annual=0 --keep-latest=5
+
+    echo "=== silverbullet: monthly:12 ==="
+    $KOPIA policy set silverbullet@selfhosted:/data \
+      --keep-hourly=24 --keep-daily=14 --keep-weekly=4 \
+      --keep-monthly=12 --keep-annual=0 --keep-latest=5
+
+    echo "=== shoko: weekly:8 ==="
+    $KOPIA policy set shoko@media-center:/data \
+      --keep-hourly=24 --keep-daily=14 --keep-weekly=8 \
+      --keep-monthly=0 --keep-annual=0 --keep-latest=5
+
+    echo "=== qui: global baseline ==="
+    $KOPIA policy set qui@media-center:/data \
+      --keep-hourly=24 --keep-daily=14 --keep-weekly=4 \
+      --keep-monthly=0 --keep-annual=0 --keep-latest=5
+
+    echo "=== maintenance: log retention 72h ==="
+    $KOPIA maintenance set --max-retained-log-age=72h
+
+    echo "=== Done ==="

@@ -1,0 +1,76 @@
+---
+# Enforces Kopia retention policies daily by executing configmap-policies.yaml.
+# Kopia stores policies inside the repository (not in K8s manifests), so without
+# this CronJob desired state only exists in someone's memory.
+#
+# To add or change a policy: edit configmap-policies.yaml only — this file never needs touching.
+#
+# NOTE: this pattern (ConfigMap-driven CronJob) exists because kopia-secret lives only in
+# volsync-system, making per-app component CronJobs impractical without cross-namespace
+# secret access. This is one of the concrete drivers to evaluate kopiur migration, which
+# stores retention policies natively as K8s CRDs (SnapshotPolicy) per app.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kopia-policy-enforce
+  namespace: volsync-system
+spec:
+  schedule: "0 4 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: kopia
+              image: ghcr.io/home-operations/kopia:0.23.1@sha256:27da0a33b44e1b902150a6c963514237217464bb13118a95bb056667be93cda5
+              envFrom:
+                - secretRef:
+                    name: kopia-secret
+              command:
+                - /bin/sh
+                - /scripts/policies.sh
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+                limits:
+                  memory: 256Mi
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                - name: config-file
+                  mountPath: /config/repository.config
+                  subPath: repository.config
+                - name: scripts
+                  mountPath: /scripts
+                - name: tmpfs
+                  mountPath: /tmp
+          volumes:
+            - name: config
+              emptyDir: {}
+            - name: config-file
+              secret:
+                secretName: kopia-secret
+            - name: scripts
+              configMap:
+                name: kopia-policies
+                defaultMode: 0755
+            - name: tmpfs
+              emptyDir: {}

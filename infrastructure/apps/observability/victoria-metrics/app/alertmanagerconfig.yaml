@@ -16,6 +16,10 @@ spec:
       - receiver: "null"
         matchers:
           - 'alertname=~"InfoInhibitor|Watchdog"'
+      - receiver: "null"
+        matchers:
+          - 'alertname="NodeRAIDDegraded"'
+          - 'instance="qnap-nas"'
   receivers:
     - name: chaski-discord
       webhook_configs:

@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.87.0
+    tag: 0.91.2
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -94,11 +94,34 @@ spec:
     defaultDashboards:
       enabled: true
       grafanaOperator:
-        enabled: false
-      labels:
-        key: value
-      annotations:
-        key: value
+        enabled: true
+        spec:
+          allowCrossNamespaceImport: false
+          instanceSelector:
+            matchLabels:
+              dashboards: grafana
+          folder: VictoriaMetrics
+      dashboards:
+        controller-manager:
+          enabled: false
+        grafana-overview:
+          enabled: false
+        node-exporter-full:
+          clusterMetric: node_uname_info
+        k8s-resources-windows-cluster:
+          enabled: false
+        k8s-resources-windows-namespace:
+          enabled: false
+        k8s-resources-windows-pod:
+          enabled: false
+        k8s-windows-cluster-rsrc-use:
+          enabled: false
+        k8s-windows-node-rsrc-use:
+          enabled: false
+        nodes-darwin:
+          enabled: false
+        nodes-aix:
+          enabled: false
 
     defaultRules:
       create: true

@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.57.0
+    tag: 0.58.1
   url: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -33,7 +33,7 @@ spec:
   values:
     instance:
       distribution:
-        artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.57.0
+        artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.58.1
         version: 2.x
       cluster:
         networkPolicy: false
@@ -138,6 +138,14 @@ spec:
             target:
               kind: Deployment
               name: kustomize-controller
+          - # Tune notification-controller CPU request (p99=7m over 90d, limit kept at current 1 CPU)
+            patch: |-
+              - op: replace
+                path: /spec/template/spec/containers/0/resources/requests/cpu
+                value: 15m
+            target:
+              kind: Deployment
+              name: notification-controller
               
               
               

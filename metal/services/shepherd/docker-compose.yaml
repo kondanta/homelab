@@ -1,11 +1,11 @@
 ---
 services:
   shepherd:
-    image: ghcr.io/kondanta/shepherd:2026.7.2
+    image: ghcr.io/kondanta/shepherd:2026.8.2
     restart: unless-stopped
     container_name: "shepherd"
     ports:
-      - "8080:8080"
+      - "11250:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${ROOT_DIR}:${ROOT_DIR}

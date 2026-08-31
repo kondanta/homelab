@@ -1,0 +1,14 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: qnap
+  namespace: observability
+spec:
+  targetEndpoints:
+    - targets: ["10.1.20.100:9094"]
+      labels:
+        job: qnapexporter
+        instance: qnap-nas
+      interval: 10m
+      path: /metrics

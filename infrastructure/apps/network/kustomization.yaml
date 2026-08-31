@@ -8,6 +8,7 @@ components:
   - ../../components/sops
 resources:
   - echo/ks.yaml
+  - external-services/ks.yaml
   - external-dns/ks.yaml
   - cloudflare-tunnel/ks.yaml
   - towonel/ks.yaml

@@ -1,10 +1,21 @@
 ---
 services:
   adguardhome:
-    image: adguard/adguardhome:v0.107.78
+    image: adguard/adguardhome:v0.107.79
     container_name: adguardhome
     restart: unless-stopped
     network_mode: host # Want to make sure that ips are reported correctly
     volumes:
       - ./work:/opt/adguardhome/work
       - ./conf:/opt/adguardhome/conf
+
+  adguard-exporter:
+    # renovate: datasource=docker depName=ghcr.io/henrywhitaker3/adguard-exporter
+    image: ghcr.io/henrywhitaker3/adguard-exporter:v1.2.1
+    container_name: adguard-exporter
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - .env
+    environment:
+      ADGUARD_SERVERS: http://localhost

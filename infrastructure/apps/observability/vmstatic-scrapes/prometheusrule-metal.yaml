@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: metal-hosts
+spec:
+  groups:
+    - name: metal-hosts.rules
+      rules:
+        - alert: MetalHostDown
+          expr: up{job="node-exporter-metal"} == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: >-
+              Metal host {{ $labels.instance }} is unreachable
+
+        - alert: MetalHostHighCPU
+          expr: >-
+            100 - (avg by (instance) (
+              rate(node_cpu_seconds_total{job="node-exporter-metal", mode="idle"}[5m])
+            ) * 100) > 80
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              {{ $labels.instance }} CPU above 80% for 5m ({{ $value | printf "%.0f" }}%)
+
+        - alert: MetalHostCriticalCPU
+          expr: >-
+            100 - (avg by (instance) (
+              rate(node_cpu_seconds_total{job="node-exporter-metal", mode="idle"}[5m])
+            ) * 100) > 95
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: >-
+              {{ $labels.instance }} CPU above 95% for 2m ({{ $value | printf "%.0f" }}%)
+
+        - alert: MetalHostHighMemory
+          expr: >-
+            (1 - node_memory_MemAvailable_bytes{job="node-exporter-metal"}
+               / node_memory_MemTotal_bytes{job="node-exporter-metal"}) * 100 > 85
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              {{ $labels.instance }} memory above 85% for 10m ({{ $value | printf "%.0f" }}%)
+
+        - alert: MetalHostDiskWarning
+          expr: >-
+            (1 - node_filesystem_avail_bytes{job="node-exporter-metal", instance!="qnap-nas", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+               / node_filesystem_size_bytes{job="node-exporter-metal", instance!="qnap-nas", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}) * 100 > 80
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              {{ $labels.instance }} {{ $labels.mountpoint }} disk above 80% ({{ $value | printf "%.0f" }}%)
+
+        - alert: MetalHostDiskCritical
+          expr: >-
+            (1 - node_filesystem_avail_bytes{job="node-exporter-metal", instance!="qnap-nas", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+               / node_filesystem_size_bytes{job="node-exporter-metal", instance!="qnap-nas", fstype!~"tmpfs|overlay|squashfs|devtmpfs"}) * 100 > 90
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: >-
+              {{ $labels.instance }} {{ $labels.mountpoint }} disk above 90% ({{ $value | printf "%.0f" }}%)
+
+        - alert: NASSwapHigh
+          expr: >-
+            (node_memory_SwapTotal_bytes{job="qnapexporter"}
+             - node_memory_SwapFree_bytes{job="qnapexporter"})
+            > 500 * 1024 * 1024
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              NAS swap above 500MB for 30m ({{ $value | humanize1024 }}B used)
+
+        - alert: MetalHostHighLoad
+          expr: >-
+            node_load15{job="node-exporter-metal"}
+            / on(instance) count without(cpu, mode)(
+                node_cpu_seconds_total{job="node-exporter-metal", mode="idle"}
+              ) > 2
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              {{ $labels.instance }} load average above 2x CPU count for 15m ({{ $value | printf "%.1f" }})

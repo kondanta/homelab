@@ -17,10 +17,14 @@ spec:
       runAsUser: ${VOLSYNC_PUID:=568}
       runAsGroup: ${VOLSYNC_PGID:=568}
       fsGroup: ${VOLSYNC_PGID:=568}
+    moverAffinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: DoesNotExist
     parallelism: 2
     repository: volsync-secret
-    retain:
-      daily: ${VOLSYNC_RETAIN_DAILY:=14}
-      weekly: ${VOLSYNC_RETAIN_WEEKLY:=0}
     storageClassName: ${VOLSYNC_STORAGECLASS:=longhorn}
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=longhorn}

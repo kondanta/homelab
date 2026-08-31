@@ -5,6 +5,7 @@ kind: GrafanaDashboard
 metadata:
   name: cert-manager
 spec:
+  folder: Cert Manager
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -21,6 +22,7 @@ kind: GrafanaDashboard
 metadata:
   name: cert-manager2
 spec:
+  folder: Cert Manager
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -37,6 +39,7 @@ kind: GrafanaDashboard
 metadata:
   name: coredns
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -53,6 +56,7 @@ kind: GrafanaDashboard
 metadata:
   name: envoy
 spec:
+  folder: Networking
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -69,6 +73,7 @@ kind: GrafanaDashboard
 metadata:
   name: kubernetes-api-server
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -85,6 +90,7 @@ kind: GrafanaDashboard
 metadata:
   name: kubernetes-coredns
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -101,6 +107,7 @@ kind: GrafanaDashboard
 metadata:
   name: kubernetes-global
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -117,6 +124,7 @@ kind: GrafanaDashboard
 metadata:
   name: kubernetes-namespaces
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -133,6 +141,7 @@ kind: GrafanaDashboard
 metadata:
   name: kubernetes-nodes
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -149,6 +158,7 @@ kind: GrafanaDashboard
 metadata:
   name: kubernetes-pods
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -165,6 +175,7 @@ kind: GrafanaDashboard
 metadata:
   name: kubernetes-volumes
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -181,6 +192,7 @@ kind: GrafanaDashboard
 metadata:
   name: node-exporter-full
 spec:
+  folder: Metal
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -197,6 +209,7 @@ kind: GrafanaDashboard
 metadata:
   name: k8s-dashboard
 spec:
+  folder: Kubernetes
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -213,6 +226,7 @@ kind: GrafanaDashboard
 metadata:
   name: loki-kubernetes-logs
 spec:
+  folder: Logs
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -227,8 +241,60 @@ spec:
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
+  name: adguard-home
+spec:
+  folder: Networking
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+  grafanaCom:
+    # renovate: depName="AdGuard Home Exporter"
+    id: 20799
+    revision: 8
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: cadvisor
+spec:
+  folder: Metal
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+  grafanaCom:
+    # renovate: depName="Cadvisor exporter"
+    id: 14282
+    revision: 1
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: postgresql
+spec:
+  folder: Databases
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+  grafanaCom:
+    # renovate: depName="PostgreSQL Database"
+    id: 9628
+    revision: 8
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
   name: volsync
 spec:
+  folder: Storage
   instanceSelector:
     matchLabels:
       dashboards: grafana

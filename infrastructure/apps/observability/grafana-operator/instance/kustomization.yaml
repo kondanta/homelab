@@ -6,6 +6,7 @@ resources:
   - grafana.yaml
   - grafanadatasource.yaml
   - grafanadashboard.yaml
+  - grafanadashboard-qnap.yaml
   - admin-secret.sops.yaml
   - grafana-oidc-secret.sops.yaml
   - httproute.yaml

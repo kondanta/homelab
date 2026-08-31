@@ -36,7 +36,7 @@ spec:
           init-db:
             image:
               repository: ghcr.io/home-operations/postgres-init
-              tag: 18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec
+              tag: 18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}"
@@ -44,17 +44,17 @@ spec:
           app:
             image:
               repository: ghcr.io/paperless-ngx/paperless-ngx
-              tag: 3.0.4@sha256:3838b9a4260d23acc5bb63aed407138435e70b56e5806f4baa350ca184e57582
+              tag: 3.1.0@sha256:49eba766581b9134cfa6b584b9eb718355fb9cfbd44b2a7c9c72a427d4891648
             env:
               TZ: Europe/Oslo
               PAPERLESS_URL: https://paperless.taylan.dev
               PAPERLESS_PORT: &port 8000
               PAPERLESS_TIME_ZONE: Europe/Oslo
               PAPERLESS_DBENGINE: postgresql
-              PAPERLESS_DBHOST: backup.internal
+              PAPERLESS_DBHOST: postgres.network.svc.cluster.local
               PAPERLESS_DBPORT: "5432"
               PAPERLESS_DBNAME: paperless
-              PAPERLESS_REDIS: redis://backup.internal:6379
+              PAPERLESS_REDIS: redis://redis.network.svc.cluster.local:6379
               PAPERLESS_OCR_LANGUAGE: eng
               PAPERLESS_TIKA_ENABLED: "1"
               PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
@@ -123,7 +123,7 @@ spec:
               DISABLE_GOOGLE_CHROME: "1"
             image:
               repository: gotenberg/gotenberg
-              tag: 8.34.0@sha256:67097317623a503ba2a6a7e9ae8db6929a1f7e1bbd88077bacf2d325fbdab923
+              tag: 8.36.0@sha256:87c16b9f364279d321bc9772d31fa58aa6abe036423c270698bd636c3a8e9466
             resources:
               requests:
                 cpu: 10m
