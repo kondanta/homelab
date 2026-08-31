@@ -2,7 +2,7 @@
 services:
   towonel:
     # renovate: datasource=docker depName=codeberg.org/towonel/towonel-node versioning=semver-coerced
-    image: codeberg.org/towonel/towonel-node:1.5.3
+    image: codeberg.org/towonel/towonel-node:1.6.0
     container_name: towonel
     restart: unless-stopped
     ports:
