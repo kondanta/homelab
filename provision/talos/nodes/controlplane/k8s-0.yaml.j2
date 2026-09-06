@@ -1,0 +1,11 @@
+---
+# machine.type is set by controlplane.yaml.j2 — not repeated here.
+# KubeNodeConfig labels merge with base (cluster.yaml.j2) and role (controlplane.yaml.j2) overlays.
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: k8s-0
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: m
