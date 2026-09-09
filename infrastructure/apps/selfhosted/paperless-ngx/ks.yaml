@@ -25,6 +25,7 @@ spec:
       APP: *app
       GATUS_SUBDOMAIN: paperless
       VOLSYNC_CAPACITY: 50Gi
+      VOLSYNC_SCHEDULE: "45 * * * *"
   dependsOn:
     - name: longhorn
       namespace: longhorn-system

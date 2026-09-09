@@ -17,6 +17,7 @@ spec:
     substitute:
       APP: silverbullet
       VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_SCHEDULE: "50 * * * *"
       VOLSYNC_PUID: "1000"
       VOLSYNC_PGID: "1000"
   prune: true
