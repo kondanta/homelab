@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 89.2.4
+    tag: 90.0.0
   url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -52,6 +52,8 @@ spec:
       enabled: false
     defaultRules:
       create: false
+    kubeApiServer:
+      enabled: false
     kubelet:
       enabled: false
     kubeControllerManager:
@@ -61,4 +63,8 @@ spec:
     kubeProxy:
       enabled: false
     kubeEtcd:
+      enabled: false
+    kubeDns:
+      enabled: false
+    coreDns:
       enabled: false
