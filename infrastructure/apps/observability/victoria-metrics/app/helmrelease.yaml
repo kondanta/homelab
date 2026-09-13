@@ -145,16 +145,6 @@ spec:
 
     kubeApiServer:
       enabled: true
-      vmScrape:
-        spec:
-          # Drop unused apiserver/etcd histogram buckets (no dashboard or
-          # VMRule references them). apiserver_request_sli_duration_seconds_bucket
-          # is kept: it feeds the kube-apiserver SLO/burnrate rules.
-          metricRelabelConfigs:
-            - sourceLabels:
-                - __name__
-              action: drop
-              regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket"
 
     vmsingle:
       extraArgs:
@@ -177,6 +167,19 @@ spec:
           promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: "true"
           promscrape.dropOriginalLabels: "false"
+        # Global drop of unused apiserver/etcd histogram buckets: no dashboard
+        # or VMRule references them. apiserver_request_sli_duration_seconds_bucket
+        # is kept: it feeds the kube-apiserver SLO/burnrate rules.
+        # Applied globally (not on the kubeApiServer VMServiceScrape) because
+        # that CRD's spec has no top-level metricRelabelConfigs field -- the
+        # kube-prometheus-stack-style chart merges vmScrape.spec directly onto
+        # VMServiceScrape.spec, and the API server silently prunes unknown
+        # fields there, so a per-scrape override for this CRD kind is a no-op.
+        globalScrapeMetricRelabelConfigs:
+          - sourceLabels:
+              - __name__
+            action: drop
+            regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket"
         resources:
           limits:
             memory: 1Gi
