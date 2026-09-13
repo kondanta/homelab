@@ -36,6 +36,11 @@ spec:
       - --exclude-target-net=10.0.0.0/8
       - --exclude-target-net=172.16.0.0/12
       - --exclude-target-net=192.168.0.0/16
+      # gateway-httproute source publishes the "external" Gateway's private LB IP
+      # (10.1.20.202) as the target, which the exclude-target-net filters above
+      # then drop, silently zeroing every record. Force CNAME to the real public
+      # entrypoint instead, matching the Gateway's own target annotation.
+      - --default-targets=external.taylan.dev
     triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute"]
