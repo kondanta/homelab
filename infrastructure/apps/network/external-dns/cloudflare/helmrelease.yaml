@@ -48,7 +48,13 @@ spec:
       # including external.taylan.dev itself (from the crd source's towonel/
       # cloudflare-tunnel DNSEndpoints), which would otherwise become a CNAME
       # pointing at itself and fail the whole zone's batch apply.
-      - --regex-domain-exclusion=^external\.taylan\.dev$
+      # https-redirect (no hostnames, inherits the external Gateway's wildcard
+      # listener hostname) also gets published here, creating a real public
+      # *.taylan.dev CNAME. That let gatus's guarded/internal-only endpoint
+      # checks (which resolve via public 1.1.1.1 deliberately, to verify they
+      # are NOT publicly reachable) start getting real 404 responses from the
+      # external gateway instead of failing to resolve. Exclude both names.
+      - --regex-domain-exclusion=^(external|\*)\.taylan\.dev$
     triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute"]
