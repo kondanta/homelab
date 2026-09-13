@@ -1,0 +1,10 @@
+---
+services:
+  koito:
+    image: gabehf/koito:v0.3.2
+    container_name: koito
+    ports:
+      - "4110:4110"
+    volumes:
+      - ./koito:/etc/koito
+    restart: unless-stopped
