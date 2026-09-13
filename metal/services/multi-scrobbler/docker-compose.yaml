@@ -1,0 +1,22 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "9079:80"   # expose Caddy on host port 9079
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - multi-scrobbler
+
+  multi-scrobbler:
+    image: foxxmd/multi-scrobbler:0.16.4
+    container_name: multi-scrobbler
+    env_file:
+      - .env
+    volumes:
+      - "./config:/config"
+    expose:
+      - 9078
+    restart: unless-stopped

@@ -1,0 +1,17 @@
+:80 {
+    basicauth {
+    	<user> <pass>
+    }
+
+    @callbacks {
+        path /callback /spotify/callback
+    }
+    handle @callbacks {
+        reverse_proxy multi-scrobbler:9078
+    }
+    reverse_proxy multi-scrobbler:9078 {
+        flush_interval -1
+    }
+
+    reverse_proxy multi-scrobbler:9078
+}
