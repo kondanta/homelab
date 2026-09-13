@@ -44,13 +44,15 @@ endpoints:
     interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53
+      basic-auth:
+        username: "${MULTISCROBBLER_USER}"
+        password: "${MULTISCROBBLER_PASSWORD}"
     alerts:
       - type: discord
     conditions:
-      # behind Caddy basic auth, no credentials configured here, so an
-      # unauthenticated request gets 401 — that still proves Caddy (and
-      # therefore the tunnel/backend) is up and responding correctly.
-      - "[STATUS] == 401"
+      # authenticated request, so this actually checks the backend behind
+      # Caddy, not just that Caddy's auth gate is up.
+      - "[STATUS] == 200"
     ui:
       hide-hostname: true
       hide-url: true
