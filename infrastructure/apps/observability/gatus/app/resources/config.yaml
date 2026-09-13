@@ -44,9 +44,12 @@ endpoints:
     interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53
-      basic-auth:
-        username: "${MULTISCROBBLER_USER}"
-        password: "${MULTISCROBBLER_PASSWORD}"
+    headers:
+      # gatus has no basic-auth config field; it does a raw, unescaped
+      # os.ExpandEnv substitution on the whole file before YAML parsing, so
+      # the value must be pre-encoded to only contain YAML-safe characters.
+      # MULTISCROBBLER_BASIC_AUTH = base64("user:password").
+      Authorization: "Basic ${MULTISCROBBLER_BASIC_AUTH}"
     alerts:
       - type: discord
     conditions:
