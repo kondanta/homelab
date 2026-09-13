@@ -48,7 +48,7 @@ spec:
       # including external.taylan.dev itself (from the crd source's towonel/
       # cloudflare-tunnel DNSEndpoints), which would otherwise become a CNAME
       # pointing at itself and fail the whole zone's batch apply.
-      - --regex-domain-exclude=^external\.taylan\.dev$
+      - --regex-domain-exclusion=^external\.taylan\.dev$
     triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute"]

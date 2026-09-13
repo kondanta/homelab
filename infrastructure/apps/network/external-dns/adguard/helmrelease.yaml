@@ -60,6 +60,11 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=internal
+      # https-redirect has no hostnames, so it inherits the "internal" Gateway's
+      # wildcard listener hostname (*.taylan.dev) and gets treated as a route to
+      # publish. Its external-dns.alpha.kubernetes.io/controller: none annotation
+      # doesn't stop this in practice, so exclude the wildcard name directly.
+      - --regex-domain-exclusion=^\*\.taylan\.dev$
     triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute"]
