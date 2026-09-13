@@ -15,3 +15,8 @@ spec:
     - port: manager
       interval: 30s
       path: /metrics
+      metricRelabelConfigs:
+        - sourceLabels:
+            - __name__
+          action: drop
+          regex: "longhorn_rest_client_(rate_limiter_latency|request_latency)_seconds_bucket"

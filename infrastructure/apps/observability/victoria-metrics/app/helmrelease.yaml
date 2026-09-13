@@ -145,6 +145,16 @@ spec:
 
     kubeApiServer:
       enabled: true
+      vmScrape:
+        spec:
+          # Drop unused apiserver/etcd histogram buckets (no dashboard or
+          # VMRule references them). apiserver_request_sli_duration_seconds_bucket
+          # is kept: it feeds the kube-apiserver SLO/burnrate rules.
+          metricRelabelConfigs:
+            - sourceLabels:
+                - __name__
+              action: drop
+              regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket"
 
     vmsingle:
       extraArgs:

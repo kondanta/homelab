@@ -20,3 +20,8 @@ spec:
         instance: adguard-host
       interval: 30s
       path: /metrics
+      metricRelabelConfigs:
+        - sourceLabels:
+            - __name__
+          action: drop
+          regex: "adguard_queries_details_histogram_bucket|adguard_processing_time_(milliseconds|seconds)_bucket"
