@@ -36,24 +36,21 @@ spec:
       - --exclude-target-net=10.0.0.0/8
       - --exclude-target-net=172.16.0.0/12
       - --exclude-target-net=192.168.0.0/16
-      # gateway-httproute source publishes the "external" Gateway's private LB IP
-      # (10.1.20.202) as the target, which the exclude-target-net filters above
-      # then drop, silently zeroing every record. --default-targets alone is a
-      # no-op here: newer external-dns only applies it when the source provides
-      # zero targets, and gateway-httproute always provides the private IP.
-      # --force-default-targets restores the old "always override" behavior.
-      - --default-targets=external.taylan.dev
-      - --force-default-targets
-      # force-default-targets applies to every endpoint this instance manages,
-      # including external.taylan.dev itself (from the crd source's towonel/
-      # cloudflare-tunnel DNSEndpoints), which would otherwise become a CNAME
-      # pointing at itself and fail the whole zone's batch apply.
-      # https-redirect (no hostnames, inherits the external Gateway's wildcard
-      # listener hostname) also gets published here, creating a real public
-      # *.taylan.dev CNAME. That let gatus's guarded/internal-only endpoint
-      # checks (which resolve via public 1.1.1.1 deliberately, to verify they
-      # are NOT publicly reachable) start getting real 404 responses from the
-      # external gateway instead of failing to resolve. Exclude both names.
+      # gateway-httproute previously published the "external" Gateway's private
+      # LB IP (10.1.20.202) as the target, which exclude-target-net above then
+      # dropped, silently zeroing every record. Root cause: the Gateway's
+      # target: external.taylan.dev annotation used the deprecated
+      # external-dns.alpha.kubernetes.io/ prefix, which this version ignores
+      # (default is external-dns.kubernetes.io/, no "alpha") — now fixed in
+      # gateway.yaml, so the annotation itself correctly overrides the target
+      # and --default-targets/--force-default-targets are no longer needed.
+      #
+      # Still excluding these two names as defense-in-depth: external.taylan.dev
+      # is also crd-sourced (towonel/cloudflare-tunnel DNSEndpoints) and could
+      # self-reference again under any future target-forcing config; https-redirect
+      # has no hostnames so it inherits the wildcard listener hostname
+      # (*.taylan.dev) regardless of whether its controller: none annotation
+      # is honored.
       - --regex-domain-exclusion=^(external|\*)\.taylan\.dev$
     triggerLoopOnEvent: true
     policy: sync

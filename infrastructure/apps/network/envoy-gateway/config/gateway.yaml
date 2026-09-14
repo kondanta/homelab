@@ -19,7 +19,7 @@ metadata:
   labels:
     type: internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname internal.taylan.dev
+    external-dns.kubernetes.io/target: &hostname internal.taylan.dev
     gatus.home-operations.com/endpoint: |-
       client:
         dns-resolver: tcp://1.1.1.1:53
@@ -32,7 +32,7 @@ spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.kubernetes.io/hostname: *hostname
       lbipam.cilium.io/ips: 10.1.20.201,::ffff:10.1.20.201
   listeners:
     - name: http
@@ -62,7 +62,7 @@ metadata:
   labels:
     type: external
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.taylan.dev
+    external-dns.kubernetes.io/target: &hostname external.taylan.dev
     gatus.home-operations.com/endpoint: |-
       client:
         dns-resolver: tcp://1.1.1.1:53
