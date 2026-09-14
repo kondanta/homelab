@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: markbeep/audiobookrequest
-              tag: 1
+              tag: 1.10.7
             env:
               TZ: Europe/Oslo
               LOG_LEVEL: "info"
@@ -52,7 +52,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 15m
