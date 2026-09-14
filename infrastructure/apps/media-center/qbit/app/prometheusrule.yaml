@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: qbittorrent
+spec:
+  groups:
+    - name: qbittorrent.rules
+      rules:
+        - alert: QbittorrentGluetunCrashLooping
+          expr: |-
+            kube_pod_container_status_waiting_reason{namespace="media-center", pod=~"qbittorrent-.*", reason="CrashLoopBackOff", container=~"gluetun|seedboxapi"} == 1
+          annotations:
+            summary: >-
+              qBittorrent's {{ $labels.container }} container is crash-looping — likely the pinned
+              ProtonVPN exit node (node-dk-08.protonvpn.net) was retired or is unreachable
+          for: 5m
+          labels:
+            severity: warning
