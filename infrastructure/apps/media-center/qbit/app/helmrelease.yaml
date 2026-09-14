@@ -78,6 +78,7 @@ spec:
               VPN_PORT_FORWARDING: on
               VPN_PORT_FORWARDING_PROVIDER: protonvpn
               SERVER_COUNTRIES: Denmark
+              SERVER_HOSTNAMES: node-dk-08.protonvpn.net # pin exit node so ASN stays stable across restarts -> MaM ASN-lock stops invalidating the session
               PORT_FORWARD_ONLY: "on"
               DOT: off
               DOT_IPV6: off
