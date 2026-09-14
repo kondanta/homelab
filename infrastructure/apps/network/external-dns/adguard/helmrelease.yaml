@@ -62,8 +62,11 @@ spec:
       - --gateway-name=internal
       # https-redirect has no hostnames, so it inherits the "internal" Gateway's
       # wildcard listener hostname (*.taylan.dev) and gets treated as a route to
-      # publish. Its external-dns.alpha.kubernetes.io/controller: none annotation
-      # doesn't stop this in practice, so exclude the wildcard name directly.
+      # publish. Its controller: none annotation used the deprecated
+      # external-dns.alpha.kubernetes.io/ prefix, which this version ignores
+      # (default prefix is external-dns.kubernetes.io/, no "alpha") — now fixed
+      # in httproute.yaml, but keep this exclusion as defense-in-depth since an
+      # unhostnamed route is inherently fragile.
       - --regex-domain-exclusion=^\*\.taylan\.dev$
     triggerLoopOnEvent: true
     policy: sync

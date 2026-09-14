@@ -16,5 +16,5 @@ spec:
       # resolvers treat as a hard failure (breaking in-cluster OIDC and similar calls).
       # Not proxied: Cloudflare cannot proxy traffic to a private IP.
       providerSpecific:
-        - name: "external-dns.alpha.kubernetes.io/cloudflare-proxied"
+        - name: "external-dns.kubernetes.io/cloudflare-proxied"
           value: "false"
