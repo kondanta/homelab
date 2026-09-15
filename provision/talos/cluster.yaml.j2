@@ -7,6 +7,7 @@
 #
 # What remains in v1alpha1: CA crt (public), machine token, cluster identity, cluster endpoint.
 # The shim requires these stay in v1alpha1 — see grilling session notes for rationale.
+# machine.kubelet also stays in v1alpha1 — see the comment on that block below.
 version: v1alpha1
 machine:
   ca:
@@ -15,6 +16,31 @@ machine:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
     rbac: true
+  # kubelet stays in the legacy v1alpha1 block (mutually exclusive with the
+  # standalone KubeletConfig document — V1Alpha1ConflictValidate rejects
+  # having both) because extraMounts has no 1.14-native replacement.
+  # UserVolumeConfig only mounts at /var/mnt/<name>, and /var/lib/longhorn
+  # holds live Longhorn replica data on all 3 nodes today — migrating to it
+  # needs a per-node disk evacuation in Longhorn, tracked separately, not
+  # part of this schema prep. See siderolabs/talos#14365.
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:v1.36.4
+    defaultRuntimeSeccompProfileEnabled: true
+    disableManifestsDirectory: true
+    config:
+      serializeImagePulls: false
+    extraMounts:
+      # Verified live (talos-bdf-jh3, 2026-09-15): /var/lib/longhorn sits on
+      # Talos's EPHEMERAL partition (/dev/sda4, mounted at /var) — not a
+      # separate disk. EPHEMERAL isn't noexec; engine binaries execute fine
+      # through this bind mount today (Longhorn v1.12.1).
+      - destination: /var/lib/longhorn
+        options:
+          - bind
+          - rshared
+          - rw
+        source: /var/lib/longhorn
+        type: bind
   token: {{ MACHINE_TOKEN }}
 cluster:
   ca:
@@ -97,26 +123,6 @@ content: |
   [plugins."io.containerd.cri.v1.runtime"]
     cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
     device_ownership_from_security_context = true
----
-# disableManifestsDirectory is dropped — always disabled in 1.14 multi-doc format
-apiVersion: v1alpha1
-kind: KubeletConfig
-image: ghcr.io/siderolabs/kubelet:v1.36.4
-defaultRuntimeSeccompProfileEnabled: true
-extraConfig:
-  serializeImagePulls: false
-extraMounts:
-  # Verified live (talos-bdf-jh3, 2026-09-15): /var/lib/longhorn/engine-binaries
-  # is backed by a dedicated disk (/dev/sda4 xfs), not the Talos root overlay
-  # /var that defaults to noexec — engine binaries execute fine through this
-  # same bind mount today (Longhorn v1.12.1).
-  - destination: /var/lib/longhorn
-    options:
-      - bind
-      - rshared
-      - rw
-    source: /var/lib/longhorn
-    type: bind
 ---
 # Base node config for all nodes — CP role label and per-node zone label are added by role/node overlays
 apiVersion: v1alpha1

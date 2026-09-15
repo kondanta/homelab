@@ -70,10 +70,16 @@ kind: KubeAuthorizerConfig
 name: rbac
 type: RBAC
 ---
-# VERIFY: KubeAuthenticationConfig schema — confirm empty body uses built-in defaults
-# Required to avoid missing-authenticator errors when the v1alpha1 shim is not injecting defaults.
 apiVersion: v1alpha1
 kind: KubeAuthenticationConfig
+configuration:
+  anonymous:
+    conditions:
+      - path: /livez
+      - path: /readyz
+      - path: /healthz
+    enabled: true
+  jwt: []
 ---
 # key2 is hardcoded by the v1alpha1 shim (not key1). Must match for decryption to succeed on existing data.
 apiVersion: v1alpha1
