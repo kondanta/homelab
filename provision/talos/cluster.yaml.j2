@@ -32,13 +32,14 @@ cluster:
   secret: {{ CLUSTER_SECRET }}
   token: {{ CLUSTER_TOKEN }}
 ---
-# VERIFY: UnattendedInstallConfig — disk selector uses CEL (disk.model), not YAML struct
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
-image: factory.talos.dev/metal-installer/89c7d76eb7d8a185c8e80f7e5b6d3c78d8bc31f4f27c12fde293e13f5c4e035f:v1.13.7
-diskSelector:
-  match: disk.model == "512GB SSD"
-wipe: false
+installer:
+  image: factory.talos.dev/metal-installer/89c7d76eb7d8a185c8e80f7e5b6d3c78d8bc31f4f27c12fde293e13f5c4e035f:v1.13.10
+provisioning:
+  diskSelector:
+    match: disk.model == "512GB SSD"
+  wipe: false
 ---
 apiVersion: v1alpha1
 kind: KernelModuleConfig
@@ -74,26 +75,23 @@ sysctls:
   user.max_user_namespaces: "11255"
   vm.nr_hugepages: "1024"
 ---
-# VERIFY: EtcFileConfig schema — confirm 'files' array key and op/permissions fields
 apiVersion: v1alpha1
 kind: EtcFileConfig
-files:
-  - op: overwrite
-    path: /etc/nfsmount.conf
-    permissions: 0o644
-    content: |
-      [ NFSMount_Global_Options ]
-      nfsvers=4.2
-      hard=True
-      nconnect=16
-      noatime=True
-      rsize=1048576
-      wsize=1048576
+name: nfsmount.conf
+mode: 0o644
+contents: |
+  [ NFSMount_Global_Options ]
+  nfsvers=4.2
+  hard=True
+  nconnect=16
+  noatime=True
+  rsize=1048576
+  wsize=1048576
 ---
-# VERIFY: CRICustomizationConfig schema — confirm 'config' field takes raw TOML
 apiVersion: v1alpha1
 kind: CRICustomizationConfig
-config: |
+name: runtime-customization
+content: |
   [plugins."io.containerd.cri.v1.images"]
     discard_unpacked_layers = false
   [plugins."io.containerd.cri.v1.runtime"]
@@ -103,11 +101,14 @@ config: |
 # disableManifestsDirectory is dropped — always disabled in 1.14 multi-doc format
 apiVersion: v1alpha1
 kind: KubeletConfig
-image: ghcr.io/siderolabs/kubelet:v1.36.3
+image: ghcr.io/siderolabs/kubelet:v1.36.4
 defaultRuntimeSeccompProfileEnabled: true
 extraConfig:
   serializeImagePulls: false
 extraMounts:
+  # VERIFY (live cluster, before applying): confirm deployed Longhorn engine
+  # binaries under /var/lib/longhorn/engine-binaries/ still execute — /var
+  # defaults to noexec on Talos 1.14 and this bind mount does not lift it.
   - destination: /var/lib/longhorn
     options:
       - bind
@@ -125,12 +126,12 @@ labels:
   intel.feature.node.kubernetes.io/gpu: "true"
   topology.kubernetes.io/region: main
 ---
-# VERIFY: ResolverConfig schema — confirm top-level field names (not nested under hostDNS)
 apiVersion: v1alpha1
 kind: ResolverConfig
-enabled: true
-forwardKubeDNSToHost: true
-resolveMemberNames: true
+hostDNS:
+  enabled: true
+  forwardKubeDNSToHost: true
+  resolveMemberNames: true
 ---
 apiVersion: v1alpha1
 kind: KubePrismConfig
@@ -150,13 +151,12 @@ serviceSubnets:
 apiVersion: v1alpha1
 kind: KubeProxyConfig
 enabled: false
-image: registry.k8s.io/kube-proxy:v1.36.3
+image: registry.k8s.io/kube-proxy:v1.36.4
 ---
 # New in 1.14 — not present in v1alpha1. 168h = weekly trim cycle.
 apiVersion: v1alpha1
 kind: FilesystemTrimConfig
-enabled: true
-interval: 168h
+interval: 168h0m0s
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig

@@ -8,6 +8,23 @@ NODES_DIR := TALOS_DIR / "nodes"
 default:
     just --list --justfile {{ justfile() }}
 
+# Render the legacy (pre-1.14) machineconfig for a node — use for the
+# node-rename playbook, which must run before the 1.14 multi-doc migration.
+# Requires secrets in environment — call via render-config-legacy-sops in normal use.
+[doc("Usage: just talos render-config-legacy k8s-0")]
+render-config-legacy NODE:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    type=$(yq --exit-status 'select(documentIndex == 0) | .machine.type' "{{ NODES_DIR }}/{{ NODE }}.yaml.j2")
+    base=$(minijinja-cli --env --define "machinetype=${type}" "{{ TALOS_DIR }}/machineconfig.yaml.j2")
+    patch=$(minijinja-cli --env --define "machinetype=${type}" "{{ NODES_DIR }}/{{ NODE }}.yaml.j2")
+    talosctl machineconfig patch <(echo "${base}") --patch "@"<(echo "${patch}")
+
+# Render the legacy machineconfig for a node, loading secrets from sops
+[doc("Usage: just talos render-config-legacy-sops k8s-0")]
+render-config-legacy-sops NODE:
+    sops exec-env {{ TALOS_DIR }}/secrets.sops.yaml 'just talos render-config-legacy {{ NODE }}'
+
 # Render the machineconfig for a node (dry-run, prints to stdout)
 # Requires secrets in environment — call via render-config-sops in normal use.
 [doc("Usage: just talos render-config k8s-0")]

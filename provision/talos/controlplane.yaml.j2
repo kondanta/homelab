@@ -41,11 +41,10 @@ cluster:
 ---
 apiVersion: v1alpha1
 kind: KubeAPIServerConfig
-image: registry.k8s.io/kube-apiserver:v1.36.3
+image: registry.k8s.io/kube-apiserver:v1.36.4
 certSANs:
   - 127.0.0.1
   - 10.1.20.11
-disablePodSecurityPolicy: true
 extraArgs:
   enable-aggregator-routing: "true"
   feature-gates: MutatingAdmissionPolicy=true
@@ -53,16 +52,23 @@ extraArgs:
 ---
 apiVersion: v1alpha1
 kind: KubeAuditPolicyConfig
-rules:
-  - level: Metadata
+configuration:
+  apiVersion: audit.k8s.io/v1
+  kind: Policy
+  rules:
+    - level: Metadata
 ---
 # Explicit authorizers required: InjectDefaultAuthorizers() returns false with multi-doc format.
 # Order is load-bearing: node must precede rbac.
 apiVersion: v1alpha1
 kind: KubeAuthorizerConfig
-authorizationModes:
-  - node
-  - rbac
+name: node
+type: Node
+---
+apiVersion: v1alpha1
+kind: KubeAuthorizerConfig
+name: rbac
+type: RBAC
 ---
 # VERIFY: KubeAuthenticationConfig schema — confirm empty body uses built-in defaults
 # Required to avoid missing-authenticator errors when the v1alpha1 shim is not injecting defaults.
@@ -72,20 +78,21 @@ kind: KubeAuthenticationConfig
 # key2 is hardcoded by the v1alpha1 shim (not key1). Must match for decryption to succeed on existing data.
 apiVersion: v1alpha1
 kind: KubeEtcdEncryptionConfig
-encryptionConfig:
+config:
   resources:
-    - secrets
-  providers:
-    - secretbox:
-        keys:
-          - name: key2
-            secret: {{ CLUSTER_SECRETBOX_ENCRYPTION_SECRET }}
-    - identity: {}
+    - resources:
+        - secrets
+      providers:
+        - secretbox:
+            keys:
+              - name: key2
+                secret: {{ CLUSTER_SECRETBOX_ENCRYPTION_SECRET }}
+        - identity: {}
 ---
 # apiVersion/kind stripped from embedded config — KubeSchedulerConfig establishes the type.
 apiVersion: v1alpha1
 kind: KubeSchedulerConfig
-image: registry.k8s.io/kube-scheduler:v1.36.3
+image: registry.k8s.io/kube-scheduler:v1.36.4
 extraArgs:
   bind-address: 0.0.0.0
 config:
@@ -106,7 +113,7 @@ config:
 ---
 apiVersion: v1alpha1
 kind: KubeControllerManagerConfig
-image: registry.k8s.io/kube-controller-manager:v1.36.3
+image: registry.k8s.io/kube-controller-manager:v1.36.4
 extraArgs:
   bind-address: 0.0.0.0
 ---
