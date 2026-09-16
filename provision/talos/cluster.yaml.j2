@@ -61,7 +61,7 @@ cluster:
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
 installer:
-  image: factory.talos.dev/metal-installer/89c7d76eb7d8a185c8e80f7e5b6d3c78d8bc31f4f27c12fde293e13f5c4e035f:v1.13.10
+  image: factory.talos.dev/metal-installer/89c7d76eb7d8a185c8e80f7e5b6d3c78d8bc31f4f27c12fde293e13f5c4e035f:v1.14.1
 provisioning:
   diskSelector:
     match: disk.model == "512GB SSD"
@@ -151,12 +151,6 @@ podSubnets:
   - 10.244.0.0/16
 serviceSubnets:
   - 10.96.0.0/12
----
-# disabled: true → enabled: false in multi-doc format
-apiVersion: v1alpha1
-kind: KubeProxyConfig
-enabled: false
-image: registry.k8s.io/kube-proxy:v1.36.4
 ---
 # New in 1.14 — not present in v1alpha1. 168h = weekly trim cycle.
 apiVersion: v1alpha1

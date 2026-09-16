@@ -129,10 +129,17 @@ render-config NODE:
 
     node_config=$(minijinja-cli "${node_file}")
 
+    # KubeFlannelCNIConfig (what no-flannel.yaml deletes) is control-plane-only —
+    # applying it to a worker machine config fails validation.
+    flannel_patch=()
+    if [[ "${role}" == "controlplane" ]]; then
+        flannel_patch=(--patch "{{ TALOS_DIR }}/no-flannel.yaml")
+    fi
+
     talosctl machineconfig patch <(echo "${cluster}") \
         --patch "@"<(echo "${role_config}") \
         --patch "@"<(echo "${node_config}") \
-        --patch "{{ TALOS_DIR }}/no-flannel.yaml"
+        "${flannel_patch[@]}"
 
 # Render the machineconfig for a node, loading secrets from sops
 [doc("Usage: just talos render-config-sops k8s-0")]

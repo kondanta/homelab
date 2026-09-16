@@ -146,6 +146,14 @@ image: registry.k8s.io/kube-controller-manager:v1.36.4
 extraArgs:
   bind-address: 0.0.0.0
 ---
+# KubeProxyConfig is control-plane-only (verified: pkg/machinery/config/container/validate.go
+# rejects it on worker machines) — moved here from cluster.yaml.j2, which is rendered for
+# every node including workers. disabled: true -> enabled: false in multi-doc format.
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+image: registry.k8s.io/kube-proxy:v1.36.4
+---
 # No taints = scheduling allowed on control plane (replaces allowSchedulingOnControlPlanes: true).
 # Labels merge with the base KubeNodeConfig from cluster.yaml.j2.
 apiVersion: v1alpha1
