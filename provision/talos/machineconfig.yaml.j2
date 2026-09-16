@@ -27,7 +27,6 @@ machine:
       enabled: true
     {% endif %}
     rbac: true
-    stableHostname: true
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
@@ -129,6 +128,23 @@ cluster:
     key: {{ ENV.CLUSTER_AGGREGATOR_CA_KEY }}
   allowSchedulingOnControlPlanes: true
   apiServer:
+    admissionControl:
+      - name: PodSecurity
+        configuration:
+          apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+          kind: PodSecurityConfiguration
+          defaults:
+            enforce: baseline
+            enforce-version: latest
+            audit: restricted
+            audit-version: latest
+            warn: restricted
+            warn-version: latest
+          exemptions:
+            namespaces:
+              - kube-system
+            runtimeClasses: []
+            usernames: []
     auditPolicy:
       apiVersion: audit.k8s.io/v1
       kind: Policy

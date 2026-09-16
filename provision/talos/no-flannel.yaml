@@ -1,0 +1,12 @@
+# Talos generates KubeFlannelCNIConfig unconditionally — cni: none in legacy
+# v1alpha1 doesn't stop it (siderolabs/talos#13958), it has no disable field,
+# and it's not merely "absent" here — it must be explicitly deleted or
+# Flannel comes up alongside Cilium.
+#
+# $patch: delete only decodes correctly when passed as a --patch layer, not
+# as part of the base document set (talosctl rejects it as an unknown key
+# there) — verified empirically, kept as its own patch file for that reason.
+---
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
