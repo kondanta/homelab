@@ -11,7 +11,7 @@
 version: v1alpha1
 machine:
   ca:
-    crt: {{ MACHINE_CA_CRT }}
+    crt: {{ ENV.MACHINE_CA_CRT }}
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -27,7 +27,7 @@ machine:
     image: ghcr.io/siderolabs/kubelet:v1.36.4
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
-    config:
+    extraConfig:
       serializeImagePulls: false
     extraMounts:
       # Verified live (talos-bdf-jh3, 2026-09-15): /var/lib/longhorn sits on
@@ -41,10 +41,10 @@ machine:
           - rw
         source: /var/lib/longhorn
         type: bind
-  token: {{ MACHINE_TOKEN }}
+  token: {{ ENV.MACHINE_TOKEN }}
 cluster:
   ca:
-    crt: {{ CLUSTER_CA_CRT }}
+    crt: {{ ENV.CLUSTER_CA_CRT }}
   clusterName: homelab
   controlPlane:
     endpoint: https://10.1.20.11:6443
@@ -54,9 +54,9 @@ cluster:
       kubernetes:
         disabled: true
       service: {}
-  id: {{ CLUSTER_ID }}
-  secret: {{ CLUSTER_SECRET }}
-  token: {{ CLUSTER_TOKEN }}
+  id: {{ ENV.CLUSTER_ID }}
+  secret: {{ ENV.CLUSTER_SECRET }}
+  token: {{ ENV.CLUSTER_TOKEN }}
 ---
 apiVersion: v1alpha1
 kind: UnattendedInstallConfig
@@ -81,7 +81,7 @@ name: uio_pci_generic
 ---
 apiVersion: v1alpha1
 kind: SysctlConfig
-sysctls:
+params:
   fs.inotify.max_user_instances: "8192"
   fs.inotify.max_user_watches: "1048576"
   net.core.default_qdisc: fq
@@ -142,10 +142,8 @@ hostDNS:
 ---
 apiVersion: v1alpha1
 kind: KubePrismConfig
-enabled: true
 port: 7445
 ---
-# cni: none is dropped — absence of KubeFlannelCNIConfig = no Flannel (Cilium manages networking)
 apiVersion: v1alpha1
 kind: KubeNetworkConfig
 dnsDomain: cluster.local

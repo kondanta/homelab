@@ -44,7 +44,7 @@ verify-secrets:
 
     check_key() {
         local name="$1" value="$2"
-        [[ -z "$value" ]] && { gum log -t rfc3339 -s -l warn "empty, skipping" field "$name"; return 0; }
+        [[ -z "$value" ]] && { gum log -t rfc3339 -s -l warn "empty, skipping" field "$name"; fail=1; return 0; }
         if echo "$value" | base64 -d 2>/dev/null | normalize_pem | openssl pkey -check -noout >/dev/null 2>&1; then
             gum log -t rfc3339 -s -l info "key OK" field "$name"
         else
@@ -55,7 +55,7 @@ verify-secrets:
 
     check_cert() {
         local name="$1" value="$2"
-        [[ -z "$value" ]] && { gum log -t rfc3339 -s -l warn "empty, skipping" field "$name"; return 0; }
+        [[ -z "$value" ]] && { gum log -t rfc3339 -s -l warn "empty, skipping" field "$name"; fail=1; return 0; }
         if echo "$value" | base64 -d 2>/dev/null | openssl x509 -noout -checkend 0 >/dev/null 2>&1; then
             gum log -t rfc3339 -s -l info "cert OK (valid, not expired)" field "$name"
         else
@@ -123,33 +123,16 @@ render-config NODE:
     fi
     node_file="{{ NODES_DIR }}/${role}/{{ NODE }}.yaml.j2"
 
-    cluster=$(minijinja-cli \
-        -D MACHINE_CA_CRT="${MACHINE_CA_CRT}" \
-        -D MACHINE_TOKEN="${MACHINE_TOKEN}" \
-        -D CLUSTER_CA_CRT="${CLUSTER_CA_CRT}" \
-        -D CLUSTER_ID="${CLUSTER_ID}" \
-        -D CLUSTER_SECRET="${CLUSTER_SECRET}" \
-        -D CLUSTER_TOKEN="${CLUSTER_TOKEN}" \
-        "{{ TALOS_DIR }}/cluster.yaml.j2")
+    cluster=$(minijinja-cli --env "{{ TALOS_DIR }}/cluster.yaml.j2")
 
-    role_config=$(minijinja-cli \
-        -D MACHINE_CA_CRT="${MACHINE_CA_CRT}" \
-        -D MACHINE_CA_KEY="${MACHINE_CA_KEY}" \
-        -D CLUSTER_CA_CRT="${CLUSTER_CA_CRT}" \
-        -D CLUSTER_CA_KEY="${CLUSTER_CA_KEY}" \
-        -D CLUSTER_AGGREGATOR_CA_CRT="${CLUSTER_AGGREGATOR_CA_CRT}" \
-        -D CLUSTER_AGGREGATOR_CA_KEY="${CLUSTER_AGGREGATOR_CA_KEY}" \
-        -D CLUSTER_SA_KEY="${CLUSTER_SA_KEY}" \
-        -D CLUSTER_ETCD_CA_CRT="${CLUSTER_ETCD_CA_CRT}" \
-        -D CLUSTER_ETCD_CA_KEY="${CLUSTER_ETCD_CA_KEY}" \
-        -D CLUSTER_SECRETBOX_ENCRYPTION_SECRET="${CLUSTER_SECRETBOX_ENCRYPTION_SECRET}" \
-        "{{ TALOS_DIR }}/${role}.yaml.j2")
+    role_config=$(minijinja-cli --env "{{ TALOS_DIR }}/${role}.yaml.j2")
 
     node_config=$(minijinja-cli "${node_file}")
 
     talosctl machineconfig patch <(echo "${cluster}") \
         --patch "@"<(echo "${role_config}") \
-        --patch "@"<(echo "${node_config}")
+        --patch "@"<(echo "${node_config}") \
+        --patch "{{ TALOS_DIR }}/no-flannel.yaml"
 
 # Render the machineconfig for a node, loading secrets from sops
 [doc("Usage: just talos render-config-sops k8s-0")]
