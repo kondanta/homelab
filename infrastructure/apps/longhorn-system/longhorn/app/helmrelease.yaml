@@ -15,6 +15,30 @@ spec:
         kind: HelmRepository
         name: longhorn
         namespace: flux-system
+  # The chart hardcodes hostPath: /var/lib/longhorn/ on longhorn-manager with
+  # no values.yaml key to add another mount (verified against
+  # chart/templates/daemonset-sa.yaml — no extraVolumes/extraHostPath support
+  # in 1.12.1). Mounting /var/mnt/ broadly so it also covers local-hostpath
+  # and future UserVolumeConfig volumes without repeated patches.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: DaemonSet
+              name: longhorn-manager
+            patch: |
+              - op: add
+                path: /spec/template/spec/volumes/-
+                value:
+                  name: var-mnt
+                  hostPath:
+                    path: /var/mnt/
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts/-
+                value:
+                  name: var-mnt
+                  mountPath: /var/mnt/
+                  mountPropagation: Bidirectional
   values:
     persistence:
       defaultClass: true
