@@ -12,15 +12,6 @@ machine:
     # Without crt here, the merge would send only the key and clear the crt written by cluster.yaml.j2.
     crt: {{ MACHINE_CA_CRT }}
     key: {{ MACHINE_CA_KEY }}
-  features:
-    kubernetesTalosAPIAccess:
-      allowedKubernetesNamespaces:
-        - actions-runner-system
-        - security
-        - system-upgrade
-      allowedRoles:
-        - os:admin
-      enabled: true
   type: controlplane
 cluster:
   ca:
@@ -39,6 +30,17 @@ cluster:
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
 ---
+# machine.features.kubernetesTalosAPIAccess is deprecated in 1.14 in favor of
+# this document kind — presence of the document implies enabled, no `enabled` field.
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:admin
+allowedKubernetesNamespaces:
+  - actions-runner-system
+  - security
+  - system-upgrade
+---
 apiVersion: v1alpha1
 kind: KubeAPIServerConfig
 image: registry.k8s.io/kube-apiserver:v1.36.4
@@ -49,6 +51,27 @@ extraArgs:
   enable-aggregator-routing: "true"
   feature-gates: MutatingAdmissionPolicy=true
   runtime-config: admissionregistration.k8s.io/v1beta1=true
+---
+# PodSecurity admission moved to its own document kind in 1.14 —
+# KubeAPIServerConfig no longer carries an admissionControl field at all.
+apiVersion: v1alpha1
+kind: KubeAdmissionControlConfig
+name: PodSecurity
+configuration:
+  apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+  kind: PodSecurityConfiguration
+  defaults:
+    enforce: baseline
+    enforce-version: latest
+    audit: restricted
+    audit-version: latest
+    warn: restricted
+    warn-version: latest
+  exemptions:
+    namespaces:
+      - kube-system
+    runtimeClasses: []
+    usernames: []
 ---
 apiVersion: v1alpha1
 kind: KubeAuditPolicyConfig
