@@ -1,0 +1,25 @@
+---
+# machine.type is set by workers.yaml.j2 — not repeated here.
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: k8s-3
+---
+# SER5 Pro (AMD Ryzen 7 5800H) — different hardware from the N100 fleet, so the
+# base UnattendedInstallConfig (Intel schematic, N100 disk model) is overridden here.
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/metal-installer/e53f9d192e6be71a166c2e1900795708fe57685294d2fc96c54bd73f0b0215f6:v1.14.1
+provisioning:
+  diskSelector:
+    match: disk.model == "CT500P3PSSD8"
+---
+# Override the base KubeNodeConfig's Intel-only assumptions (intel GPU label,
+# tuppr schematic annotation) for this node's AMD hardware; add its zone label.
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+annotations:
+  tuppr.home-operations.com/schematic: "e53f9d192e6be71a166c2e1900795708fe57685294d2fc96c54bd73f0b0215f6"
+labels:
+  intel.feature.node.kubernetes.io/gpu: "false"
+  topology.kubernetes.io/zone: m
