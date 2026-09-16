@@ -157,10 +157,19 @@ apiVersion: v1alpha1
 kind: FilesystemTrimConfig
 interval: 168h0m0s
 ---
+# volumeType: directory mounts within EPHEMERAL's existing filesystem at
+# /var/mnt/local-hostpath — no new partition, so provisioning (diskSelector/
+# minSize) is disallowed for this type and must be omitted entirely.
 apiVersion: v1alpha1
 kind: UserVolumeConfig
 name: local-hostpath
-provisioning:
-  diskSelector:
-    match: disk.transport == "sata"
-  minSize: 512GB
+volumeType: directory
+---
+# Migration target for Longhorn's /var/lib/longhorn (see
+# provision/talos/memory/2026-09-15_longhorn-uservolume-migration-backlog.md).
+# Mounts at /var/mnt/longhorn, same directory-within-EPHEMERAL mechanism as
+# local-hostpath above — no new partition, no disk-space constraint.
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn
+volumeType: directory
