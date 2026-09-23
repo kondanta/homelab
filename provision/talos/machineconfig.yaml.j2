@@ -158,11 +158,11 @@ cluster:
       enable-aggregator-routing: "true"
       feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
-    image: registry.k8s.io/kube-apiserver:v1.37.0
+    image: registry.k8s.io/kube-apiserver:v1.37.1
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-controller-manager:v1.37.0
+    image: registry.k8s.io/kube-controller-manager:v1.37.1
   etcd:
     ca:
       crt: {{ ENV.CLUSTER_ETCD_CA_CRT }}
@@ -171,7 +171,7 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
   proxy:
     disabled: true
-    image: registry.k8s.io/kube-proxy:v1.37.0
+    image: registry.k8s.io/kube-proxy:v1.37.1
   scheduler:
     config:
       apiVersion: kubescheduler.config.k8s.io/v1
@@ -192,7 +192,7 @@ cluster:
                     whenUnsatisfiable: ScheduleAnyway
     extraArgs:
       bind-address: 0.0.0.0
-    image: registry.k8s.io/kube-scheduler:v1.37.0
+    image: registry.k8s.io/kube-scheduler:v1.37.1
   secretboxEncryptionSecret: {{ ENV.CLUSTER_SECRETBOX_ENCRYPTION_SECRET }}
   serviceAccount:
     key: {{ ENV.CLUSTER_SA_KEY }}
