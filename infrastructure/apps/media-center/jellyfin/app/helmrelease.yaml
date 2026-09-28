@@ -55,9 +55,9 @@ spec:
               requests:
                 gpu.intel.com/i915: 1
                 cpu: 1 # Transcoding is demanding
-                memory: 100Mi
+                memory: 1Gi # avg working set ~650-850Mi
               limits:
-                memory: 2Gi
+                memory: 3Gi # peak RSS 1.7Gi + cache; 2Gi OOMed 2026-09-24
                 gpu.intel.com/i915: 1
     defaultPodOptions:
       securityContext:
