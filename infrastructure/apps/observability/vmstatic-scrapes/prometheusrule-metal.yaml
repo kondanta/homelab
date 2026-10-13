@@ -74,17 +74,34 @@ spec:
             summary: >-
               {{ $labels.instance }} {{ $labels.mountpoint }} disk above 90% ({{ $value | printf "%.0f" }}%)
 
-        - alert: NASSwapHigh
+        # Replaces NASSwapHigh (swap used > 500MB). The NAS holds a stable ~860MB of cold QTS
+        # daemon pages in swap with ~2.8GB RAM available and ~0 swap churn, so "swap used" was
+        # permanently true and said nothing about health. These two rules alert on the actual
+        # failure modes instead.
+        - alert: NASLowMemory
+          # Baseline MemAvailable min over 14d was ~2.85GB, so 500MB is real memory starvation.
           expr: >-
-            (node_memory_SwapTotal_bytes{job="qnapexporter"}
-             - node_memory_SwapFree_bytes{job="qnapexporter"})
-            > 500 * 1024 * 1024
-          for: 30m
+            node_memory_MemAvailable_bytes{job="qnapexporter"} < 500 * 1024 * 1024
+          for: 15m
           labels:
             severity: warning
           annotations:
             summary: >-
-              NAS swap above 500MB for 30m ({{ $value | humanize1024 }}B used)
+              NAS available memory below 500MB for 15m ({{ $value | humanize1024 }}B available)
+
+        - alert: NASSwapGrowing
+          # Baseline max swap growth was +26MB/h over 14d; 150MB/h is a leak or memory pressure,
+          # not the normal slow drift of cold pages.
+          expr: >-
+            node_memory_SwapFree_bytes{job="qnapexporter"} offset 1h
+            - node_memory_SwapFree_bytes{job="qnapexporter"}
+            > 150 * 1024 * 1024
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              NAS swap grew by {{ $value | humanize1024 }}B in the last hour
 
         - alert: MetalHostHighLoad
           expr: >-
