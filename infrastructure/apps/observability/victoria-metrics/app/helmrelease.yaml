@@ -202,6 +202,10 @@ spec:
         podMonitorSelector: {}
 
     prometheus-node-exporter:
+      # mountstats: per-op NFS RTT/queue/retrans (node_mountstats_nfs_*) for the nas.lcl media mount.
+      # Off by default; retransmit counters alone miss stalls shorter than the 60s hard-mount timeo.
+      extraArgs:
+        - --collector.mountstats
       resources:
         requests:
           cpu: 10m
