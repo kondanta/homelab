@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_backendtrafficpolicies.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: jellyfin
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: jellyfin
+  # Keep the gateway-level policy (compression) instead of replacing it for this route.
+  mergeType: StrategicMerge
+  timeout:
+    http:
+      # Without this Envoy applies its 15s default route timeout, which cuts every long
+      # direct-play range response mid-body (response_flags=UT, 206 after ~15s) for all
+      # clients. 0s disables the route timeout; hung streams are still bounded by the
+      # 5m stream idle timeout.
+      requestTimeout: 0s
