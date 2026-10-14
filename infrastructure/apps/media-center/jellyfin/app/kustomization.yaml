@@ -5,6 +5,7 @@ kind: Kustomization
 components:
   - ../../../../components/no-control-plane
 resources:
+  - backendtrafficpolicy.yaml
   - helmrelease.yaml
   - ocirepository.yaml
   - pvc.yaml
