@@ -123,7 +123,7 @@ spec:
               DISABLE_GOOGLE_CHROME: "1"
             image:
               repository: gotenberg/gotenberg
-              tag: 8.38.0@sha256:c36cdd730893e3941d27a196ff8b68675e473642d067ec7ee3668b9adaa37b75
+              tag: 8.38.1@sha256:aa552cc115db488e0f0bcb07446aac13071ad51505b642c84bb894500907b42b
             resources:
               requests:
                 cpu: 10m
