@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/httproutefilter_v1alpha1.json
+# Envoy answers directly, so there is no pod/image behind blog.taylan.dev.
+# 503 + Retry-After tells crawlers the outage is temporary (200 would get indexed).
+# NB: Envoy interprets %...% in the body as command operators; keep % out of the HTML.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: blog-placeholder
+spec:
+  directResponse:
+    statusCode: 503
+    contentType: text/html; charset=utf-8
+    header:
+      set:
+        - name: Retry-After
+          value: "86400"
+    body:
+      type: Inline
+      inline: |
+        <!doctype html>
+        <html lang="en">
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta name="robots" content="noindex">
+          <title>roaming-root | under construction</title>
+          <style>
+            :root { color-scheme: light dark; }
+            body { margin: 0; min-height: 100vh; display: grid; place-items: center;
+                   font: 1.1rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+            main { padding: 2rem; max-width: 32rem; text-align: center; }
+            h1 { font-size: 1.4rem; margin: 0 0 .5rem; }
+            p { margin: 0; opacity: .75; }
+          </style>
+        </head>
+        <body>
+          <main>
+            <h1>&gt; roaming-root</h1>
+            <p>Under construction. Back soon.</p>
+          </main>
+        </body>
+        </html>

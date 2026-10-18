@@ -18,3 +18,4 @@ resources:
   - silverbullet/ks.yaml
   - koito/ks.yaml
   - multi-scrobbler/ks.yaml
+  - blog-placeholder/ks.yaml
