@@ -1,0 +1,95 @@
+---
+# Pulls a consistent copy of Vaultwarden's data dir from Hetzner into the
+# vaultwarden-backup PVC; the volsync component (ks.yaml) snapshots that PVC
+# into Kopia daily at 17:15 UTC.
+#
+# Hetzner side: the key in vaultwarden-backup-ssh is accepted only with a forced
+# command (authorized_keys: restrict,command="/usr/local/bin/vw-backup-stream")
+# that runs a SQLite online backup and writes a tar to stdout. No shell, no
+# forwarding. Fail-safe: extraction goes to .incoming and replaces `current`
+# only after sanity checks, so a failed run never destroys the last good copy.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vaultwarden-backup
+spec:
+  schedule: "50 16 * * *"
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
+          containers:
+            - name: pull
+              # renovate: datasource=docker depName=docker.io/instrumentisto/rsync-ssh
+              image: docker.io/instrumentisto/rsync-ssh:alpine3.23-r3@sha256:6cbad37c2fbdca4ac7ad9d1c1bb8990af9efd4dc76321b349935876cbb1e9e4a
+              command: ["/bin/sh", "-ec"]
+              args:
+                - |
+                  set -o pipefail
+                  # ssh refuses group-readable keys; fsGroup makes the secret mount 0440
+                  cp /ssh/id_ed25519 /tmp/id && chmod 600 /tmp/id
+
+                  rm -rf /data/.incoming && mkdir -p /data/.incoming
+                  ssh -i /tmp/id -o BatchMode=yes -o IdentitiesOnly=yes \
+                      -o UserKnownHostsFile=/ssh/known_hosts -o StrictHostKeyChecking=yes \
+                      -o ConnectTimeout=20 root@46.62.237.128 \
+                    | tar -x -C /data/.incoming
+
+                  # sanity: refuse to swap in an empty or truncated pull
+                  test -s /data/.incoming/db.sqlite3
+                  test -s /data/.incoming/rsa_key.pem
+                  head -c 15 /data/.incoming/db.sqlite3 | grep -q 'SQLite format 3'
+
+                  rm -rf /data/current && mv /data/.incoming /data/current
+                  date -u +%FT%TZ > /data/last-success
+                  echo "ok: $(du -sh /data/current | cut -f1) in /data/current"
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 32Mi
+                limits:
+                  memory: 128Mi
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: ssh
+                  mountPath: /ssh
+                  readOnly: true
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: vaultwarden-backup
+            - name: ssh
+              secret:
+                secretName: vaultwarden-backup-ssh
+            - name: tmp
+              emptyDir: {}

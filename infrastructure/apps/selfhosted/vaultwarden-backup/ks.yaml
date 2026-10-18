@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app vaultwarden-backup
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
+  interval: 1h
+  path: ./infrastructure/apps/selfhosted/vaultwarden-backup/app
+  postBuild:
+    substitute:
+      APP: vaultwarden-backup
+      VOLSYNC_CAPACITY: 2Gi
+      # daily, 25 min after the CronJob below (16:50 UTC); data only changes once a day
+      VOLSYNC_SCHEDULE: "15 17 * * *"
+      VOLSYNC_PUID: "1000"
+      VOLSYNC_PGID: "1000"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: selfhosted
+  wait: false
