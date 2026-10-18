@@ -12,8 +12,6 @@ spec:
   values:
     controllers:
       koito:
-        # 0 until koito.db is seeded into the PVC; a follow-up PR flips this to 1
-        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
