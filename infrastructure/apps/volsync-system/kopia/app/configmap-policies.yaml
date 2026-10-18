@@ -39,6 +39,11 @@ data:
       --keep-hourly=24 --keep-daily=14 --keep-weekly=4 \
       --keep-monthly=0 --keep-annual=0 --keep-latest=5
 
+    echo "=== koito: monthly:12 (listening history, not reproducible) ==="
+    $KOPIA policy set koito@selfhosted:/data \
+      --keep-hourly=24 --keep-daily=14 --keep-weekly=4 \
+      --keep-monthly=12 --keep-annual=0 --keep-latest=5
+
     echo "=== maintenance: log retention 72h ==="
     $KOPIA maintenance set --max-retained-log-age=72h
 
