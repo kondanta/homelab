@@ -16,3 +16,5 @@ resources:
   - chaski/ks.yaml
   - kansou/ks.yaml
   - silverbullet/ks.yaml
+  - koito/ks.yaml
+  - multi-scrobbler/ks.yaml
