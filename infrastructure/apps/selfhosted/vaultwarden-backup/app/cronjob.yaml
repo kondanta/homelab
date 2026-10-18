@@ -42,8 +42,9 @@ spec:
                         operator: DoesNotExist
           containers:
             - name: pull
-              # renovate: datasource=docker depName=docker.io/instrumentisto/rsync-ssh
-              image: docker.io/instrumentisto/rsync-ssh:alpine3.23-r3@sha256:6cbad37c2fbdca4ac7ad9d1c1bb8990af9efd4dc76321b349935876cbb1e9e4a
+              # built from metal/services/ssh-client (alpine + openssh-client, uid 1000 present)
+              # renovate: datasource=docker depName=ghcr.io/kondanta/homelab/metal/ssh-client
+              image: ghcr.io/kondanta/homelab/metal/ssh-client:3.24.2@sha256:4e248232418efb7a70a469f40391c7d81742a5d4326101f6315285b05f18d8ef
               command: ["/bin/sh", "-ec"]
               args:
                 - |
@@ -52,7 +53,7 @@ spec:
                   cp /ssh/id_ed25519 /tmp/id && chmod 600 /tmp/id
 
                   rm -rf /data/.incoming && mkdir -p /data/.incoming
-                  ssh -i /tmp/id -o BatchMode=yes -o IdentitiesOnly=yes \
+                  ssh -T -i /tmp/id -o BatchMode=yes -o IdentitiesOnly=yes \
                       -o UserKnownHostsFile=/ssh/known_hosts -o StrictHostKeyChecking=yes \
                       -o ConnectTimeout=20 root@46.62.237.128 \
                     | tar -x -C /data/.incoming
