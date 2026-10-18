@@ -12,8 +12,6 @@ spec:
   values:
     controllers:
       multi-scrobbler:
-        # 0 until ms.db + Spotify creds are seeded into the PVC; a follow-up PR flips this to 1
-        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
