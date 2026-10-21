@@ -11,7 +11,6 @@ spec:
   values:
     controllers:
       freshrss:
-        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -23,6 +22,18 @@ spec:
               CRON_MIN: "*"
               DOMAIN: freshrss.taylan.dev
               LISTEN: &port 8080
+              # OIDC (Debian image, mod_auth_openidc). Only the web UI (/i/) is protected; the API has
+              # its own auth. FreshRSS must run with auth_type http_auth, and the claim below must equal
+              # the FreshRSS username. Client id/secret/crypto key come from the secret below.
+              OIDC_ENABLED: "1"
+              OIDC_PROVIDER_METADATA_URL: https://auth.taylan.dev/application/o/freshrss/.well-known/openid-configuration
+              OIDC_REMOTE_USER_CLAIM: preferred_username
+              OIDC_SCOPES: openid profile
+              # TLS ends at the gateway; without this the redirect URI would be built as http://
+              OIDC_X_FORWARDED_HEADERS: X-Forwarded-Host X-Forwarded-Proto
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}"
             probes:
               liveness:
                 enabled: true
