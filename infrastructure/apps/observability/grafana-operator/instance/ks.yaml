@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/login-ratelimit
   dependsOn:
     - name: grafana-operator
       namespace: observability
@@ -19,6 +21,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      RL_LOGIN_PATH: '/login([?].*)?'
   prune: true
   sourceRef:
     kind: GitRepository

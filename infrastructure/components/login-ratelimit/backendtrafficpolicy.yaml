@@ -1,0 +1,57 @@
+---
+# Per-client-IP limit on credential endpoints of an externally exposed app.
+#
+# Intent: slow down password guessing against apps that have their own login (or proxy
+# credentials to Jellyfin/LDAP). Only POSTs to the login path are counted, and each client
+# IP gets its own bucket (Distinct), so one noisy IP cannot lock out everyone else.
+#
+# Variables (Flux postBuild.substitute):
+#   RL_LOGIN_PATH   (required) RE2 regex, full-match against the request path (+ query string).
+#                   Use `([?].*)?` as tail to allow a query string; `(?i)` for case-insensitive apps.
+#   RL_LOGIN_LIMIT  requests per minute per IP (default 10)
+#   RL_TARGET       HTTPRoute name, defaults to ${APP}
+#
+# Client IP: relies on the external ClientTrafficPolicy using the PROXY-protocol address
+# (numTrustedHops: 0). With a trusted X-Forwarded-For hop this limit is trivially bypassable.
+#
+# mergeType keeps the Gateway-level BackendTrafficPolicy (compression) active on this route;
+# without it the route-level policy replaces it entirely.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: ${RL_TARGET:-${APP}}-login
+spec:
+  mergeType: StrategicMerge
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: ${RL_TARGET:-${APP}}
+  rateLimit:
+    type: Local
+    local:
+      rules:
+        # One rule per IP family: a Distinct selector is bound to the CIDR it is given.
+        - clientSelectors:
+            - path:
+                type: RegularExpression
+                value: '${RL_LOGIN_PATH}'
+              methods:
+                - value: POST
+              sourceCIDR:
+                type: Distinct
+                value: 0.0.0.0/0
+          limit:
+            requests: ${RL_LOGIN_LIMIT:-10}
+            unit: Minute
+        - clientSelectors:
+            - path:
+                type: RegularExpression
+                value: '${RL_LOGIN_PATH}'
+              methods:
+                - value: POST
+              sourceCIDR:
+                type: Distinct
+                value: ::/0
+          limit:
+            requests: ${RL_LOGIN_LIMIT:-10}
+            unit: Minute

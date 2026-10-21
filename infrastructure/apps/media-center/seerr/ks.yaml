@@ -8,6 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/login-ratelimit
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -16,6 +18,8 @@ spec:
   postBuild:
     substitute:
       APP: seerr
+      # seerr proxies these credentials to Jellyfin/LDAP, so it is a second brute-force door
+      RL_LOGIN_PATH: '/api/v1/auth/(jellyfin|local)([?].*)?'
   prune: true
   sourceRef:
     kind: GitRepository

@@ -8,6 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/login-ratelimit
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -16,6 +18,7 @@ spec:
   postBuild:
     substitute:
       APP: audiobookshelf
+      RL_LOGIN_PATH: '/login([?].*)?'
   prune: true
   sourceRef:
     kind: GitRepository
