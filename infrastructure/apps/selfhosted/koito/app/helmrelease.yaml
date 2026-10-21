@@ -22,6 +22,12 @@ spec:
               tag: v0.3.2@sha256:3011de405ba2a5c56270928c2b0391add8aa3b3ed68363531b3c64b61f238857
             env:
               TZ: Europe/Oslo
+              # soft heap cap (~80% of the limit): GC works harder near it instead of growing into an OOMKill
+              GOMEMLIMIT: 200MiB
+              # libvips (bimg, cgo) memory is outside the Go heap; glibc per-thread arenas fragment and are rarely returned to the OS
+              MALLOC_ARENA_MAX: "2"
+              MALLOC_TRIM_THRESHOLD_: "131072"
+              VIPS_CONCURRENCY: "1"
             probes:
               liveness:
                 enabled: true
