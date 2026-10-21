@@ -20,10 +20,12 @@ spec:
   timeout: 5m
   components:
     - ../../../../components/volsync
+    - ../../../../components/login-ratelimit
   postBuild:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: paperless
+      RL_LOGIN_PATH: '/(accounts/login|api/token)/?([?].*)?'
       VOLSYNC_CAPACITY: 50Gi
       VOLSYNC_SCHEDULE: "45 * * * *"
   dependsOn:

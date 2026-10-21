@@ -9,8 +9,16 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/login-ratelimit
   interval: 30m
   path: ./infrastructure/apps/security/authentik/app
+  postBuild:
+    substitute:
+      RL_TARGET: authentik-server
+      # login is a multi-stage flow (identification, password, MFA...), each stage is a POST
+      RL_LOGIN_PATH: '/api/v3/flows/executor/.*'
+      RL_LOGIN_LIMIT: "30"
   prune: true
   sourceRef:
     kind: GitRepository
