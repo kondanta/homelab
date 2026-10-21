@@ -57,9 +57,12 @@ spec:
   interval: 30m
   timeout: 5m
   path: "./infrastructure/apps/kube-system/cilium/hubble"
+  components:
+    - ../../../../components/fa
   postBuild:
     substitute:
       APP: hubble
+      EXT_AUTH_TARGET_NAME: hubble-ui
   prune: true
   sourceRef:
     kind: GitRepository
