@@ -19,7 +19,7 @@ spec:
       hostnames:
         - echo.taylan.dev
       parentRefs:
-        - name: external
+        - name: internal
           namespace: network
           sectionName: https
     resources:
