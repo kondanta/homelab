@@ -15,6 +15,7 @@ spec:
   path: ./infrastructure/apps/security/authentik/app
   postBuild:
     substitute:
+      APP: *app
       RL_TARGET: authentik-server
       # login is a multi-stage flow (identification, password, MFA...), each stage is a POST
       RL_LOGIN_PATH: '/api/v3/flows/executor/.*'
