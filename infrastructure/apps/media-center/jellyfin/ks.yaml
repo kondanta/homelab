@@ -8,8 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/login-ratelimit
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -18,8 +16,6 @@ spec:
   postBuild:
     substitute:
       APP: jellyfin
-      # case-insensitive: ASP.NET routing ignores case, Envoy regex does not
-      RL_LOGIN_PATH: '(?i)/Users/AuthenticateByName([?].*)?'
   prune: true
   sourceRef:
     kind: GitRepository

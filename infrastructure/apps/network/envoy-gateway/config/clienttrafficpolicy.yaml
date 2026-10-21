@@ -30,11 +30,10 @@ spec:
       name: external
   proxyProtocol:
     optional: true
-  # Real client IP arrives via PROXY protocol (Caddy -> towonel -> agent); no HTTP proxy
-  # sits in front of Envoy, so a client-supplied X-Forwarded-For must not be trusted.
-  clientIPDetection:
-    xForwardedFor:
-      numTrustedHops: 0
+  # No clientIPDetection on purpose: the real client IP arrives via PROXY protocol (Caddy -> towonel
+  # -> agent) and no HTTP proxy sits in front of Envoy. Any xForwardedFor block (even numTrustedHops: 0)
+  # makes Envoy take the client address from a client-supplied X-Forwarded-For, which lets anyone
+  # pick the address that rate limits and policies key on.
   tls:
     minVersion: '1.2'
     alpnProtocols:

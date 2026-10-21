@@ -18,3 +18,35 @@ spec:
       # clients. 0s disables the route timeout; hung streams are still bounded by the
       # 5m stream idle timeout.
       requestTimeout: 0s
+  # Per-client-IP limit on the password endpoint. Lives here, not in components/login-ratelimit:
+  # a route accepts only one route-level BackendTrafficPolicy, so a second one is rejected as
+  # Conflicted. Case-insensitive because ASP.NET routing ignores case and Envoy regex does not.
+  # Needs the external ClientTrafficPolicy to use the real client IP (numTrustedHops: 0).
+  rateLimit:
+    type: Local
+    local:
+      rules:
+        - clientSelectors:
+            - path:
+                type: RegularExpression
+                value: "(?i)/Users/AuthenticateByName([?].*)?"
+              methods:
+                - value: POST
+              sourceCIDR:
+                type: Distinct
+                value: 0.0.0.0/0
+          limit:
+            requests: 10
+            unit: Minute
+        - clientSelectors:
+            - path:
+                type: RegularExpression
+                value: "(?i)/Users/AuthenticateByName([?].*)?"
+              methods:
+                - value: POST
+              sourceCIDR:
+                type: Distinct
+                value: ::/0
+          limit:
+            requests: 10
+            unit: Minute
