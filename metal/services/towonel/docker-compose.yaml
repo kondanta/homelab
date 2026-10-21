@@ -8,6 +8,12 @@ services:
     ports:
       - "8443:8443/tcp"
       - "51820:51820/udp"
+    environment:
+      # Caddy (L4, same docker network) prepends PROXY v2 so the edge sees the real
+      # client IP instead of Caddy's. Trusted peers (default: private ranges, which
+      # covers the proxy bridge) MUST send the header or are dropped after 2s, so
+      # this and `proxy_protocol v2` in metal/services/caddy/Caddyfile ship together.
+      TOWONEL_EDGE_PROXY_PROTOCOL: "true"
     env_file:
       - .env
     volumes:
