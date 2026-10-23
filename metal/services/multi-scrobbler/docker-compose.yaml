@@ -11,7 +11,7 @@ services:
       - multi-scrobbler
 
   multi-scrobbler:
-    image: foxxmd/multi-scrobbler:0.20.0
+    image: foxxmd/multi-scrobbler:0.20.2
     container_name: multi-scrobbler
     env_file:
       - .env
