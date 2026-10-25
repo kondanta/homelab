@@ -13,7 +13,7 @@ permissions:
 jobs:
   main:
     name: Labeler - Labeler
-    runs-on: i7
+    runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     permissions:
       contents: read
