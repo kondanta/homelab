@@ -33,6 +33,34 @@ services:
       start_period: 30s
       retries: 3
 
+  # Joins this host to the *monitoring* tenant's private mesh so the cluster can scrape the
+  # loopback-only exporters (node-exporter :9100, cadvisor :8081) without any public port.
+  # MUST use a dedicated tenant invite, never the <domain.dev> ingress one: an agent publishes
+  # its invite's hostnames, and the edge would route public traffic to this service-less agent.
+  # Secrets (TOWONEL_INVITE_TOKEN, TOWONEL_MESH_AUTH_KEY) live in the host-only mesh.env.
+  towonel-mesh:
+    # renovate: datasource=docker depName=codeberg.org/towonel/towonel-agent versioning=semver-coerced
+    image: codeberg.org/towonel/towonel-agent:1.13.3
+    container_name: towonel-mesh
+    restart: unless-stopped
+    # host network: the exporters listen on 127.0.0.1 only
+    network_mode: host
+    mem_limit: 128m
+    env_file:
+      - path: mesh.env
+        required: false
+    environment:
+      RUST_LOG: info
+      TOWONEL_MESH_NAME: hetzner
+      TOWONEL_MESH_STATE_DIR: /home/nonroot/mesh
+      # port = what mesh peers connect to, origin = what this agent dials
+      TOWONEL_AGENT_MESH_SERVICES: >-
+        [{"port":9100,"origin":"127.0.0.1:9100"},
+        {"port":8081,"origin":"127.0.0.1:8081"}]
+    volumes:
+      # device key, single-use auth keys cannot re-enroll: must survive recreation
+      - towonel_mesh:/home/nonroot
+
 networks:
   proxy:
     external: true
@@ -43,4 +71,11 @@ volumes:
     driver_opts:
       type: none
       device: /root/projects/towonel/data
+      o: bind
+  # create first, owned by the image's uid: mkdir -p /root/projects/towonel/mesh && chown 10001:10001 /root/projects/towonel/mesh
+  towonel_mesh:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/projects/towonel/mesh
       o: bind
