@@ -157,6 +157,7 @@ spec:
               # Drop unused apiserver/etcd histogram buckets (no dashboard or
               # VMRule references them). apiserver_request_sli_duration_seconds_bucket
               # is kept: it feeds the kube-apiserver SLO/burnrate rules.
+              # Only the _bucket series are dropped; _sum/_count stay for averages.
               # Must live under endpoints[] (not top-level spec): VMServiceScrape's
               # CRD schema only defines metricRelabelConfigs there, and a
               # VMAgent-level globalScrapeMetricRelabelConfigs does NOT get
@@ -166,21 +167,20 @@ spec:
                 - sourceLabels:
                     - __name__
                   action: drop
-                  regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket"
+                  regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_dispatch_duration_seconds_bucket|apiserver_storage_list_duration_seconds_bucket|apiserver_watch_cache_initialization_duration_seconds_bucket|kubernetes_feature_enabled"
 
     vmsingle:
-      extraArgs:
-        search.enableLabelAPI: "true"
-      retentionPeriod: "14d"
-      storage:
-        volumeClaimTemplate:
-          spec:
-            accessModes:
-              - "ReadWriteOnce"
-            storageClassName: longhorn
-            resources:
-              requests:
-                storage: 10Gi
+      # Everything for the VMSingle CR lives under spec; keys placed directly
+      # under vmsingle are ignored by the chart. These values match what has
+      # been running: 1 month of retention on a 20Gi volume (PVCs cannot shrink).
+      spec:
+        retentionPeriod: "1"
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
 
     vmagent:
       enabled: true
@@ -257,6 +257,11 @@ spec:
                 - __name__
               action: drop
               regex: "container_spec.*"
+            # Feature-gate flags, ~1k series, unused.
+            - sourceLabels:
+                - __name__
+              action: drop
+              regex: "kubernetes_feature_enabled"
             # Drop cgroup metrics with no pod.
             - sourceLabels:
                 - id
@@ -286,6 +291,21 @@ spec:
           memory: 96Mi
       vmScrape:
         enabled: true
+        spec:
+          # Helm replaces lists, so this repeats the chart's default endpoint
+          # (port http, honorLabels, labeldrop) and adds one drop rule.
+          endpoints:
+            - port: http
+              honorLabels: true
+              metricRelabelConfigs:
+                - action: labeldrop
+                  regex: (uid|container_id|image_id)
+                # ReplicaSet series pile up for old revisions (~3k series) and no
+                # dashboard or rule reads them.
+                - sourceLabels:
+                    - __name__
+                  action: drop
+                  regex: "kube_replicaset_(created|metadata_generation|spec_replicas|status_fully_labeled_replicas|status_observed_generation|status_ready_replicas)"
     grafana:
       enabled: false
 
