@@ -34,13 +34,8 @@ spec:
       # Block retention. At ~2 req/s with tail sampling this fits easily in the 10Gi PVC.
       retention: 168h
 
+      # Container security context (the chart reads this key, not containerSecurityContext)
       securityContext:
-        fsGroup: 472
-        runAsGroup: 472
-        runAsUser: 472
-        runAsNonRoot: true
-
-      containerSecurityContext:
         allowPrivilegeEscalation: false
         capabilities:
           drop:
@@ -72,6 +67,15 @@ spec:
     serviceMonitor:
       enabled: true
       interval: 30s
+
+    # Pod security context. 10001 is the grafana/tempo image's user.
+    securityContext:
+      fsGroup: 10001
+      runAsGroup: 10001
+      runAsUser: 10001
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
 
     persistence:
       enabled: true
