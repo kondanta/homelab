@@ -9,6 +9,16 @@ spec:
   telemetry:
     metrics:
       prometheus: {}
+    tracing:
+      # Spans go to the OTel collector (tail sampling, then Tempo). The collector is a
+      # plain Service in this namespace, so no ReferenceGrant or Backend CRD is needed.
+      provider:
+        type: OpenTelemetry
+        backendRefs:
+          - name: otel-collector
+            port: 4317
+      # Envoy samples everything; the collector's tail sampler decides what to keep.
+      samplingRate: 100
   shutdown:
     drainTimeout: 300s
   logging:
