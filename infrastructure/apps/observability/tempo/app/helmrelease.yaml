@@ -10,8 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 1.24.4
-  url: oci://ghcr.io/grafana/helm-charts/tempo
+    tag: 3.2.1
+  url: oci://ghcr.io/grafana-community/helm-charts/tempo
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -24,17 +24,18 @@ spec:
     kind: OCIRepository
     name: tempo
   values:
-    replicas: 0
+    replicas: 1
     tempo:
+      # Pinned explicitly (chart default is its appVersion) so Renovate tracks the image
+      registry: docker.io
+      repository: grafana/tempo
+      tag: 3.1.1
       reportingEnabled: false
+      # Block retention. At ~2 req/s with tail sampling this fits easily in the 10Gi PVC.
+      retention: 168h
 
+      # Container security context (the chart reads this key, not containerSecurityContext)
       securityContext:
-        fsGroup: 472
-        runAsGroup: 472
-        runAsUser: 472
-        runAsNonRoot: true
-
-      containerSecurityContext:
         allowPrivilegeEscalation: false
         capabilities:
           drop:
@@ -54,23 +55,27 @@ spec:
           cpu: 10m
           memory: 128Mi
         limits:
-          cpu: 100m
-          memory: 256Mi
+          cpu: 200m
+          memory: 512Mi
 
-      distributor:
-        enabled: true
-      ingester:
-        lifecycler:
-          ring:
-            kvstore:
-              store: inmemory
-      compactor:
-        enabled: true
+      # Off: behind the tail sampler it would only see sampled traces, so span-derived
+      # rates would be skewed. RED metrics come from Envoy's own counters.
       metricsGenerator:
-        enabled: true
-        remoteWriteUrl: http://vmsingle-stack.observability.svc.cluster.local:8428/api/v1/write
-        storage:
-          path: /var/tempo/metrics
+        enabled: false
+
+    # Tempo's own metrics (tempo_*); the VM operator converts this to a VMServiceScrape
+    serviceMonitor:
+      enabled: true
+      interval: 30s
+
+    # Pod security context. 10001 is the grafana/tempo image's user.
+    securityContext:
+      fsGroup: 10001
+      runAsGroup: 10001
+      runAsUser: 10001
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
 
     persistence:
       enabled: true
