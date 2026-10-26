@@ -5,6 +5,5 @@ kind: Kustomization
 resources:
   - adguard.yaml
   - backup-host.yaml
-  - hetzner.yaml
   - qnap.yaml
   - prometheusrule-metal.yaml
