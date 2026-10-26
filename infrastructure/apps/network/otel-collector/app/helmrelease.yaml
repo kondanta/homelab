@@ -1,0 +1,129 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: otel-collector
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.177.0
+  url: oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-collector
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: otel-collector
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: otel-collector
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    mode: deployment
+    # Tail sampling needs every span of a trace on the same instance.
+    # Do not scale this out without a loadbalancing exporter in front.
+    replicaCount: 1
+    # Envoy (namespace: network) references the collector by this name.
+    fullnameOverride: otel-collector
+
+    image:
+      repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
+      # contrib distro is required for the tail_sampling processor
+      tag: 0.163.2
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+
+    ports:
+      # Only OTLP/gRPC from Envoy is used. Disable the chart's other receivers.
+      otlp-http:
+        enabled: false
+      jaeger-compact:
+        enabled: false
+      jaeger-thrift:
+        enabled: false
+      jaeger-grpc:
+        enabled: false
+      zipkin:
+        enabled: false
+
+    serviceMonitor:
+      enabled: true
+      metricsEndpoints:
+        - port: metrics
+          interval: 30s
+
+    config:
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+              endpoint: 0.0.0.0:4317
+            http: null
+        # chart defaults add jaeger/zipkin/prometheus receivers; null removes them
+        jaeger: null
+        zipkin: null
+        prometheus: null
+
+      processors:
+        memory_limiter:
+          check_interval: 1s
+          limit_percentage: 80
+          spike_limit_percentage: 25
+        tail_sampling:
+          # A trace is held this long before a keep/drop decision. Envoy spans arrive
+          # when the request completes, so 10s covers all but pathological requests.
+          decision_wait: 10s
+          num_traces: 5000
+          # ~2 req/s average, ~8 req/s peak on the homelab gateways
+          expected_new_traces_per_sec: 20
+          # Policies are OR'd: a trace is kept if any policy matches.
+          policies:
+            - name: errors
+              type: status_code
+              status_code:
+                status_codes: [ERROR]
+            - name: slow-requests
+              type: latency
+              latency:
+                threshold_ms: 2000
+            - name: baseline
+              type: probabilistic
+              probabilistic:
+                sampling_percentage: 25
+        batch: {}
+
+      exporters:
+        # chart default; unused
+        debug: null
+        otlp_grpc/tempo:
+          endpoint: tempo.observability.svc.cluster.local:4317
+          tls:
+            insecure: true
+
+      service:
+        pipelines:
+          traces:
+            receivers: [otlp]
+            processors: [memory_limiter, tail_sampling, batch]
+            exporters: [otlp_grpc/tempo]
+          # chart defaults define metrics/logs pipelines; remove them
+          metrics: null
+          logs: null

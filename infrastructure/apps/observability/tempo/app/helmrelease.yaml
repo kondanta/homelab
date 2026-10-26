@@ -24,9 +24,11 @@ spec:
     kind: OCIRepository
     name: tempo
   values:
-    replicas: 0
+    replicas: 1
     tempo:
       reportingEnabled: false
+      # Block retention. At ~2 req/s with tail sampling this fits easily in the 10Gi PVC.
+      retention: 168h
 
       securityContext:
         fsGroup: 472
@@ -54,8 +56,8 @@ spec:
           cpu: 10m
           memory: 128Mi
         limits:
-          cpu: 100m
-          memory: 256Mi
+          cpu: 200m
+          memory: 512Mi
 
       distributor:
         enabled: true
@@ -66,11 +68,10 @@ spec:
               store: inmemory
       compactor:
         enabled: true
+      # Off: behind the tail sampler it would only see sampled traces, so span-derived
+      # rates would be skewed. RED metrics come from Envoy's own counters.
       metricsGenerator:
-        enabled: true
-        remoteWriteUrl: http://vmsingle-stack.observability.svc.cluster.local:8428/api/v1/write
-        storage:
-          path: /var/tempo/metrics
+        enabled: false
 
     persistence:
       enabled: true
