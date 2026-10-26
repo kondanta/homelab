@@ -14,6 +14,13 @@ spec:
       interval: 10s
       path: /stats/prometheus
       port: metrics
+      # Unused per-cluster histograms. envoy_cluster_upstream_cx_connect_ms_bucket
+      # is kept on purpose: connect time is useful when debugging upstream stalls.
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+          action: drop
+          regex: "envoy_cluster_update_duration_bucket|envoy_cluster_upstream_cx_length_ms_bucket|envoy_cluster_upstream_rq_per_cx_bucket"
   selector:
     matchLabels:
       app.kubernetes.io/component: proxy

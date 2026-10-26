@@ -11,6 +11,12 @@ spec:
   podMetricsEndpoints:
     - honorLabels: true
       port: http-prom
+      # No dashboard or rule uses the reconcile-duration histogram (2.2k series).
+      metricRelabelings:
+        - sourceLabels:
+            - __name__
+          action: drop
+          regex: gotk_reconcile_duration_seconds_bucket
   selector:
     matchExpressions:
       - key: app.kubernetes.io/component

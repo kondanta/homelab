@@ -167,7 +167,7 @@ spec:
                 - sourceLabels:
                     - __name__
                   action: drop
-                  regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_dispatch_duration_seconds_bucket|apiserver_storage_list_duration_seconds_bucket|apiserver_watch_cache_initialization_duration_seconds_bucket"
+                  regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_dispatch_duration_seconds_bucket|apiserver_storage_list_duration_seconds_bucket|apiserver_watch_cache_initialization_duration_seconds_bucket|kubernetes_feature_enabled"
 
     vmsingle:
       extraArgs:
@@ -258,6 +258,11 @@ spec:
                 - __name__
               action: drop
               regex: "container_spec.*"
+            # Feature-gate flags, ~1k series, unused.
+            - sourceLabels:
+                - __name__
+              action: drop
+              regex: "kubernetes_feature_enabled"
             # Drop cgroup metrics with no pod.
             - sourceLabels:
                 - id
@@ -287,6 +292,21 @@ spec:
           memory: 96Mi
       vmScrape:
         enabled: true
+        spec:
+          # Helm replaces lists, so this repeats the chart's default endpoint
+          # (port http, honorLabels, labeldrop) and adds one drop rule.
+          endpoints:
+            - port: http
+              honorLabels: true
+              metricRelabelConfigs:
+                - action: labeldrop
+                  regex: (uid|container_id|image_id)
+                # ReplicaSet series pile up for old revisions (~3k series) and no
+                # dashboard or rule reads them.
+                - sourceLabels:
+                    - __name__
+                  action: drop
+                  regex: "kube_replicaset_(created|metadata_generation|spec_replicas|status_fully_labeled_replicas|status_observed_generation|status_ready_replicas)"
     grafana:
       enabled: false
 

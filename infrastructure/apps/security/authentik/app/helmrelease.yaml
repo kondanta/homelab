@@ -36,6 +36,12 @@ spec:
         enabled: true
         serviceMonitor:
           enabled: true
+          # The per-view Django latency histogram is unused (1.7k series).
+          metricRelabelings:
+            - sourceLabels:
+                - __name__
+              action: drop
+              regex: django_http_requests_latency_seconds_by_view_method_bucket
       route:
         main:
           enabled: true

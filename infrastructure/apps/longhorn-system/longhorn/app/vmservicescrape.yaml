@@ -19,4 +19,4 @@ spec:
         - sourceLabels:
             - __name__
           action: drop
-          regex: "longhorn_rest_client_(rate_limiter_latency|request_latency)_seconds_bucket"
+          regex: "longhorn_rest_client_(rate_limiter_latency|request_latency)_seconds_bucket|longhorn_workqueue_(queue|work)_duration_seconds_bucket"
