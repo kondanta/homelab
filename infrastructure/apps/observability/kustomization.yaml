@@ -17,7 +17,6 @@ resources:
   - pushgateway/ks.yaml
   - vmstatic-scrapes/ks.yaml
   - tempo/ks.yaml
-  - towonel-mesh/ks.yaml
   - victoria-metrics/ks.yaml
 patches:
   - # Patch to set the pod security policy to privileged.
