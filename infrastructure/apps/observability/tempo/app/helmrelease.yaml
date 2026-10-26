@@ -50,13 +50,20 @@ spec:
           wal:
             path: /var/tempo/wal
 
+      # Idle is ~50Mi, but Grafana's Traces Drilldown fires several TraceQL-metrics
+      # queries at once and pushed RSS past 500Mi (OOMKilled at 512Mi on 2026-10-26).
       resources:
         requests:
           cpu: 10m
-          memory: 128Mi
+          memory: 256Mi
         limits:
           cpu: 200m
-          memory: 512Mi
+          memory: 1Gi
+      # Go does not see the container limit; GOMEMLIMIT (~80% of it) makes the GC work
+      # harder before the kernel OOM-kills the pod.
+      extraEnv:
+        - name: GOMEMLIMIT
+          value: 800MiB
 
       # Off: behind the tail sampler it would only see sampled traces, so span-derived
       # rates would be skewed. RED metrics come from Envoy's own counters.
