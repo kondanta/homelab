@@ -73,6 +73,11 @@ spec:
       metricsGenerator:
         enabled: false
 
+    # Tempo's own metrics (tempo_*); the VM operator converts this to a VMServiceScrape
+    serviceMonitor:
+      enabled: true
+      interval: 30s
+
     persistence:
       enabled: true
       storageClassName: longhorn
