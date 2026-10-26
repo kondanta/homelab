@@ -157,6 +157,7 @@ spec:
               # Drop unused apiserver/etcd histogram buckets (no dashboard or
               # VMRule references them). apiserver_request_sli_duration_seconds_bucket
               # is kept: it feeds the kube-apiserver SLO/burnrate rules.
+              # Only the _bucket series are dropped; _sum/_count stay for averages.
               # Must live under endpoints[] (not top-level spec): VMServiceScrape's
               # CRD schema only defines metricRelabelConfigs there, and a
               # VMAgent-level globalScrapeMetricRelabelConfigs does NOT get
@@ -166,7 +167,7 @@ spec:
                 - sourceLabels:
                     - __name__
                   action: drop
-                  regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket"
+                  regex: "apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_watch_list_duration_seconds_bucket|apiserver_request_body_size_bytes_bucket|apiserver_watch_cache_read_wait_seconds_bucket|apiserver_watch_events_sizes_bucket|apiserver_response_sizes_bucket|apiserver_watch_events_dispatch_duration_seconds_bucket|apiserver_storage_list_duration_seconds_bucket|apiserver_watch_cache_initialization_duration_seconds_bucket"
 
     vmsingle:
       extraArgs:
