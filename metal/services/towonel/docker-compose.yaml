@@ -58,8 +58,11 @@ services:
         [{"port":9100,"origin":"127.0.0.1:9100"},
         {"port":8081,"origin":"127.0.0.1:8081"}]
     volumes:
-      # device key, single-use auth keys cannot re-enroll: must survive recreation
-      - towonel_mesh:/home/nonroot
+      # device key, single-use auth keys cannot re-enroll: must survive recreation.
+      # Mount at the state dir itself, NOT /home/nonroot: Docker copies the image's
+      # /home/nonroot ownership (65532) onto an empty volume at start, which undoes the
+      # chown and leaves uid 10001 unable to write ("failed to create state dir").
+      - towonel_mesh:/home/nonroot/mesh
 
 networks:
   proxy:
