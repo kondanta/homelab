@@ -41,7 +41,7 @@ spec:
     image:
       repository: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib
       # contrib distro is required for the tail_sampling processor
-      tag: 0.163.2
+      tag: 0.164.0
 
     resources:
       requests:
