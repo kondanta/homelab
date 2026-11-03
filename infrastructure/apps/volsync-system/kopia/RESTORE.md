@@ -1,13 +1,15 @@
 # Restoring an app from the Kopia repository
 
 Use this when an app's PVC is lost or corrupted. It restores **directly from the Kopia
-repository**, not through VolSync's `ReplicationDestination` (`<app>-dst`).
+repository**.
 
-> **Why not `<app>-dst`?** It restores fine, but then stores the result as a Longhorn
-> `type: snap` VolumeSnapshot taken *inside* a temporary volume that VolSync deletes
-> right afterwards. The snapshot object stays `readyToUse`, but creating a PVC from it
-> fails (`failed to verify data source: volume pvc-… not found`). Seen on koito and on
-> the June silverbullet snapshot, 2026-10-18. Follow-up: try `copyMethod: Direct`.
+> **No `<app>-dst` (ReplicationDestination).** The volsync component used to create one per
+> app, but its restore produced a Longhorn `type: snap` VolumeSnapshot taken *inside* a
+> temporary volume that VolSync deletes right afterwards. The snapshot stayed `readyToUse`,
+> but creating a PVC from it failed (`failed to verify data source: volume pvc-… not found`;
+> seen on koito and silverbullet, 2026-10-18). Nothing referenced the destinations, so they
+> were removed from the component on 2026-11-03 and the dead snapshots went with them
+> (each snapshot is owned by its ReplicationDestination).
 
 **Drill status (koito, 2026-10-18):** steps 1-4 tested end to end (2,946 files / 503 MB,
 SQLite integrity ok). Step 5 is the same `tar | kubectl exec` streaming used to seed the
