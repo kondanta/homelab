@@ -22,11 +22,21 @@ spec:
             env:
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__APP__THEME: dark
+              # OIDC via Authentik. Authority, client id/secret and user identifier come from the secret below.
+              # Identifier must be the user's *verified* email or sub claim (not preferred_username).
+              SONARR__AUTH__METHOD: Oidc
+              SONARR__AUTH__OIDCSCOPES: openid profile email
               SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
               SONARR__LOG__DBENABLED: "False"
               SONARR__LOG__LEVEL: info
               SONARR__SERVER__PORT: &port 80
+              # Who may send X-Forwarded-* (Envoy pods + LAN). Without this the app ignores the headers:
+              # it sees Envoy's IP, builds an http:// OIDC redirect_uri and never applies the local bypass.
+              SONARR__SERVER__TRUSTEDNETWORKS: 10.244.0.0/16,10.1.0.0/16
               TZ: Europe/Oslo
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}"
             probes:
               liveness:
                 enabled: true

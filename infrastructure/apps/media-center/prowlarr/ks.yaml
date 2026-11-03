@@ -11,6 +11,8 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
+  components:
+    - ../../../../components/fa
   interval: 1h
   path: ./infrastructure/apps/media-center/prowlarr/app
   postBuild:
