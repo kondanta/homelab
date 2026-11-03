@@ -49,6 +49,18 @@ data:
       --keep-hourly=0 --keep-daily=30 --keep-weekly=0 \
       --keep-monthly=12 --keep-annual=0 --keep-latest=5
 
+    echo "=== jellyfin: weekly, keep latest 3; skip regenerable data ==="
+    # Config is rarely restored, so keep few snapshots. Ignored paths are relative to the source root
+    # (the PVC root): trickplay, downloaded images and the Shokofin VFS are rebuilt by Jellyfin/Shokofin
+    # after a restore (slow, but not data loss). Kept: jellyfin.db, users/library config, plugin settings,
+    # Intro Skipper analysis, extracted subtitles.
+    $KOPIA policy set jellyfin@media-center:/data \
+      --keep-hourly=0 --keep-daily=0 --keep-weekly=0 \
+      --keep-monthly=0 --keep-annual=0 --keep-latest=3 \
+      --clear-ignore \
+      --add-ignore=/data/trickplay --add-ignore=/metadata --add-ignore=/Shokofin/VFS \
+      --add-ignore=/temp --add-ignore=/log
+
     echo "=== maintenance: log retention 72h ==="
     $KOPIA maintenance set --max-retained-log-age=72h
 
