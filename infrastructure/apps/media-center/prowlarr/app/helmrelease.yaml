@@ -22,6 +22,8 @@ spec:
             env:
               PROWLARR__APP__INSTANCENAME: Prowlarr
               PROWLARR__APP__THEME: dark
+              # Auth is done at the gateway (Authentik forward-auth, components/fa); app does none itself.
+              PROWLARR__AUTH__METHOD: External
               PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
               PROWLARR__LOG__DBENABLED: "False"
               PROWLARR__LOG__LEVEL: info
