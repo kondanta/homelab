@@ -53,6 +53,9 @@ routes:
       Status: {{ .payload.status }}{{ with .payload.commonLabels.severity }} | Severity: {{ . }}{{ end }}
       {{- range .payload.alerts }}
       • {{ .annotations.summary | default "no description" }}
+        {{- with .labels.service }}  `svc/{{ . }}`{{ end }}
+        {{- with .labels.scrape_job }}  `scrape/{{ . }}`{{ end }}
+        {{- with .labels.node }}  `node/{{ . }}`{{ end }}
         {{- with .labels.namespace }}  `ns/{{ . }}`{{ end }}
         {{- with .labels.pod }}  `{{ . }}`{{ end }}
         {{- with .labels.instance }}  `{{ . }}`{{ end }}
