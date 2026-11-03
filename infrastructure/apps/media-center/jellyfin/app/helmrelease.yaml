@@ -45,9 +45,7 @@ spec:
                   httpGet:
                     path: /health
                     port: *port
-                  # 12.0 runs a full-library DB migration/cleanup on first boot; 30 (5 min) could kill it mid-migration.
-                  # TODO: revert to 30 once 12.x has booted cleanly.
-                  failureThreshold: 90
+                  failureThreshold: 30
                   periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
