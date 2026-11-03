@@ -217,8 +217,10 @@ spec:
           endpoints:
             - port: metrics
               relabelConfigs:
+                # NB: single underscore after `meta`; the double-underscore spelling matches nothing and
+                # silently produced no label. Gives node-level alerts (NodeSystemSaturation, ...) a node name.
                 - source_labels:
-                    - __meta__kubernetes_endpoint_node_name
+                    - __meta_kubernetes_endpoint_node_name
                   target_label: node
 
     kubelet:
