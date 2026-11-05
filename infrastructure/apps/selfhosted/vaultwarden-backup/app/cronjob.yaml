@@ -44,7 +44,7 @@ spec:
             - name: pull
               # built from metal/services/ssh-client (alpine + openssh-client, uid 1000 present)
               # renovate: datasource=docker depName=ghcr.io/kondanta/homelab/metal/ssh-client
-              image: ghcr.io/kondanta/homelab/metal/ssh-client:3.24.3@sha256:b1e075ff5ad624a17c234ae80ec675b82b7083862e365e36ccd5dfeaee713874
+              image: ghcr.io/kondanta/homelab/metal/ssh-client:3.24.4@sha256:ae756bf1356ea523a05eace5ccdfdd7f0fdd1ac54634dacd12533ad715a5afe3
               command: ["/bin/sh", "-ec"]
               args:
                 - |
