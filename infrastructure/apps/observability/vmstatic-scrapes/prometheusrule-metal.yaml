@@ -103,6 +103,32 @@ spec:
             summary: >-
               NAS swap grew by {{ $value | humanize1024 }}B in the last hour
 
+        # Metal hosts are the two Raspberry Pis (job node-exporter-metal exposes only the SoC
+        # thermal zone). The Pi firmware starts throttling at 80C and clamps harder near 85C, so
+        # these fire when throttling is actually happening, not before. temp0/temp1 are the same
+        # zone, hence max by (instance). The backup Pi 4 idles ~67C and exceeds 80C for ~45 min
+        # most days (06:00 rclone), so the warning WILL fire daily until cooling is fixed.
+        # Expected response: check airflow/heatsink/case, then consider dropping arm_boost.
+        - alert: MetalHostHot
+          expr: >-
+            max by (instance) (node_hwmon_temp_celsius{job="node-exporter-metal"}) > 80
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: >-
+              {{ $labels.instance }} SoC at {{ $value | printf "%.0f" }}C for 10m (throttling above 80C)
+
+        - alert: MetalHostCriticalTemp
+          expr: >-
+            max by (instance) (node_hwmon_temp_celsius{job="node-exporter-metal"}) > 85
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: >-
+              {{ $labels.instance }} SoC at {{ $value | printf "%.0f" }}C for 5m (heavy throttling, check cooling now)
+
         - alert: MetalHostHighLoad
           expr: >-
             node_load15{job="node-exporter-metal"}
