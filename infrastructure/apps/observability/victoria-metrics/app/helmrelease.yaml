@@ -48,8 +48,11 @@ spec:
           limits:
             memory: 200Mi
 
-    vmalertmanager:
-      enabled: true
+    # The chart's key is `alertmanager`, and everything for the VMAlertmanager CR lives under
+    # spec. The same settings under `vmalertmanager` were silently ignored, which left
+    # silences and the notification log in an emptyDir. The PVC also keeps the descheduler
+    # away from the pod (PodsWithPVC protection).
+    alertmanager:
       spec:
         storage:
           volumeClaimTemplate:
@@ -60,6 +63,9 @@ spec:
               resources:
                 requests:
                   storage: 2Gi
+
+    vmalertmanager:
+      enabled: true
       route:
         enabled: true
         parentRefs:

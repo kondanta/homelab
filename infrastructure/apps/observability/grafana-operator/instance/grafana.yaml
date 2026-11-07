@@ -32,6 +32,12 @@ spec:
         type: Recreate
       template:
         spec:
+          # The operator creates grafana-pvc from persistentVolumeClaim above but leaves
+          # grafana-data as an emptyDir unless the volume is overridden like this.
+          volumes:
+            - name: grafana-data
+              persistentVolumeClaim:
+                claimName: grafana-pvc
           containers:
             - name: grafana
               env:

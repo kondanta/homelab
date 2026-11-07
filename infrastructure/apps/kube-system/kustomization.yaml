@@ -8,6 +8,7 @@ components:
   - ../../components/sops
 resources:
   - cilium/ks.yaml
+  - descheduler/ks.yaml
   - reloader/ks.yaml
   - intel-device-plugin/ks.yaml
   - metrics-server/ks.yaml

@@ -28,6 +28,10 @@ spec:
     persistentVolume:
       enabled: false
 
+    podAnnotations:
+      # No persistence: an eviction drops all pushed metrics. See descheduler.
+      descheduler.alpha.kubernetes.io/prefer-no-eviction: "true"
+
     securityContext:
       runAsNonRoot: true
       runAsUser: 65534
