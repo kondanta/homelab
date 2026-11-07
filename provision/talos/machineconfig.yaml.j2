@@ -190,6 +190,16 @@ cluster:
                   - maxSkew: 1
                     topologyKey: kubernetes.io/hostname
                     whenUnsatisfiable: ScheduleAnyway
+            # Weight memory over CPU when scoring nodes (see controlplane.yaml.j2).
+            - name: NodeResourcesFit
+              args:
+                scoringStrategy:
+                  type: LeastAllocated
+                  resources:
+                    - name: memory
+                      weight: 3
+                    - name: cpu
+                      weight: 1
     extraArgs:
       bind-address: 0.0.0.0
     image: registry.k8s.io/kube-scheduler:v1.37.2
