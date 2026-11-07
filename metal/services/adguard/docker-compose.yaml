@@ -11,7 +11,7 @@ services:
 
   adguard-exporter:
     # renovate: datasource=docker depName=ghcr.io/henrywhitaker3/adguard-exporter
-    image: ghcr.io/henrywhitaker3/adguard-exporter:v1.2.1
+    image: ghcr.io/henrywhitaker3/adguard-exporter:v1.2.3
     container_name: adguard-exporter
     restart: unless-stopped
     network_mode: host
