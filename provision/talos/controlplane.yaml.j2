@@ -139,6 +139,19 @@ config:
               - maxSkew: 1
                 topologyKey: kubernetes.io/hostname
                 whenUnsatisfiable: ScheduleAnyway
+        # Weight memory over CPU when scoring nodes. Memory is the scarce resource here and the
+        # SER5 (k8s-3) has 16 CPUs vs 4, so the default equal weighting kept sending new and
+        # descheduled pods back to it (a 6-pod probe with the default config put 6/6 on k8s-3;
+        # with these weights 0/6 went there).
+        - name: NodeResourcesFit
+          args:
+            scoringStrategy:
+              type: LeastAllocated
+              resources:
+                - name: memory
+                  weight: 3
+                - name: cpu
+                  weight: 1
 ---
 apiVersion: v1alpha1
 kind: KubeControllerManagerConfig
