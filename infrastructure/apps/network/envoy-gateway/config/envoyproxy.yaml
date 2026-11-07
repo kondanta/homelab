@@ -67,6 +67,10 @@ spec:
     kubernetes:
       envoyDeployment:
         replicas: 1
+        pod:
+          annotations:
+            # Single-replica gateway data plane: an eviction is an outage. See descheduler.
+            descheduler.alpha.kubernetes.io/prefer-no-eviction: "true"
         container:
           resources:
             requests:

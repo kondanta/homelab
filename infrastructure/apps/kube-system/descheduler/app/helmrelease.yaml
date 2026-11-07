@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: descheduler
+spec:
+  interval: 10m
+  chartRef:
+    kind: OCIRepository
+    name: descheduler
+  values:
+    kind: Deployment
+    replicas: 1
+    deschedulingInterval: 10m
+    serviceAccount:
+      name: descheduler
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
+    # The ServiceMonitor selects a Service, and the chart only creates one when enabled.
+    service:
+      enabled: true
+    serviceMonitor:
+      enabled: true
+    deschedulerPolicy:
+      # Cap evictions per cycle so a bad threshold cannot churn the cluster.
+      maxNoOfPodsToEvictPerNode: 3
+      # Actual usage from metrics-server, not requests: requests say k8s-3 (16 CPU) is
+      # empty on CPU while it is the node actually short on memory.
+      metricsProviders:
+        - source: KubernetesMetrics
+      profiles:
+        - name: balance-memory
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                # Only evict pods that another worker can take (taints, affinity, iGPU requests).
+                nodeFit: true
+                # Pods annotated prefer-no-eviction are never evicted (default is only "prefer").
+                noEvictionPolicy: Mandatory
+                podProtections:
+                  defaultDisabled:
+                    # emptyDir is scratch/cache here and is rebuilt on restart; without this,
+                    # ~40% of the pods on k8s-3 could never be moved.
+                    - PodsWithLocalStorage
+                  extraEnabled:
+                    # Longhorn RWO volumes must re-attach on the new node; leave stateful pods alone.
+                    - PodsWithPVC
+            - name: LowNodeUtilization
+              args:
+                # Relative to the mean memory use of the nodes in scope: a node is over/under
+                # when more than 10 points above/below it. Only memory is listed, so CPU and
+                # pod count are ignored (cpu is ~5-25% everywhere; pod count is not the goal).
+                useDeviationThresholds: true
+                thresholds:
+                  memory: 10
+                targetThresholds:
+                  memory: 10
+                metricsUtilization:
+                  source: KubernetesMetrics
+            # Hygiene: clear pods the kubelet/scheduler left in a dead state. Jobs are skipped
+            # so a failed Job's history is not wiped.
+            - name: RemoveFailedPods
+              args:
+                reasons:
+                  - ContainerStatusUnknown
+                  - NodeAffinity
+                  - NodeShutdown
+                  - Terminated
+                  - UnexpectedAdmissionError
+                includingInitContainers: true
+                excludeOwnerKinds:
+                  - Job
+                minPodLifetimeSeconds: 1800
+            # Hygiene: evict pods that no longer satisfy their own placement rules.
+            - name: RemovePodsViolatingInterPodAntiAffinity
+            - name: RemovePodsViolatingNodeAffinity
+              args:
+                nodeAffinityType:
+                  - requiredDuringSchedulingIgnoredDuringExecution
+            - name: RemovePodsViolatingNodeTaints
+            - name: RemovePodsViolatingTopologySpreadConstraint
+          plugins:
+            balance:
+              enabled:
+                - LowNodeUtilization
+                - RemovePodsViolatingTopologySpreadConstraint
+            deschedule:
+              enabled:
+                - RemoveFailedPods
+                - RemovePodsViolatingInterPodAntiAffinity
+                - RemovePodsViolatingNodeAffinity
+                - RemovePodsViolatingNodeTaints
+      # Control plane is tainted and takes no workloads; keep it out of the mean.
+      nodeSelector: "!node-role.kubernetes.io/control-plane"
