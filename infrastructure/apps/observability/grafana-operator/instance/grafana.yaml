@@ -32,6 +32,12 @@ spec:
         type: Recreate
       template:
         spec:
+          securityContext:
+            # Grafana runs as 10001; without fsGroup the Longhorn volume is root-owned and
+            # /var/lib/grafana is not writable (CrashLoopBackOff). Merges with the operator's
+            # default seccompProfile.
+            fsGroup: 10001
+            fsGroupChangePolicy: OnRootMismatch
           # The operator creates grafana-pvc from persistentVolumeClaim above but leaves
           # grafana-data as an emptyDir unless the volume is overridden like this.
           volumes:
