@@ -19,7 +19,7 @@ spec:
             image:
               repository: foxxmd/multi-scrobbler
               # renovate: datasource=docker depName=foxxmd/multi-scrobbler
-              tag: 0.20.3@sha256:74c306b059f6953bc38d69372ca57260b616f2d98502189d32e14caba3c9e419
+              tag: 0.21.0@sha256:d3dacd94c5e6629d9a01579c2e4484de9440c1755dcbaae2ffb50d19b18793a0
             env:
               # Image boots through s6-overlay (/init) as root and drops to PUID/PGID
               # itself, so no runAsNonRoot / readOnlyRootFilesystem here.
