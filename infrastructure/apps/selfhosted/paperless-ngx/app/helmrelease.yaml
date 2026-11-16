@@ -51,7 +51,9 @@ spec:
               PAPERLESS_PORT: &port 8000
               PAPERLESS_TIME_ZONE: Europe/Oslo
               PAPERLESS_DBENGINE: postgresql
-              PAPERLESS_DBHOST: postgres.network.svc.cluster.local
+              # Trailing dot = absolute name: skips the ndots:5 search list, which would
+              # otherwise leak <name>.infra.local (NXDOMAIN) to AdGuard on every lookup.
+              PAPERLESS_DBHOST: postgres.network.svc.cluster.local.
               PAPERLESS_DBPORT: "5432"
               PAPERLESS_DBNAME: paperless
               PAPERLESS_REDIS: redis://redis.network.svc.cluster.local:6379

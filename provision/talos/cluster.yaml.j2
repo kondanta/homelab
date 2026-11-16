@@ -126,6 +126,15 @@ labels:
 ---
 apiVersion: v1alpha1
 kind: ResolverConfig
+# Drop the DHCP-supplied `infra.local` search domain. Pods inherit it via
+# dnsPolicy ClusterFirst, so every short/ndots<5 lookup leaked <name>.infra.local
+# (always NXDOMAIN) through CoreDNS -> AdGuard -> public DoH/DoT upstreams.
+# Verified 2026-11-16 with `--mode try` on k8s-2: resolver layer becomes
+# `configuration` with an empty list. Existing pods keep the old resolv.conf
+# until restarted.
+searchDomains:
+  disableDefault: true
+  domains: []
 hostDNS:
   enabled: true
   forwardKubeDNSToHost: true
