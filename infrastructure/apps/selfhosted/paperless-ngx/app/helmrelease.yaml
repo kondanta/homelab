@@ -76,6 +76,10 @@ spec:
                   httpGet:
                     path: /accounts/login/
                     port: *port
+                    # 3.5.0 rejects the pod-IP Host header (DisallowedHost -> 400)
+                    httpHeaders:
+                      - name: Host
+                        value: paperless.taylan.dev
                   initialDelaySeconds: 30
                   periodSeconds: 15
                   timeoutSeconds: 5
@@ -87,6 +91,10 @@ spec:
                   httpGet:
                     path: /accounts/login/
                     port: *port
+                    # 3.5.0 rejects the pod-IP Host header (DisallowedHost -> 400)
+                    httpHeaders:
+                      - name: Host
+                        value: paperless.taylan.dev
                   initialDelaySeconds: 15
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -98,6 +106,10 @@ spec:
                   httpGet:
                     path: /accounts/login/
                     port: *port
+                    # 3.5.0 rejects the pod-IP Host header (DisallowedHost -> 400)
+                    httpHeaders:
+                      - name: Host
+                        value: paperless.taylan.dev
                   failureThreshold: 30
                   periodSeconds: 10
             resources:
