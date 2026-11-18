@@ -34,7 +34,7 @@ services:
 
   postgres-exporter:
     # renovate: datasource=docker depName=quay.io/prometheuscommunity/postgres-exporter
-    image: quay.io/prometheuscommunity/postgres-exporter:v0.20.1
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.21.1
     container_name: postgres-exporter
     restart: unless-stopped
     ports:
