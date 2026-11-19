@@ -2,7 +2,7 @@
 services:
   cadvisor:
     # renovate: datasource=docker depName=ghcr.io/google/cadvisor
-    image: ghcr.io/google/cadvisor:v0.61.0
+    image: ghcr.io/google/cadvisor:v0.61.1
     container_name: cadvisor
     restart: unless-stopped
     privileged: true
