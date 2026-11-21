@@ -2,7 +2,7 @@
 services:
   postgres:
     # renovate: datasource=docker depName=postgres
-    image: postgres:18.7-trixie
+    image: postgres:19.0-trixie
     container_name: postgres
     restart: unless-stopped
     user: "999:999"
