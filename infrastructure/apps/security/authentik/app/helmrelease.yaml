@@ -24,7 +24,7 @@ spec:
       replicas: 1
       initContainers:
         - name: init-db
-          image: ghcr.io/home-operations/postgres-init:18
+          image: ghcr.io/home-operations/postgres-init:19
           envFrom: *envFrom
       resources:
         requests:
