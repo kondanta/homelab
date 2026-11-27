@@ -19,7 +19,7 @@ spec:
             image:
               repository: ghcr.io/silverbulletmd/silverbullet
               # renovate: datasource=docker depName=ghcr.io/silverbulletmd/silverbullet
-              tag: 2.12.1@sha256:ddfdf0844213e8509597b537674e09ff25a14528715ec6137b653aa8dd73b087
+              tag: 3.0.1@sha256:b4a188c5137dd6af1b60db4be3e6bb33dc56aa85df9d52cfd821352254582b35
             env:
               SB_NAME: taylan's notes
               TZ: Europe/Oslo
